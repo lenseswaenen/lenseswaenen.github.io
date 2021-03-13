@@ -3,7 +3,7 @@ usemathjax: true
 layout: post
 title: "Foo"
 date: 2021-03-01 23:45:13 -0400
-background: /img/posts/bayesian-dl-images/Untitled.png # '/img/posts/01.jpg'
+background: '/img/bg-index.png'
 ---
 
 # Testing stuff

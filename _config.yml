@@ -1,23 +1,24 @@
-title:              Joris Baan
-email:              jsbaan@gmail.com
-description:        ML Engineer with a passion for research, ML, NLP and much more.
-author:             Joris Baan
-baseurl:
-url:                https://jorisbaan.nl
+title:              Bits of math
+email:              lenseswaenen@gmail.com
+description: >- # this means to ignore newlines until "baseurl:"
+  Sharing bits of mathematics that I've come across in my ~10 years as a professional mathematical engineer.
+author:             Lense Swaenen
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Social Profiles
-twitter_username:   jsbaan
-github_username:    jsbaan
+twitter_username: LenseSwaenen
+github_username:  lenseswaenen
 facebook_username:
 instagram_username:
-linkedin_username:  joris-baan-669324b3
+linkedin_username:  
 
 # Add your google-analytics ID here to activate google analytics
 google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
 
 # SEO settings
 twitter:
-  username: jsbaan
+  username: LenseSwaenen
   card: summary_large_image
 
 # Build settings

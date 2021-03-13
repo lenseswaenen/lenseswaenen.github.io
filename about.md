@@ -2,27 +2,17 @@
 layout: page
 title: About Me
 description: ""
-background: '/img/bg-index.jpg'
+background: '/img/bg-index.png'
 ---
 
-I am currently Machine Learning Engineer & Product Owner at *DPG Media*. I work on responsible news recommendation for major Dutch news titles such as de Volkskrant, het Parool, AD and nu.nl, reaching roughly 10 million users a day.
+My name is Lense Swaenen. I'm a Belgian mathematical engineer. Since 2012 I have been employed at [Sioux Technologies](https://www.sioux.eu) in Eindhoven (in the Netherlands), currently being the technology manager on optimization in the [Mathware department](https://www.sioux.eu/competences/mathware/). In 2012 I finished my university studies at the KULeuven. There, I obtained a Masters degree in Mathematical Engineering as well as a Masters degree in Physics (theoretical physics).
 
+This blog is to host some applied mathematical output of mine. Some work related, but mostly not.
 
-### Education
-I have an undergraduate and graduate degree in Artificial Intelligence from the University of Amsterdam and studied at the University of Toronto for one semester. I focused on NLP, deep learning, fundamental ML theory and statistics.
+### More about work
+Sioux is a 'technology partner', which basically means we do projects for other companies. Eindhoven has a lot of high tech industry, so we get to do a lot of fun stuff. I'm mainly involved in project that have a mathematical optimization component. That subdomain also has a Sioux [landing page](https://www.sioux.eu/competences/mathware/optimization/)
 
-I wrote my master thesis under the supervision of [Maartje ter Hoeve](https://maartjeth.github.io/), [Anne Schuth](https://www.anneschuth.nl/), Marlies van der Wees and [Maarten de Rijke](https://staff.fnwi.uva.nl/m.derijke/).
+Until 2020, the Mathware department of Sioux was known as LIME. LIME's branding included a mascot, 'het slimoentje'. My current header image is [The March of Progress](https://en.wikipedia.org/wiki/March_of_Progress) reinterpreted with 'slimoentje' and the history of mathematics. This artwork was created for the retirement of the former boss of LIME: Professor Bob Mattheij.
 
-In the past I have collaborated with [Dieuwke Hupkes](https://dieuwkehupkes.nl/) and [Elia Bruni](https://eliabruni.github.io/) on compositionality in neural networks.
-
-### Teaching & Supervision
-- *2021 - current* - Guido Ansem, MSc AI VU. *Fact preserving text generation*. Co-supervised with Lucas de Haas and Peter Bloem.
-- *2020 – current* - Claartje Barkhof, MSc AI UvA. *Information Flow in VAEs*. Co-supervised with Lucas de Haas, David Stap and Wilker Aziz.
-- *2019 – 2020* - Henning Bartsch, MSc AI UvA. *Neural News Recommendation*. Co-supervised with Lucas de Haas and Maartje ter Hoeve.
-
-### Industry
-- Research intern at *DPG Media* working on interpretability in transformers for abstractive summarization (master thesis).
-- Research intern at *Infosys* in Bangalore working on robotic navigation in controlled environments.  
-- ML Researcher at *YoungCapital* working on finding relevant candidates given a vacancy and vice versa.
-
-Find me on [LinkedIn](https://www.linkedin.com/in/joris-baan-669324b3/) here.
+### More about myself
+I'm 32 years old, I live in Hoogstraten, Belgium with my wife and daughter. I'm a racket sports enthusiast. Table tennis is my main sport: I play competition and am also the head coach at my local club. Tennis, squash, padel, racketlon and badminton I've all done competetively to some lesser extent and a little less lately with fatherhood and all. Other interest are movies and board games.

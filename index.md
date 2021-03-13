@@ -1,8 +1,10 @@
 ---
 layout: home
-background: '/img/bg-index.jpg'
+background: '/img/bg-index.png'
 ---
 
-Welcome! I am Joris and I am interested in research at the intersection of machine learning and language. I have worked on compositionality and interpretability, and recently became more interested in probabilistic models such as VAEs and Bayesian Deep Learning for text. I also like software engineering and hiking. Check the [about](about) page to learn more about what I do and have done.
+Welcome! I am Lense, a Belgian mathematical engineer. Since 2012 I have been employed at [Sioux Technologies](https://www.sioux.eu) in Eindhoven (in the Netherlands), currently being the technology manager on optimization in the [Mathware department](https://www.sioux.eu/competences/mathware/). 
 
-I occasionally write blogposts. You can find them down below.
+This blog is to host some applied mathematical output of mine. Some work related, but mostly not.
+
+Check the [about](about) page for more info on me.
