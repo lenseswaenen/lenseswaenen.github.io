@@ -1,15 +1,19 @@
 // Import Core Clean Blog SCSS
 @import "../assets/vendor/startbootstrap-clean-blog/scss/clean-blog.scss";
 
+
+@import "jekyll-monokai-syntax.scss";
+/*@import "jekyll-atom-one-light-syntax.scss";*/
+
+
 /**
  * Code formatting from minima
  */
 pre,
 code {
-  font-size: 0.9375em;
-  border: 1px solid $gray-400;
+  font-size: 12px;
+  color: #f92672;
   border-radius: 3px;
-  background-color: $gray-200;
 }
 
 code {
@@ -19,7 +23,7 @@ code {
 pre {
   padding: 8px 12px;
   overflow-x: auto;
-
+  
   > code {
     border: 0;
     padding-right: 0;
@@ -29,9 +33,4 @@ pre {
 
 .highlight {
   border-radius: 3px;
-  background: $gray-200;
-
-  .highlighter-rouge & {
-    background: $gray-200;
-  }
 }
