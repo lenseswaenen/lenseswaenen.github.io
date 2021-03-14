@@ -569,5 +569,4 @@ On a closing note the linear system has rows consisting of $1$ and $-1$ entries,
 None yet
 
 ## Want to leave a comment?
-Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an [email](mailto:lenseswaenen@gmail.com)  
-
+Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an [email](mailto:lenseswaenen@gmail.com) or reply to [this tweet](https://twitter.com/LenseSwaenen/status/1371096809439911945?s=20).
