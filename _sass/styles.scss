@@ -1,6 +1,10 @@
 // Import Core Clean Blog SCSS
 @import "../assets/vendor/startbootstrap-clean-blog/scss/clean-blog.scss";
 
+body {
+  font-size: 17px;
+}
+
 
 @import "jekyll-monokai-syntax.scss";
 /*@import "jekyll-atom-one-light-syntax.scss";*/
