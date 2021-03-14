@@ -27,16 +27,10 @@ Online images like
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
-```
 
-
-```python
 x = np.linspace(-10, 10)
 y = np.sin(x)
-```
 
-
-```python
 plt.figure()
 plt.plot(x, y)
 ```
@@ -56,7 +50,9 @@ plt.plot(x, y)
 
 
 
+-----
 
-```python
+# Related posts
 
-```
+# Want to leave a comment
+Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an [email](mailto:lenseswaenen@gmail.com)  
