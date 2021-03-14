@@ -19,6 +19,8 @@ header.masthead {
   .page-heading,
   .post-heading,
   .site-heading {
+	height: 50vh !important;
+	
     padding: 200px 0 150px;
     color: white;
     @media only screen and (min-width: 768px) {

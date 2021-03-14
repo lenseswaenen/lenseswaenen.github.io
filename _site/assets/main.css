@@ -41,7 +41,7 @@ img::-moz-selection { color: #fff; background: transparent; }
 
 header.masthead { margin-bottom: 50px; background: no-repeat center center; background-color: #868e96; background-attachment: scroll; position: relative; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; }
 header.masthead .overlay { position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: #212529; opacity: 0.5; }
-header.masthead .page-heading, header.masthead .post-heading, header.masthead .site-heading { padding: 200px 0 150px; color: white; }
+header.masthead .page-heading, header.masthead .post-heading, header.masthead .site-heading { height: 50vh !important; padding: 200px 0 150px; color: white; }
 @media only screen and (min-width: 768px) { header.masthead .page-heading, header.masthead .post-heading, header.masthead .site-heading { padding: 200px 0; } }
 header.masthead .page-heading, header.masthead .site-heading { text-align: center; }
 header.masthead .page-heading h1, header.masthead .site-heading h1 { font-size: 50px; margin-top: 0; }
