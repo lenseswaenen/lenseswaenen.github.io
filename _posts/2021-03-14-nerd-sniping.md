@@ -559,8 +559,29 @@ sol = scipy.sparse.linalg.spsolve(A, b)
     675 ms ± 41.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
     
 
-On a closing note the linear system has rows consisting of $1$ and $-1$ entries, similar to finite differences of a first order derivative in partial differential equations on a grid. The normal form $A^TAx = A^Tb$ of these linear equations will resemble 2D Poisson equations very much. This makes the system very suited for solving with multigrid methods which have linear complexity in the number of variables. I used MG methods in my Masters thesis in Mathematical Engineering and am still fond of them to this day due to their incredible performance. Perhaps I'll make a blog post about that one day as well...
+The linear system has rows consisting of $1$ and $-1$ entries, similar to finite differences of a first order derivative in partial differential equations on a grid. The normal form $A^TAx = A^Tb$ of these linear equations will resemble 2D Poisson equations very much. This makes the system very suited for solving with multigrid methods which have linear complexity in the number of variables. I used MG methods in my Masters thesis in Mathematical Engineering and am still fond of them to this day due to their incredible performance. Perhaps I'll make a blog post about that one day as well...
 
+# Closing remarks
+
+As we are publishing this on $pi$-day, let's not forget that we can use this method to estimate $pi$. Note that we achieve this by solving a sparse matrix containing only zeros, ones and minus ones, and a right-hand side which is completely zero except for one one, and one minus one. 
+
+
+```python
+R = 0.7733064009494379
+pi_approx = 4/(R + 1/2)
+```
+
+
+```python
+print(np.pi, pi_approx, np.pi - pi_approx)
+```
+
+    3.141592653589793 3.1414277011545764 0.00016495243521674752
+    
+
+We get 4 correct significant digits from a ~200x200 grid.
+
+I expect this approach to correspond to one of the known infinite sum approximations to $pi$. Kudos to anyone who can tell me which one!
 
 
 -----
