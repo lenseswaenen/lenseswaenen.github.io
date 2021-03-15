@@ -563,7 +563,7 @@ The linear system has rows consisting of $1$ and $-1$ entries, similar to finite
 
 # Closing remarks
 
-As we are publishing this on $pi$-day, let's not forget that we can use this method to estimate $pi$. Note that we achieve this by solving a sparse matrix containing only zeros, ones and minus ones, and a right-hand side which is completely zero except for one one, and one minus one. 
+As we are publishing this on $\pi$-day, let's not forget that we can use this method to estimate $\pi$. Note that we achieve this by solving a sparse matrix containing only zeros, ones and minus ones, and a right-hand side which is completely zero except for one one, and one minus one. 
 
 
 ```python
@@ -581,7 +581,7 @@ print(np.pi, pi_approx, np.pi - pi_approx)
 
 We get 4 correct significant digits from a ~200x200 grid.
 
-I expect this approach to correspond to one of the known infinite sum approximations to $pi$. Kudos to anyone who can tell me which one!
+I expect this approach to correspond to one of the known $\pi$ [infinite series](https://en.wikipedia.org/wiki/List_of_formulae_involving_%CF%80#Infinite_series). Kudos to anyone who can tell me which one!
 
 
 -----
