@@ -1,4 +1,5 @@
 ---
+usemathjax: true
 layout: home
 background: '/img/bg-index.png'
 ---
