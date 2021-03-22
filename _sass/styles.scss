@@ -38,3 +38,18 @@ pre {
 .highlight {
   border-radius: 3px;
 }
+
+/* Embed tweaks
+figure, iframe, img, picture, video {
+    height: auto;
+    max-width: 100%;
+}
+*/
+
+/**
+ * Images: Copied from minima. Optionally figure, iframe, img, picture, video {}
+ */
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}

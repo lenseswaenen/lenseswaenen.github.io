@@ -16,7 +16,7 @@ $$ e^{i\pi} + 1 = 0 $$
 
 
 Online images like
-![This](https://imgs.xkcd.com/comics/circles.png)
+![This](https://imgs.xkcd.com/comics/geothmetic_meandian.png)
 
 
 ```python
