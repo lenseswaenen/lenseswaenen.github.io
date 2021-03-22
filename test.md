@@ -1,9 +1,9 @@
 ---
 usemathjax: true
 layout: post
-title: "Foo"
 date: 2021-03-01 23:45:13 -0400
 background: '/img/bg-index.png'
+permalink: /test/
 ---
 
 # Testing stuff
