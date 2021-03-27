@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    MegaTomBike 2021 - Bits of math
+    
+  </title>
+
+  <meta name="description" content="This post describes how I generated my fantasy cycling team for the MegaTomBike 2021 competition. This is a local variant of the bigger Megabike competition,...">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link rel="canonical" href="http://localhost:4000/2021/03/27/megatombike2021.html">
+  <link rel="alternate" type="application/rss+xml" title="Bits of math" href="/feed.xml">
+
+  <!-- for mathjax support -->
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" }},
+	  tex2jax: { inlineMath: [ ['$','$'], ['\\(','\\)'] ]}
+      });
+    </script>
+    <!-- <script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+  <!-- For Jekyll SEO plugin -->
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>MegaTomBike 2021 | Bits of math</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="MegaTomBike 2021" />
+<meta name="author" content="Lense Swaenen" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This post describes how I generated my fantasy cycling team for the MegaTomBike 2021 competition. This is a local variant of the bigger Megabike competition, organized by my friend Bob and others." />
+<meta property="og:description" content="This post describes how I generated my fantasy cycling team for the MegaTomBike 2021 competition. This is a local variant of the bigger Megabike competition, organized by my friend Bob and others." />
+<link rel="canonical" href="http://localhost:4000/2021/03/27/megatombike2021.html" />
+<meta property="og:url" content="http://localhost:4000/2021/03/27/megatombike2021.html" />
+<meta property="og:site_name" content="Bits of math" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-27T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="MegaTomBike 2021" />
+<meta name="twitter:site" content="@LenseSwaenen" />
+<meta name="twitter:creator" content="@Lense Swaenen" />
+<script type="application/ld+json">
+{"datePublished":"2021-03-27T00:00:00+01:00","@type":"BlogPosting","dateModified":"2021-03-27T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2021/03/27/megatombike2021.html"},"url":"http://localhost:4000/2021/03/27/megatombike2021.html","author":{"@type":"Person","name":"Lense Swaenen"},"description":"This post describes how I generated my fantasy cycling team for the MegaTomBike 2021 competition. This is a local variant of the bigger Megabike competition, organized by my friend Bob and others.","headline":"MegaTomBike 2021","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">Bits of math</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/megatombike/simon-connellan-TQZlo6cC4s0-unsplash.jpg')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>MegaTomBike 2021</h1>
+            
+            <h2 class="subheading">Knapsack approach to a fantasy cycling team</h2>
+            
+            <span class="meta">Posted by
+              <a href="#">Lense Swaenen</a>
+              on March 27, 2021 &middot; <span class="reading-time" title="Estimated read time">
+  
+   16 mins  read </span>
+
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <p>This post describes how I generated my fantasy cycling team for the <a href="https://www.megatombike.be/">MegaTomBike 2021 competition</a>. This is a local variant of the bigger Megabike competition, organized by my friend Bob and others.</p>
+
+<p>The challenge is simple: Create a team of 15 riders, each having some price tag, such that the total team cost is below 1.750.000 euro. Throughout the 2021 cycling season, riders will collect points according to their performance in all competitions on the calendar (single day &amp; multiple day events).</p>
+
+<h2 id="some-history">Some history</h2>
+
+<p>This is the first edition I’m participating in since my previous participations from 2011-2013. Though I’m far from a cycling enthusiast or expert, I’ve been quite succesful in those past competitions by simply taking a quantative approach. Mathematically, MegaTomBike can be considered a variant of a <a href="https://en.wikipedia.org/wiki/Knapsack_problem#Definition">0-1 Knapsack problem</a>, but more on that later. In 2013 and before, I was not yet familiar with discrete optimization problems and integer programming (a significant gap in the <a href="https://onderwijsaanbod.kuleuven.be/opleidingen/e/SC_52357132.htm">KULeuven mathematical engineering curriculum</a> imo). My approach back then consisted of playing around in Excel, sorting riders according to some efficiency metric, and manual puzzling my way to a decent team. This approach yielded multiple top-3 final rankings (out of ~100 participating teams).
+Key to the successes of those teams I believe were</p>
+<ul>
+  <li>No bias in favor Belgian riders (as opposed to the other, man-made teams)</li>
+  <li>No bias against riders who are unpopular due to a doping history (e.g. Michele Scarponi), due to style (e.g. Cadel Evans) or due to old age (e.g. Voigt, Garzelli).</li>
+  <li>Preference for GC riders over single day specialists. The former are more predictable and consistent, and many points are to be won in multiple day events. Recent Belgian cycling history has known more single day specialists than GC specialists, so the other teams were more biased towards that type of riders.</li>
+</ul>
+
+<h2 id="creating-the-team-for-2021">Creating the team for 2021</h2>
+
+<h3 id="mathematical-model">Mathematical model</h3>
+<p>This year, I am tackling the team creation as a 0-1 knapsack problem:</p>
+
+\[\begin{align*}
+\text{maximize}_{x_i} \quad &amp; \sum_{i=1}^n p_i x_i \\
+\text{subject to} \quad &amp; \sum_{i=1}^n c_i x_i \leq C \\
+&amp; \sum_{i=1}^n x_i = N \\
+&amp; x_i \in \{0,1\}
+\end{align*}\]
+
+<p>where $p_i$ is the number of points collected by a rider, $c_i$ is the cost of a rider, $C$ is the total team cost limit (= 1.750.000), and $N$ is the total number of riders (= 15). $x_i$ is a binary variable which either selects or does not select rider $i$.</p>
+
+<p>So, we are maximizing the total number of points, given all the constraints.</p>
+
+<p>Constraint</p>
+
+\[\sum_{i=1}^n x_i = N (= 15)\]
+
+<p>is how this problem differs from the standard 0-1 knapsack problem.</p>
+
+<h3 id="data">Data</h3>
+<p>We already know $C$ and $N$. The rider costs $c_i$ can luckily be downloaded from the MegaTomBike website in Excel format (column ‘Waarde’).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">notebook</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pd</span><span class="p">.</span><span class="n">read_excel</span><span class="p">(</span><span class="sa">r</span><span class="s">'renners.xls'</span><span class="p">).</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Renner</th>
+      <th>Waarde</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>BIDARD François</td>
+      <td>14000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>BOUCHARD Geoffrey</td>
+      <td>13500</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CALMEJANE Lilian</td>
+      <td>66000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CHAMPOUSSIN Clément</td>
+      <td>17500</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CHEREL Mikaël</td>
+      <td>15000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The hard one is $p_i$. All races are still to be ridden, so we will have to look for a proxy. I have chosen to use the <a href="https://www.uci.org/road/rankings">individual UCI road ranking points from 2020</a>. Luckily, also the UCI website allows exporting to Excel.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pd</span><span class="p">.</span><span class="n">read_excel</span><span class="p">(</span><span class="sa">r</span><span class="s">'IndividualRanking.xlsx'</span><span class="p">).</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Rank</th>
+      <th>UCI ID</th>
+      <th>Name</th>
+      <th>Nationality</th>
+      <th>Team Code</th>
+      <th>Age</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>10008888921</td>
+      <td>ROGLIČ Primož</td>
+      <td>SLOVENIA</td>
+      <td>TJV</td>
+      <td>31</td>
+      <td>4237.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>10014972740</td>
+      <td>POGAČAR Tadej</td>
+      <td>SLOVENIA</td>
+      <td>UAD</td>
+      <td>22</td>
+      <td>3055.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>10007585986</td>
+      <td>VAN AERT Wout</td>
+      <td>BELGIUM</td>
+      <td>TJV</td>
+      <td>26</td>
+      <td>2700.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>10007946203</td>
+      <td>VAN DER POEL Mathieu</td>
+      <td>NETHERLANDS</td>
+      <td>AFC</td>
+      <td>25</td>
+      <td>2040.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>10003401246</td>
+      <td>FUGLSANG Jakob</td>
+      <td>DENMARK</td>
+      <td>AST</td>
+      <td>35</td>
+      <td>1961.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h4 id="matching-names">Matching names</h4>
+
+<p>The hard part now is actually matching those two Excel files… Both have a column with the rider name, but not all have the exact same spelling or diacritics, for example <code class="language-plaintext highlighter-rouge">BERNAL Egan</code> vs <code class="language-plaintext highlighter-rouge">BERNAL GOMEZ Egan Arley</code>. Season 2021 will also have some new young riders competing who did not compete in 2020.</p>
+
+<p>Below is my best effort for matching the riders in the two tables, by ignoring the case, removing diacritics (with the <code class="language-plaintext highlighter-rouge">unidecode</code> module), matching only parts of names, …</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">unidecode</span> <span class="c1">#To remove diacritics
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mtb</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_excel</span><span class="p">(</span><span class="sa">r</span><span class="s">'renners.xls'</span><span class="p">)</span>
+<span class="n">mtb</span><span class="p">[</span><span class="s">'Renner'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">unidecode</span><span class="p">.</span><span class="n">unidecode</span><span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">mtb</span><span class="p">[</span><span class="s">'Renner'</span><span class="p">])]</span>
+
+<span class="n">uci</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_excel</span><span class="p">(</span><span class="sa">r</span><span class="s">'IndividualRanking.xlsx'</span><span class="p">)</span>
+<span class="n">uci</span><span class="p">[</span><span class="s">'Name'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">unidecode</span><span class="p">.</span><span class="n">unidecode</span><span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">uci</span><span class="p">[</span><span class="s">'Name'</span><span class="p">])]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mtb</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'Waarde'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Renner</th>
+      <th>Waarde</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>462</th>
+      <td>roglic primoz</td>
+      <td>400000</td>
+    </tr>
+    <tr>
+      <th>550</th>
+      <td>pogacar tadej</td>
+      <td>324000</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>alaphilippe julian</td>
+      <td>291000</td>
+    </tr>
+    <tr>
+      <th>583</th>
+      <td>van der poel mathieu</td>
+      <td>249000</td>
+    </tr>
+    <tr>
+      <th>466</th>
+      <td>van aert wout</td>
+      <td>242000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uci</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Rank</th>
+      <th>UCI ID</th>
+      <th>Name</th>
+      <th>Nationality</th>
+      <th>Team Code</th>
+      <th>Age</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>10008888921</td>
+      <td>roglic primoz</td>
+      <td>SLOVENIA</td>
+      <td>TJV</td>
+      <td>31</td>
+      <td>4237.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>10014972740</td>
+      <td>pogacar tadej</td>
+      <td>SLOVENIA</td>
+      <td>UAD</td>
+      <td>22</td>
+      <td>3055.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>10007585986</td>
+      <td>van aert wout</td>
+      <td>BELGIUM</td>
+      <td>TJV</td>
+      <td>26</td>
+      <td>2700.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>10007946203</td>
+      <td>van der poel mathieu</td>
+      <td>NETHERLANDS</td>
+      <td>AFC</td>
+      <td>25</td>
+      <td>2040.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>10003401246</td>
+      <td>fuglsang jakob</td>
+      <td>DENMARK</td>
+      <td>AST</td>
+      <td>35</td>
+      <td>1961.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mtb_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mtb</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'Waarde'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)[</span><span class="s">'Renner'</span><span class="p">])</span>
+<span class="n">mtb_costs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mtb</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'Waarde'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)[</span><span class="s">'Waarde'</span><span class="p">])</span>
+<span class="n">uci_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">uci</span><span class="p">[</span><span class="s">'Name'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mtb_lasts</span> <span class="o">=</span> <span class="p">[</span><span class="n">mtb_name</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">mtb_name</span> <span class="ow">in</span> <span class="n">mtb_names</span><span class="p">]</span>
+<span class="n">mtb_firsts</span> <span class="o">=</span> <span class="p">[</span><span class="n">mtb_name</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">mtb_name</span> <span class="ow">in</span> <span class="n">mtb_names</span><span class="p">]</span>
+
+<span class="n">uci_lasts</span> <span class="o">=</span> <span class="p">[</span><span class="n">uci_name</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">uci_name</span> <span class="ow">in</span> <span class="n">uci_names</span><span class="p">]</span>
+<span class="n">uci_firsts</span> <span class="o">=</span> <span class="p">[</span><span class="n">uci_name</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">uci_name</span> <span class="ow">in</span> <span class="n">uci_names</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n_found</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">n_missing</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">missing</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">match_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mtb_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mtb_names</span><span class="p">):</span> <span class="c1">#mtb.sort_values('Waarde', ascending=False)['Renner']:
+</span>    <span class="n">mtb_split</span> <span class="o">=</span> <span class="n">mtb_name</span><span class="p">.</span><span class="n">lower</span><span class="p">().</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span>
+    
+    <span class="n">n_matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">uci_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">uci_names</span><span class="p">):</span>
+        <span class="n">n_match</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">jj</span><span class="p">,</span> <span class="n">el</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mtb_split</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">uci_name</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">jj</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">n_match</span> <span class="o">+=</span> <span class="mi">2</span> <span class="c1">#More weight on first name match
+</span>                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">n_match</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="n">n_matches</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_match</span><span class="p">)</span>
+        
+    <span class="n">k</span> <span class="o">=</span> <span class="n">n_matches</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">n_matches</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">n_matches</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">uci_names</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">match_dict</span><span class="p">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">n_found</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="n">uci_name</span> <span class="o">=</span> <span class="n">uci_names</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">match_dict</span><span class="p">[</span><span class="n">mtb_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">uci_name</span>
+        <span class="c1">#print(mtb_name, ' ------ ', uci_name)
+</span>    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n_missing</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">mtb_name</span><span class="p">,</span> <span class="n">mtb_costs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+
+<span class="k">print</span><span class="p">(</span><span class="n">n_found</span><span class="p">,</span> <span class="n">n_missing</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>martin dan 156500
+hirschi marc 140000
+froome chris 131500
+izagirre gorka 82500
+ghirmay hailu biniam 64500
+...
+cavendish mark 2500
+...
+812 165
+</code></pre></div></div>
+
+<p>To conclude the data alignment: The MTB rider list has 997 riders. We are able to find an equivalent one in the UCI table for 812 out of them. 165 ones we don’t find. In the output above, those are ranked from most expensive to least expensive. Some comments:</p>
+<ul>
+  <li>Martin Dan was not matched to Martin Daniel. We will override this manually</li>
+  <li>Hirschi Marc went fine, but is twice in the MTB table</li>
+  <li>Froome Chris did not collect any points in 2020!</li>
+  <li>Cavendish Marc is coming out of retirement so did not collect any points in 2020, but should be a steal at 2.500 euro. More on this later.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">match_dict</span><span class="p">[</span><span class="s">'martin dan'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'martin daniel'</span>
+</code></pre></div></div>
+
+<h4 id="fill-uci-points-column">Fill UCI points column</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mtb_points</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">mtb_name</span> <span class="ow">in</span> <span class="n">mtb</span><span class="p">[</span><span class="s">'Renner'</span><span class="p">]:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">uci_name</span> <span class="o">=</span> <span class="n">match_dict</span><span class="p">[</span><span class="n">mtb_name</span><span class="p">]</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">uci</span><span class="p">[</span><span class="n">uci</span><span class="p">[</span><span class="s">'Name'</span><span class="p">]</span> <span class="o">==</span> <span class="n">uci_name</span><span class="p">].</span><span class="n">Points</span><span class="p">.</span><span class="n">mean</span><span class="p">()</span>
+        
+        <span class="n">mtb_points</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">mtb_points</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span>
+        
+
+<span class="n">mtb</span><span class="p">[</span><span class="s">'Points'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtb_points</span>
+
+<span class="n">mtb</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'Waarde'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Renner</th>
+      <th>Waarde</th>
+      <th>Points</th>
+      <th>Efficiency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>462</th>
+      <td>roglic primoz</td>
+      <td>400000</td>
+      <td>4237.00</td>
+      <td>0.010592</td>
+    </tr>
+    <tr>
+      <th>550</th>
+      <td>pogacar tadej</td>
+      <td>324000</td>
+      <td>3055.00</td>
+      <td>0.009429</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>alaphilippe julian</td>
+      <td>291000</td>
+      <td>1795.83</td>
+      <td>0.006171</td>
+    </tr>
+    <tr>
+      <th>583</th>
+      <td>van der poel mathieu</td>
+      <td>249000</td>
+      <td>2040.00</td>
+      <td>0.008193</td>
+    </tr>
+    <tr>
+      <th>466</th>
+      <td>van aert wout</td>
+      <td>242000</td>
+      <td>2700.00</td>
+      <td>0.011157</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>van avermaet greg</td>
+      <td>225000</td>
+      <td>650.00</td>
+      <td>0.002889</td>
+    </tr>
+    <tr>
+      <th>540</th>
+      <td>kristoff alexander</td>
+      <td>223000</td>
+      <td>857.00</td>
+      <td>0.003843</td>
+    </tr>
+    <tr>
+      <th>880</th>
+      <td>quintana nairo</td>
+      <td>207500</td>
+      <td>865.00</td>
+      <td>0.004169</td>
+    </tr>
+    <tr>
+      <th>382</th>
+      <td>valverde alejandro</td>
+      <td>198500</td>
+      <td>716.00</td>
+      <td>0.003607</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>ackermann pascal</td>
+      <td>197000</td>
+      <td>1248.00</td>
+      <td>0.006335</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mtb</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'Points'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Renner</th>
+      <th>Waarde</th>
+      <th>Points</th>
+      <th>Efficiency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>462</th>
+      <td>roglic primoz</td>
+      <td>400000</td>
+      <td>4237.00</td>
+      <td>0.010592</td>
+    </tr>
+    <tr>
+      <th>550</th>
+      <td>pogacar tadej</td>
+      <td>324000</td>
+      <td>3055.00</td>
+      <td>0.009429</td>
+    </tr>
+    <tr>
+      <th>466</th>
+      <td>van aert wout</td>
+      <td>242000</td>
+      <td>2700.00</td>
+      <td>0.011157</td>
+    </tr>
+    <tr>
+      <th>583</th>
+      <td>van der poel mathieu</td>
+      <td>249000</td>
+      <td>2040.00</td>
+      <td>0.008193</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>fuglsang jakob</td>
+      <td>178000</td>
+      <td>1961.00</td>
+      <td>0.011017</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>alaphilippe julian</td>
+      <td>291000</td>
+      <td>1795.83</td>
+      <td>0.006171</td>
+    </tr>
+    <tr>
+      <th>256</th>
+      <td>porte richie</td>
+      <td>135000</td>
+      <td>1733.00</td>
+      <td>0.012837</td>
+    </tr>
+    <tr>
+      <th>556</th>
+      <td>ulissi diego</td>
+      <td>170500</td>
+      <td>1671.00</td>
+      <td>0.009801</td>
+    </tr>
+    <tr>
+      <th>213</th>
+      <td>demare arnaud</td>
+      <td>172500</td>
+      <td>1550.00</td>
+      <td>0.008986</td>
+    </tr>
+    <tr>
+      <th>539</th>
+      <td>hirschi marc</td>
+      <td>140000</td>
+      <td>1430.00</td>
+      <td>0.010214</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>As we can see, these rankings match quite nicely. Bob told me they actually based the ‘Waarde’ values on <a href="https://www.procyclingstats.com/">ProCyclingStats</a> data (looking further back than last year).</p>
+
+<p>Now my old approach would have been to play around with ‘efficiency’.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mtb</span><span class="p">[</span><span class="s">'Efficiency'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtb</span><span class="p">[</span><span class="s">'Points'</span><span class="p">]</span><span class="o">/</span><span class="n">mtb</span><span class="p">[</span><span class="s">'Waarde'</span><span class="p">]</span>
+<span class="n">mtb</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'Waarde'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Renner</th>
+      <th>Waarde</th>
+      <th>Points</th>
+      <th>Efficiency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>462</th>
+      <td>roglic primoz</td>
+      <td>400000</td>
+      <td>4237.00</td>
+      <td>0.010592</td>
+    </tr>
+    <tr>
+      <th>550</th>
+      <td>pogacar tadej</td>
+      <td>324000</td>
+      <td>3055.00</td>
+      <td>0.009429</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>alaphilippe julian</td>
+      <td>291000</td>
+      <td>1795.83</td>
+      <td>0.006171</td>
+    </tr>
+    <tr>
+      <th>583</th>
+      <td>van der poel mathieu</td>
+      <td>249000</td>
+      <td>2040.00</td>
+      <td>0.008193</td>
+    </tr>
+    <tr>
+      <th>466</th>
+      <td>van aert wout</td>
+      <td>242000</td>
+      <td>2700.00</td>
+      <td>0.011157</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>van avermaet greg</td>
+      <td>225000</td>
+      <td>650.00</td>
+      <td>0.002889</td>
+    </tr>
+    <tr>
+      <th>540</th>
+      <td>kristoff alexander</td>
+      <td>223000</td>
+      <td>857.00</td>
+      <td>0.003843</td>
+    </tr>
+    <tr>
+      <th>880</th>
+      <td>quintana nairo</td>
+      <td>207500</td>
+      <td>865.00</td>
+      <td>0.004169</td>
+    </tr>
+    <tr>
+      <th>382</th>
+      <td>valverde alejandro</td>
+      <td>198500</td>
+      <td>716.00</td>
+      <td>0.003607</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>ackermann pascal</td>
+      <td>197000</td>
+      <td>1248.00</td>
+      <td>0.006335</td>
+    </tr>
+    <tr>
+      <th>334</th>
+      <td>ewan caleb</td>
+      <td>189000</td>
+      <td>971.00</td>
+      <td>0.005138</td>
+    </tr>
+    <tr>
+      <th>145</th>
+      <td>viviani elia</td>
+      <td>180000</td>
+      <td>254.00</td>
+      <td>0.001411</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>fuglsang jakob</td>
+      <td>178000</td>
+      <td>1961.00</td>
+      <td>0.011017</td>
+    </tr>
+    <tr>
+      <th>447</th>
+      <td>dumoulin tom</td>
+      <td>177500</td>
+      <td>700.00</td>
+      <td>0.003944</td>
+    </tr>
+    <tr>
+      <th>401</th>
+      <td>matthews michael</td>
+      <td>175000</td>
+      <td>1022.00</td>
+      <td>0.005840</td>
+    </tr>
+    <tr>
+      <th>160</th>
+      <td>evenepoel remco</td>
+      <td>175000</td>
+      <td>1193.00</td>
+      <td>0.006817</td>
+    </tr>
+    <tr>
+      <th>239</th>
+      <td>bernal egan</td>
+      <td>174500</td>
+      <td>425.50</td>
+      <td>0.002438</td>
+    </tr>
+    <tr>
+      <th>227</th>
+      <td>pinot thibaut</td>
+      <td>172500</td>
+      <td>863.00</td>
+      <td>0.005003</td>
+    </tr>
+    <tr>
+      <th>213</th>
+      <td>demare arnaud</td>
+      <td>172500</td>
+      <td>1550.00</td>
+      <td>0.008986</td>
+    </tr>
+    <tr>
+      <th>556</th>
+      <td>ulissi diego</td>
+      <td>170500</td>
+      <td>1671.00</td>
+      <td>0.009801</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mtb</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'Efficiency'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Renner</th>
+      <th>Waarde</th>
+      <th>Points</th>
+      <th>Efficiency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>777</th>
+      <td>repa vojtech</td>
+      <td>4000</td>
+      <td>175.00</td>
+      <td>0.043750</td>
+    </tr>
+    <tr>
+      <th>940</th>
+      <td>johansen julius</td>
+      <td>2500</td>
+      <td>108.43</td>
+      <td>0.043372</td>
+    </tr>
+    <tr>
+      <th>567</th>
+      <td>meisen marcel</td>
+      <td>2500</td>
+      <td>100.00</td>
+      <td>0.040000</td>
+    </tr>
+    <tr>
+      <th>939</th>
+      <td>hvideberg jonas iversby</td>
+      <td>6000</td>
+      <td>218.00</td>
+      <td>0.036333</td>
+    </tr>
+    <tr>
+      <th>933</th>
+      <td>charmig anthon</td>
+      <td>2500</td>
+      <td>86.00</td>
+      <td>0.034400</td>
+    </tr>
+    <tr>
+      <th>740</th>
+      <td>zingle axel</td>
+      <td>2500</td>
+      <td>75.00</td>
+      <td>0.030000</td>
+    </tr>
+    <tr>
+      <th>656</th>
+      <td>aniolkowski stanislaw</td>
+      <td>11000</td>
+      <td>328.00</td>
+      <td>0.029818</td>
+    </tr>
+    <tr>
+      <th>953</th>
+      <td>urianstad martin</td>
+      <td>2500</td>
+      <td>70.00</td>
+      <td>0.028000</td>
+    </tr>
+    <tr>
+      <th>405</th>
+      <td>peak barnabas</td>
+      <td>3500</td>
+      <td>90.00</td>
+      <td>0.025714</td>
+    </tr>
+    <tr>
+      <th>741</th>
+      <td>albanese vincenzo</td>
+      <td>2500</td>
+      <td>59.00</td>
+      <td>0.023600</td>
+    </tr>
+    <tr>
+      <th>602</th>
+      <td>rumac josip</td>
+      <td>7500</td>
+      <td>170.00</td>
+      <td>0.022667</td>
+    </tr>
+    <tr>
+      <th>712</th>
+      <td>murguialday jokin</td>
+      <td>2500</td>
+      <td>56.00</td>
+      <td>0.022400</td>
+    </tr>
+    <tr>
+      <th>877</th>
+      <td>pajur markus</td>
+      <td>6000</td>
+      <td>126.00</td>
+      <td>0.021000</td>
+    </tr>
+    <tr>
+      <th>454</th>
+      <td>kooij olav</td>
+      <td>14500</td>
+      <td>304.00</td>
+      <td>0.020966</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>romo javier</td>
+      <td>2500</td>
+      <td>50.00</td>
+      <td>0.020000</td>
+    </tr>
+    <tr>
+      <th>791</th>
+      <td>cuadrado unai</td>
+      <td>2500</td>
+      <td>50.00</td>
+      <td>0.020000</td>
+    </tr>
+    <tr>
+      <th>873</th>
+      <td>louvel matis</td>
+      <td>3000</td>
+      <td>56.00</td>
+      <td>0.018667</td>
+    </tr>
+    <tr>
+      <th>847</th>
+      <td>marit arne</td>
+      <td>2500</td>
+      <td>46.00</td>
+      <td>0.018400</td>
+    </tr>
+    <tr>
+      <th>857</th>
+      <td>weemaes sasha</td>
+      <td>3000</td>
+      <td>53.00</td>
+      <td>0.017667</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>declercq tim</td>
+      <td>23500</td>
+      <td>415.00</td>
+      <td>0.017660</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The spread in efficiency among top riders is not huge: 0.005 - 0.01 UCI points per euro. The best ones go up to about 0.015.</p>
+
+<h3 id="solving-the-knapsack-problem">Solving the knapsack problem</h3>
+<p>We use <a href="http://www.pyomo.org/">Pyomo</a> as the optimization modeling environment. The problem to solve is a MILP (actually a binary linear program). We will use open source solver CBC to do the actual solving. The code below is modified from the <a href="https://github.com/Pyomo/pyomo/blob/main/examples/pyomo/concrete/knapsack-concrete.py">Pyomo knapsack example</a>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pyomo.environ</span> <span class="k">as</span> <span class="n">pyo</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">points</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">cost</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">count</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">mtb</span><span class="p">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">points</span><span class="p">[</span><span class="n">el</span><span class="p">[</span><span class="s">'Renner'</span><span class="p">]]</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="s">'Points'</span><span class="p">]</span>
+    <span class="n">cost</span><span class="p">[</span><span class="n">el</span><span class="p">[</span><span class="s">'Renner'</span><span class="p">]]</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="s">'Waarde'</span><span class="p">]</span>
+    <span class="n">count</span><span class="p">[</span><span class="n">el</span><span class="p">[</span><span class="s">'Renner'</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cost_limit</span> <span class="o">=</span> <span class="mi">1750000</span>
+<span class="n">count_required</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">points</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">(</span><span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">Binary</span><span class="p">)</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">maximize</span><span class="p">)</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">cost</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">cost_limit</span><span class="p">)</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">==</span> <span class="n">count_required</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Let’s run this thing!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">opt</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s">"cbc.exe"</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">solve</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Problem: 
+- Lower bound: -inf
+  Upper bound: inf
+  Number of objectives: 1
+  Number of constraints: 2
+  Number of variables: 976
+  Sense: unknown
+Solver: 
+- Status: ok
+  Message: CBC 2.10.3 optimal, objective -20583.33; 12 nodes, 89 iterations, 0.202 seconds
+  Termination condition: optimal
+  Id: 0
+  Error rc: 0
+  Time: 0.2946770191192627
+Solution: 
+- number of solutions: 0
+  number of solutions displayed: 0
+</code></pre></div></div>
+
+<p>We got our solution with 976 variables in less than a second. This team would have collected 20583.33 UCI points last season. Let’s look at the team:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">component_data_objects</span><span class="p">(</span><span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">v</span><span class="p">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">key</span> <span class="o">+</span> <span class="p">(</span><span class="mi">20</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">))</span><span class="o">*</span><span class="s">' '</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'%s </span><span class="se">\t</span><span class="s"> %6i </span><span class="se">\t</span><span class="s"> %7i'</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">points</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">cost</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fuglsang jakob       	   1961 	  178000
+kelderman wilco      	   1328 	  121000
+almeida joao         	   1370 	  121500
+declercq tim         	    415 	   23500
+senechal florian     	   1325 	   81500
+carthy hugh          	    821 	   69000
+geoghegan hart tao   	   1292 	  126000
+porte richie         	   1733 	  135000
+hindley jai          	   1155 	  100000
+kooij olav           	    304 	   14500
+roglic primoz        	   4237 	  400000
+van aert wout        	   2700 	  242000
+nizzolo giacomo      	   1115 	   93500
+vermeersch gianni    	    499 	   31000
+aniolkowski stanislaw 	    328 	   11000
+</code></pre></div></div>
+
+<h3 id="reconsidering-mark-cavendish">Reconsidering Mark Cavendish</h3>
+<p>Before we wrap up, one final detour we take is to see what solution we’d get if we’d Mark Cavendish some reasonable amount of points, say 400 i.s.o. the current 0, which would have placed him around spot 100-150 on the UCI ranking of 2020.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">points</span><span class="p">[</span><span class="s">'cavendish mark'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">400</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cost_limit</span> <span class="o">=</span> <span class="mi">1750000</span>
+<span class="n">count_required</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">points</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">(</span><span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">Binary</span><span class="p">)</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">maximize</span><span class="p">)</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">cost</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">cost_limit</span><span class="p">)</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">==</span> <span class="n">count_required</span><span class="p">)</span>
+
+<span class="n">opt</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s">"cbc.exe"</span><span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">solve</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Problem: 
+- Lower bound: -inf
+  Upper bound: inf
+  Number of objectives: 1
+  Number of constraints: 2
+  Number of variables: 976
+  Sense: unknown
+Solver: 
+- Status: ok
+  Message: CBC 2.10.3 optimal, objective -20817.33; 0 nodes, 14 iterations, 0.157 seconds
+  Termination condition: optimal
+  Id: 0
+  Error rc: 0
+  Time: 0.26456785202026367
+Solution: 
+- number of solutions: 0
+  number of solutions displayed: 0
+</code></pre></div></div>
+
+<p>We observe an increase in total team score from 20583 to 20817, about 230 points. We know we could never gain more than 400 points. The resulting team is</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">component_data_objects</span><span class="p">(</span><span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">v</span><span class="p">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">key</span> <span class="o">+</span> <span class="p">(</span><span class="mi">20</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">))</span><span class="o">*</span><span class="s">' '</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'%s </span><span class="se">\t</span><span class="s"> %6i </span><span class="se">\t</span><span class="s"> %7i'</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">points</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">cost</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fuglsang jakob       	   1961 	  178000
+kelderman wilco      	   1328 	  121000
+almeida joao         	   1370 	  121500
+cavendish mark       	    400 	    2500
+declercq tim         	    415 	   23500
+senechal florian     	   1325 	   81500
+carthy hugh          	    821 	   69000
+porte richie         	   1733 	  135000
+hindley jai          	   1155 	  100000
+hirschi marc         	   1430 	  140000
+roglic primoz        	   4237 	  400000
+van aert wout        	   2700 	  242000
+nizzolo giacomo      	   1115 	   93500
+vermeersch gianni    	    499 	   31000
+aniolkowski stanislaw 	    328 	   11000
+</code></pre></div></div>
+
+<p>This team only swaps out 2 riders with respect to our previous solution: Mark Cavendish replaces Olav Kooij (also a sprinter), and the few gained euros are used to replace Tao Geoghegan Hart with Marc Hirschi. We could have done similar consideration for a rider like Mathieu van der Poel who had a poor start to his 2020 season, but who is looking very good for 2021, but I didn’t.</p>
+
+<p>I finally decided to stick to the original team and give young Dutch sprinting talent Olav Kooij his shot at glory.</p>
+
+<h1 id="closing-thoughts">Closing thoughts</h1>
+
+<p>The final team is submitted as ‘<a href="https://www.erfgoedcelleuven.be/nl/poeske-scherens">Poeske Scherens</a> Fanclub’ (a double entendre in Dutch) is:</p>
+<ul>
+  <li>Fuglsang Jakob</li>
+  <li>Kelderman Wilco</li>
+  <li>Almeida Joao</li>
+  <li>Declercq Tim</li>
+  <li>Senechal Florian</li>
+  <li>Carthy Hugh</li>
+  <li>Geoghegan Hart Tao</li>
+  <li>Porte Richie</li>
+  <li>Hindley Jai</li>
+  <li>Kooij Olav</li>
+  <li>Roglic Primoz</li>
+  <li>Van Aert Wout</li>
+  <li>Nizzolo Giacomo</li>
+  <li>Vermeersch Gianni</li>
+  <li>Aniolkowski Stanislaw</li>
+</ul>
+
+<p>Though completely unbiased towards Belgian riders, we still have 3. The team quite clearly is oriented towards GC riders, in particular those who did well last year (Fuglsang, Kelderman, Almeida, Geoghegan Hart, Porte, Hindley, Roglic). One could argue that what we have basically done is find the most significant differences between the UCI ranking and ProCyclingStats. This team indicates that the UCI ranking is more favorable to GC riders than ProCyclingStats.</p>
+
+<p>The real question is of course: Which one is the most representative for the MegaTomBike ranking? Or even more precise: Which past ranking (or complex model with multiple years and multiple features) is the best predictor for a future MegaTomBike ranking? We could then even consider past MegaTomBike scores, which I don’t have access to currently.</p>
+
+<p>Those questions I’ll leave for some future post, for example when the 2021 season is over.</p>
+
+<p>Until then… go team!</p>
+
+<hr />
+
+<h2 id="related-posts">Related posts</h2>
+<p>None yet</p>
+
+<h2 id="want-to-leave-a-comment">Want to leave a comment?</h2>
+<p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a>.</p>
+
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/2021/03/14/nerd-sniping.html" data-toggle="tooltip" data-placement="top" title="Nerd sniping">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="mailto:lenseswaenen@gmail.com">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/LenseSwaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/lenseswaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Lense Swaenen 2021</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQVCL505Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7RQVCL505Y');
+</script>
+
+
+
+</body>
+
+</html>
