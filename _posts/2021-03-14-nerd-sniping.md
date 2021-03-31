@@ -2,14 +2,12 @@
 usemathjax: true
 layout: post
 title: "Nerd sniping"
-subtitle: 
+subtitle: "A numerical approach to XKCD's nerd sniping challenge"
 date: 2021-03-14
 background: '/img/bg-index.png'
 ---
 
 What better day to post my first mathematical blog post ever than $$\pi$$-day! 
-
-# A numerical approach to XKCD's nerd sniping challenge
 
 A classic XKCD comic is the one introducing the concept of 'nerd sniping':
 
