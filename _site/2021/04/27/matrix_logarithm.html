@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    The matrix logarithm of an orthogonal matrix - Bits of math
+    
+  </title>
+
+  <meta name="description" content="A love letter: The matrix logarithm of an orthogonal matrix">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link rel="canonical" href="http://localhost:4000/2021/04/27/matrix_logarithm.html">
+  <link rel="alternate" type="application/rss+xml" title="Bits of math" href="/feed.xml">
+
+  <!-- for mathjax support -->
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" }},
+	  tex2jax: { inlineMath: [ ['$','$'], ['\\(','\\)'] ]}
+      });
+    </script>
+    <!-- <script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+  <!-- For Jekyll SEO plugin -->
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>The matrix logarithm of an orthogonal matrix | Bits of math</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="The matrix logarithm of an orthogonal matrix" />
+<meta name="author" content="Lense Swaenen" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A love letter: The matrix logarithm of an orthogonal matrix" />
+<meta property="og:description" content="A love letter: The matrix logarithm of an orthogonal matrix" />
+<link rel="canonical" href="http://localhost:4000/2021/04/27/matrix_logarithm.html" />
+<meta property="og:url" content="http://localhost:4000/2021/04/27/matrix_logarithm.html" />
+<meta property="og:site_name" content="Bits of math" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-04-27T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="The matrix logarithm of an orthogonal matrix" />
+<meta name="twitter:site" content="@LenseSwaenen" />
+<meta name="twitter:creator" content="@Lense Swaenen" />
+<script type="application/ld+json">
+{"datePublished":"2021-04-27T00:00:00+02:00","@type":"BlogPosting","dateModified":"2021-04-27T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2021/04/27/matrix_logarithm.html"},"url":"http://localhost:4000/2021/04/27/matrix_logarithm.html","author":{"@type":"Person","name":"Lense Swaenen"},"description":"A love letter: The matrix logarithm of an orthogonal matrix","headline":"The matrix logarithm of an orthogonal matrix","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <!-- For Google findability -->
+  <meta name="google-site-verification" content="HMALsEPUPk8UDAmx9EYoAWZ0cB2rgDoxBp6zhln4_H4" />
+</head>
+
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">Bits of math</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/bg-index.png')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>The matrix logarithm of an orthogonal matrix</h1>
+            
+            <h2 class="subheading">A love letter</h2>
+            
+            <span class="meta">Posted by
+              <a href="#">Lense Swaenen</a>
+              on April 27, 2021 &middot; <span class="reading-time" title="Estimated read time">
+  
+   4 mins  read </span>
+
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1 id="a-love-letter-the-matrix-logarithm-of-an-orthogonal-matrix">A love letter: The matrix logarithm of an orthogonal matrix</h1>
+
+<p>This post is a tribute to the fact that the matrix logarithm of a $3\times 3$ rotational matrix is</p>
+
+\[\log{R} = \frac{\theta}{\sin{\theta}}(R^T - R) \label{eq:logm} \tag{1}\]
+
+<p>where $\theta$ satisfies $1 + 2\cos(\theta) = \text{trace}(R)$.</p>
+
+<p>I think this is beautiful and surprising: The matrix logarithm is proportional to the simplest skew-symmetric matrix one can create from $R$: $R^T - R$.</p>
+
+<p>We will show that a matrix logarithm of a rotational matrix will output a skew-symmetric matrix, but that a priori does not have to mean the relationship is as simple as it is!</p>
+
+<p>A more thorough treatment of this topic can be found in this <a href="https://www.sciencedirect.com/science/article/pii/S0377042709007791">paper</a>.</p>
+
+<h1 id="matrix-exponentials">Matrix exponentials</h1>
+
+<p>Matrix exponentials are neat. They appear in the (analytical) solutions to linear systems of ordinary differential equations (ODEs):</p>
+
+\[\mathbf{\dot{x}} = A\mathbf{x} \quad \Rightarrow \quad \mathbf{x}(t) = e^{At}\mathbf{x}_0 \label{eq:ode} \tag{2}\]
+
+<p>in which</p>
+
+\[e^A = 1 + A + \frac{1}{2} A^2 + \frac{1}{3!}A^3 + \ldots + \frac{1}{n!}A^n + \ldots\]
+
+<p>There is a famous paper by MATLAB founder Cleve Moler on how there are many ways to compute is, but all of them are <a href="https://www.cs.cornell.edu/cv/ResearchPDF/19ways+.pdf">dubious</a>. Luckily, we will only be dealing with a specific type of small systems in this post: $3 \times 3$ skew-symmetric systems. A skew-symmetric system is one that satisfies</p>
+
+\[S^T = - S\]
+
+<p>It follows rather directly that</p>
+
+\[(e^S)^Te^S = e^{S^T}e^S = e^{-S}e^S = e^{-S + S} = e^0 = I\]
+
+<p>The matrix exponential of a skew-symmetric matrix is orthogonal. And conversely the matrix logarithm of an orthogonal matrix will be skew-symmetric.</p>
+
+<p>We have not actually used the $3\times 3$ size of the matrices yet, but we’ll need that to also understand the $\theta$ which appears in equation \eqref{eq:logm}</p>
+
+<p>We will take a detour through some application: 3D curves</p>
+
+<h1 id="3d-curves">3D curves</h1>
+<p>For sufficiently smooth curves in 3D, one can define an orthogonal coordinate frame at every point along the curve consisting of the 3 vectors:</p>
+<ul>
+  <li>$T$: the tangent</li>
+  <li>$N$: the normal</li>
+  <li>$B$: the binormal</li>
+</ul>
+
+<p>A picture says a thousand words:</p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Frenet.svg" alt="Frenet-Serret frame" width="300" /></p>
+
+<p>This frame is known as the <a href="https://en.wikipedia.org/wiki/Frenet%E2%80%93Serret_formulas">Frenet-Serret frame</a>. Associated are the Frenet-Serret equations which establish the relationship between the change of these frames when one moves along the curve, and the curvature $\kappa$ and torsion $\tau$ of the 3D curve:</p>
+
+\[\begin{bmatrix} \mathbf{T'} \\ \mathbf{N'} \\ \mathbf{B'} \end{bmatrix} = \begin{bmatrix}
+ 0 &amp; \kappa &amp; 0 \\
+ -\kappa &amp; 0 &amp; \tau \\
+ 0 &amp; -\tau &amp; 0
+\end{bmatrix}
+\begin{bmatrix} \mathbf{T} \\ \mathbf{N} \\ \mathbf{B} \end{bmatrix}\]
+
+<p>Et voila, we have our skew-symmetric matrix! Solving these differential equations is generally not as simple as using equation \eqref{eq:ode}, as $\kappa$ and $\tau$ are usually functions of time/arc length. But matrix exponentials can be useful when designing dedicated integrators for these types of systems, which will be a topic for a future blog post.</p>
+
+<p>Note that these are not general skew-symmetric matrices, as the $(1, 3)$ and $(3, 1)$ entries are zero. Parallel transport frames and <a href="https://en.wikipedia.org/wiki/Darboux_frame">Darboux frames</a> are alternative frames for which these entries might not be zero.</p>
+
+<p>Why would one be interested in using all of these equations? Well, the applications are plenty: rollercoasters are real life examples of freeform curves, flight paths of planes and drones as well, freeform curves are used in many design applications, etc..</p>
+
+<h1 id="3d-rotation-formalisms">3D rotation formalisms</h1>
+
+<p>Wikipedia has a very extensive page on <a href="https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions">rotation formalisms in 3D</a>, which lists are relates formalisms like</p>
+<ul>
+  <li>Euler angles</li>
+  <li>Rotation matrices</li>
+  <li>Quaternions</li>
+  <li>Axis-angle representations</li>
+</ul>
+
+<p>Matrix exponentials are abundant. Even in 2D this is actually the case when we consider the relationship between angles, complex numbers and exponentials through:</p>
+
+\[e^{i\theta} = \cos(\theta) + i \sin(\theta)\]
+
+<p>In 3D, the key connection between the matrix exponentials and logarithms and the rotation formalisms is that the skew-symmetric matrix is very closely related to the axis-angle representation. A $3\times 3$ skew-symmetric matrix only has 3 ‘degrees-of-freedom’ $\mathbf{u} = (u_1, u_2, u_3)$:</p>
+
+\[S_u = \begin{bmatrix}
+ 0 &amp; -u_3 &amp; u_2 \\
+ u_3 &amp; 0 &amp; -u_1 \\
+ -u_2 &amp; u_1 &amp; 0
+\end{bmatrix}\]
+
+<p>The ‘axis’ in axis-angle is only a direction, so a normalized $\hat{\mathbf{u}} = \frac{\mathbf{u}}{|\mathbf{u}|}$. The angle $\theta$ from equation \eqref{eq:logm} is precisely the length of $\mathbf{u}$:</p>
+
+\[\theta = \|\mathbf{u}\|\]
+
+<p>Finally, we can remark the relationship between the cross product and matrix vector multiplication with $S$</p>
+
+<h1 id="scipy-experiments">Scipy experiments</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span>
+</code></pre></div></div>
+
+<h2 id="matrix-exponential">Matrix exponential</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">T</span> <span class="o">-</span> <span class="n">S</span> <span class="c1"># Random skew-symmetric matrix
+</span><span class="k">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[ 0.         -0.06587121  0.39412242]
+ [ 0.06587121  0.          3.5626287 ]
+ [-0.39412242 -3.5626287   0.        ]]
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">R</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">expm</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">R</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[ 0.97635354 -0.20005875 -0.08191619]
+ [-0.21582354 -0.88030499 -0.42247286]
+ [ 0.01240816  0.43016232 -0.90266628]]
+[[ 1.00000000e+00 -1.29061949e-17 -8.79726730e-17]
+ [-1.29061949e-17  1.00000000e+00 -4.21722237e-16]
+ [-8.79726730e-17 -4.21722237e-16  1.00000000e+00]]
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">S</span><span class="o">/</span><span class="n">theta</span>
+<span class="n">C2</span> <span class="o">=</span> <span class="n">C</span> <span class="o">@</span> <span class="n">C</span>
+<span class="n">R2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">C</span> <span class="o">+</span>  <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">*</span><span class="n">C2</span>
+<span class="k">print</span><span class="p">(</span><span class="n">R2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[ 0.97635354 -0.20005875 -0.08191619]
+ [-0.21582354 -0.88030499 -0.42247286]
+ [ 0.01240816  0.43016232 -0.90266628]]
+</code></pre></div></div>
+
+<h2 id="matrix-logarithm">Matrix logarithm</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">R</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">qr</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">R</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[-0.81111708  0.55235245 -0.19234307]
+ [-0.25976631 -0.63485003 -0.72765851]
+ [-0.52403296 -0.54025199  0.65842026]]
+[[ 1.00000000e+00  9.10029322e-18 -6.74003476e-18]
+ [ 9.10029322e-18  1.00000000e+00  1.55457201e-16]
+ [-6.74003476e-18  1.55457201e-16  1.00000000e+00]]
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scipy</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">logm</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">T</span> <span class="o">-</span> <span class="n">R</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[        inf, -2.98369391, -2.98369391],
+       [-2.98369391,        -inf, -2.98369391],
+       [-2.98369391, -2.98369391,         inf]])
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="related-posts">Related posts</h2>
+<p>None yet</p>
+
+<h2 id="want-to-leave-a-comment">Want to leave a comment?</h2>
+<p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a></p>
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/2021/03/27/megatombike2021.html" data-toggle="tooltip" data-placement="top" title="MegaTomBike 2021">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="mailto:lenseswaenen@gmail.com">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/LenseSwaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/lenseswaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Lense Swaenen 2021</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQVCL505Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7RQVCL505Y');
+</script>
+
+
+
+</body>
+
+</html>

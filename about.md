@@ -13,7 +13,7 @@ This blog is to host some applied mathematical output of mine. Some work related
 ### More about work
 Sioux is a 'technology partner', which basically means we do projects for other companies. Eindhoven has a lot of high tech industry, so we get to do a lot of fun stuff. I'm mainly involved in project that have a mathematical optimization component. That subdomain also has a Sioux [landing page](https://www.sioux.eu/competences/mathware/optimization/)
 
-Until 2020, the Mathware department of Sioux was known as LIME. LIME's branding included a mascot, 'het slimoentje'. My current header image is [The March of Progress](https://en.wikipedia.org/wiki/March_of_Progress) reinterpreted with 'slimoentje' and the history of mathematics. This artwork was created for the retirement of the former boss of LIME: Professor Bob Mattheij.
+Until 2020, the Mathware department of Sioux was known as LIME. LIME's branding included a mascot, 'het slimoentje'. My current header image is [The March of Progress](https://en.wikipedia.org/wiki/March_of_Progress) reinterpreted with 'slimoentje' and the history of mathematics. This artwork was created for the retirement of the former boss of LIME: Professor Bob Mattheij. Other header images have been taken from [Unsplash](https://unsplash.com/).
 
 ### More about myself
 I'm 32 years old, I live in Hoogstraten, Belgium with my wife and daughter. I'm a racket sports enthusiast. Table tennis is my main sport: I play competition and am also the head coach at my local club. Tennis, squash, padel, racketlon and badminton I've all done competetively to some lesser extent and a little less lately with fatherhood and all. Other interest are movies and board games.

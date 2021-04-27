@@ -1,4 +1,172 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-04-04T10:20:41+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Bits of math</title><subtitle>Sharing bits of mathematics that I've come across in my ~10 years as a professional mathematical engineer.</subtitle><author><name>Lense Swaenen</name></author><entry><title type="html">MegaTomBike 2021</title><link href="http://localhost:4000/2021/03/27/megatombike2021.html" rel="alternate" type="text/html" title="MegaTomBike 2021" /><published>2021-03-27T00:00:00+01:00</published><updated>2021-03-27T00:00:00+01:00</updated><id>http://localhost:4000/2021/03/27/megatombike2021</id><content type="html" xml:base="http://localhost:4000/2021/03/27/megatombike2021.html">&lt;p&gt;This post describes how I generated my fantasy cycling team for the &lt;a href=&quot;https://www.megatombike.be/&quot;&gt;MegaTomBike 2021 competition&lt;/a&gt;. This is a local variant of the bigger Megabike competition, organized by my friend Bob and others.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-04-27T12:34:29+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Bits of math</title><subtitle>Sharing bits of mathematics that I've come across in my ~10 years as a professional mathematical engineer.</subtitle><author><name>Lense Swaenen</name></author><entry><title type="html">The matrix logarithm of an orthogonal matrix</title><link href="http://localhost:4000/2021/04/27/matrix_logarithm.html" rel="alternate" type="text/html" title="The matrix logarithm of an orthogonal matrix" /><published>2021-04-27T00:00:00+02:00</published><updated>2021-04-27T00:00:00+02:00</updated><id>http://localhost:4000/2021/04/27/matrix_logarithm</id><content type="html" xml:base="http://localhost:4000/2021/04/27/matrix_logarithm.html">&lt;h1 id=&quot;a-love-letter-the-matrix-logarithm-of-an-orthogonal-matrix&quot;&gt;A love letter: The matrix logarithm of an orthogonal matrix&lt;/h1&gt;
+
+&lt;p&gt;This post is a tribute to the fact that the matrix logarithm of a $3\times 3$ rotational matrix is&lt;/p&gt;
+
+\[\log{R} = \frac{\theta}{\sin{\theta}}(R^T - R) \label{eq:logm} \tag{1}\]
+
+&lt;p&gt;where $\theta$ satisfies $1 + 2\cos(\theta) = \text{trace}(R)$.&lt;/p&gt;
+
+&lt;p&gt;I think this is beautiful and surprising: The matrix logarithm is proportional to the simplest skew-symmetric matrix one can create from $R$: $R^T - R$.&lt;/p&gt;
+
+&lt;p&gt;We will show that a matrix logarithm of a rotational matrix will output a skew-symmetric matrix, but that a priori does not have to mean the relationship is as simple as it is!&lt;/p&gt;
+
+&lt;p&gt;A more thorough treatment of this topic can be found in this &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/S0377042709007791&quot;&gt;paper&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;matrix-exponentials&quot;&gt;Matrix exponentials&lt;/h1&gt;
+
+&lt;p&gt;Matrix exponentials are neat. They appear in the (analytical) solutions to linear systems of ordinary differential equations (ODEs):&lt;/p&gt;
+
+\[\mathbf{\dot{x}} = A\mathbf{x} \quad \Rightarrow \quad \mathbf{x}(t) = e^{At}\mathbf{x}_0 \label{eq:ode} \tag{2}\]
+
+&lt;p&gt;in which&lt;/p&gt;
+
+\[e^A = 1 + A + \frac{1}{2} A^2 + \frac{1}{3!}A^3 + \ldots + \frac{1}{n!}A^n + \ldots\]
+
+&lt;p&gt;There is a famous paper by MATLAB founder Cleve Moler on how there are many ways to compute is, but all of them are &lt;a href=&quot;https://www.cs.cornell.edu/cv/ResearchPDF/19ways+.pdf&quot;&gt;dubious&lt;/a&gt;. Luckily, we will only be dealing with a specific type of small systems in this post: $3 \times 3$ skew-symmetric systems. A skew-symmetric system is one that satisfies&lt;/p&gt;
+
+\[S^T = - S\]
+
+&lt;p&gt;It follows rather directly that&lt;/p&gt;
+
+\[(e^S)^Te^S = e^{S^T}e^S = e^{-S}e^S = e^{-S + S} = e^0 = I\]
+
+&lt;p&gt;The matrix exponential of a skew-symmetric matrix is orthogonal. And conversely the matrix logarithm of an orthogonal matrix will be skew-symmetric.&lt;/p&gt;
+
+&lt;p&gt;We have not actually used the $3\times 3$ size of the matrices yet, but we’ll need that to also understand the $\theta$ which appears in equation \eqref{eq:logm}&lt;/p&gt;
+
+&lt;p&gt;We will take a detour through some application: 3D curves&lt;/p&gt;
+
+&lt;h1 id=&quot;3d-curves&quot;&gt;3D curves&lt;/h1&gt;
+&lt;p&gt;For sufficiently smooth curves in 3D, one can define an orthogonal coordinate frame at every point along the curve consisting of the 3 vectors:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;$T$: the tangent&lt;/li&gt;
+  &lt;li&gt;$N$: the normal&lt;/li&gt;
+  &lt;li&gt;$B$: the binormal&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A picture says a thousand words:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/1/11/Frenet.svg&quot; alt=&quot;Frenet-Serret frame&quot; width=&quot;300&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This frame is known as the &lt;a href=&quot;https://en.wikipedia.org/wiki/Frenet%E2%80%93Serret_formulas&quot;&gt;Frenet-Serret frame&lt;/a&gt;. Associated are the Frenet-Serret equations which establish the relationship between the change of these frames when one moves along the curve, and the curvature $\kappa$ and torsion $\tau$ of the 3D curve:&lt;/p&gt;
+
+\[\begin{bmatrix} \mathbf{T'} \\ \mathbf{N'} \\ \mathbf{B'} \end{bmatrix} = \begin{bmatrix}
+ 0 &amp;amp; \kappa &amp;amp; 0 \\
+ -\kappa &amp;amp; 0 &amp;amp; \tau \\
+ 0 &amp;amp; -\tau &amp;amp; 0
+\end{bmatrix}
+\begin{bmatrix} \mathbf{T} \\ \mathbf{N} \\ \mathbf{B} \end{bmatrix}\]
+
+&lt;p&gt;Et voila, we have our skew-symmetric matrix! Solving these differential equations is generally not as simple as using equation \eqref{eq:ode}, as $\kappa$ and $\tau$ are usually functions of time/arc length. But matrix exponentials can be useful when designing dedicated integrators for these types of systems, which will be a topic for a future blog post.&lt;/p&gt;
+
+&lt;p&gt;Note that these are not general skew-symmetric matrices, as the $(1, 3)$ and $(3, 1)$ entries are zero. Parallel transport frames and &lt;a href=&quot;https://en.wikipedia.org/wiki/Darboux_frame&quot;&gt;Darboux frames&lt;/a&gt; are alternative frames for which these entries might not be zero.&lt;/p&gt;
+
+&lt;p&gt;Why would one be interested in using all of these equations? Well, the applications are plenty: rollercoasters are real life examples of freeform curves, flight paths of planes and drones as well, freeform curves are used in many design applications, etc..&lt;/p&gt;
+
+&lt;h1 id=&quot;3d-rotation-formalisms&quot;&gt;3D rotation formalisms&lt;/h1&gt;
+
+&lt;p&gt;Wikipedia has a very extensive page on &lt;a href=&quot;https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions&quot;&gt;rotation formalisms in 3D&lt;/a&gt;, which lists are relates formalisms like&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Euler angles&lt;/li&gt;
+  &lt;li&gt;Rotation matrices&lt;/li&gt;
+  &lt;li&gt;Quaternions&lt;/li&gt;
+  &lt;li&gt;Axis-angle representations&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Matrix exponentials are abundant. Even in 2D this is actually the case when we consider the relationship between angles, complex numbers and exponentials through:&lt;/p&gt;
+
+\[e^{i\theta} = \cos(\theta) + i \sin(\theta)\]
+
+&lt;p&gt;In 3D, the key connection between the matrix exponentials and logarithms and the rotation formalisms is that the skew-symmetric matrix is very closely related to the axis-angle representation. A $3\times 3$ skew-symmetric matrix only has 3 ‘degrees-of-freedom’ $\mathbf{u} = (u_1, u_2, u_3)$:&lt;/p&gt;
+
+\[S_u = \begin{bmatrix}
+ 0 &amp;amp; -u_3 &amp;amp; u_2 \\
+ u_3 &amp;amp; 0 &amp;amp; -u_1 \\
+ -u_2 &amp;amp; u_1 &amp;amp; 0
+\end{bmatrix}\]
+
+&lt;p&gt;The ‘axis’ in axis-angle is only a direction, so a normalized $\hat{\mathbf{u}} = \frac{\mathbf{u}}{|\mathbf{u}|}$. The angle $\theta$ from equation \eqref{eq:logm} is precisely the length of $\mathbf{u}$:&lt;/p&gt;
+
+\[\theta = \|\mathbf{u}\|\]
+
+&lt;p&gt;Finally, we can remark the relationship between the cross product and matrix vector multiplication with $S$&lt;/p&gt;
+
+&lt;h1 id=&quot;scipy-experiments&quot;&gt;Scipy experiments&lt;/h1&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;scipy.linalg&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;matrix-exponential&quot;&gt;Matrix exponential&lt;/h2&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;S&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;randn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;S&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;S&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Random skew-symmetric matrix
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[[ 0.         -0.06587121  0.39412242]
+ [ 0.06587121  0.          3.5626287 ]
+ [-0.39412242 -3.5626287   0.        ]]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scipy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linalg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[[ 0.97635354 -0.20005875 -0.08191619]
+ [-0.21582354 -0.88030499 -0.42247286]
+ [ 0.01240816  0.43016232 -0.90266628]]
+[[ 1.00000000e+00 -1.29061949e-17 -8.79726730e-17]
+ [-1.29061949e-17  1.00000000e+00 -4.21722237e-16]
+ [-8.79726730e-17 -4.21722237e-16  1.00000000e+00]]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;theta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theta&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;C2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;C&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;R2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eye&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[[ 0.97635354 -0.20005875 -0.08191619]
+ [-0.21582354 -0.88030499 -0.42247286]
+ [ 0.01240816  0.43016232 -0.90266628]]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;matrix-logarithm&quot;&gt;Matrix logarithm&lt;/h2&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;randn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linalg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[[-0.81111708  0.55235245 -0.19234307]
+ [-0.25976631 -0.63485003 -0.72765851]
+ [-0.52403296 -0.54025199  0.65842026]]
+[[ 1.00000000e+00  9.10029322e-18 -6.74003476e-18]
+ [ 9.10029322e-18  1.00000000e+00  1.55457201e-16]
+ [-6.74003476e-18  1.55457201e-16  1.00000000e+00]]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;scipy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linalg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;array([[        inf, -2.98369391, -2.98369391],
+       [-2.98369391,        -inf, -2.98369391],
+       [-2.98369391, -2.98369391,         inf]])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;related-posts&quot;&gt;Related posts&lt;/h2&gt;
+&lt;p&gt;None yet&lt;/p&gt;
+
+&lt;h2 id=&quot;want-to-leave-a-comment&quot;&gt;Want to leave a comment?&lt;/h2&gt;
+&lt;p&gt;Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an &lt;a href=&quot;mailto:lenseswaenen@gmail.com&quot;&gt;email&lt;/a&gt;&lt;/p&gt;</content><author><name>Lense Swaenen</name></author><summary type="html">A love letter: The matrix logarithm of an orthogonal matrix</summary></entry><entry><title type="html">MegaTomBike 2021</title><link href="http://localhost:4000/2021/03/27/megatombike2021.html" rel="alternate" type="text/html" title="MegaTomBike 2021" /><published>2021-03-27T00:00:00+01:00</published><updated>2021-03-27T00:00:00+01:00</updated><id>http://localhost:4000/2021/03/27/megatombike2021</id><content type="html" xml:base="http://localhost:4000/2021/03/27/megatombike2021.html">&lt;p&gt;This post describes how I generated my fantasy cycling team for the &lt;a href=&quot;https://www.megatombike.be/&quot;&gt;MegaTomBike 2021 competition&lt;/a&gt;. This is a local variant of the bigger Megabike competition, organized by my friend Bob and others.&lt;/p&gt;
 
 &lt;p&gt;The challenge is simple: Create a team of 15 riders, each having some price tag, such that the total team cost is below 1.750.000 euro. Throughout the 2021 cycling season, riders will collect points according to their performance in all competitions on the calendar (single day &amp;amp; multiple day events).&lt;/p&gt;
 
@@ -1139,13 +1307,13 @@ vermeersch gianni    	    499 	   31000
 aniolkowski stanislaw 	    328 	   11000
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;This team only swaps out 2 riders with respect to our previous solution: Mark Cavendish replaces Olav Kooij (also a sprinter), and the few gained euros are used to replace Tao Geoghegan Hart with Marc Hirschi. We could have done similar consideration for a rider like Mathieu van der Poel who had a poor start to his 2020 season, but who is looking very good for 2021, but I didn’t.&lt;/p&gt;
+&lt;p&gt;This team only swaps out two riders with respect to our previous solution: Mark Cavendish replaces Olav Kooij (also a sprinter), and the few gained euros are used to replace Tao Geoghegan Hart with Marc Hirschi. We could have done a similar consideration for a rider like Mathieu van der Poel who had a poor start to his 2020 season, but who is looking very good for 2021, but I didn’t.&lt;/p&gt;
 
 &lt;p&gt;I finally decided to stick to the original team and give young Dutch sprinting talent Olav Kooij his shot at glory.&lt;/p&gt;
 
 &lt;h1 id=&quot;closing-thoughts&quot;&gt;Closing thoughts&lt;/h1&gt;
 
-&lt;p&gt;The final team is submitted as ‘&lt;a href=&quot;https://www.erfgoedcelleuven.be/nl/poeske-scherens&quot;&gt;Poeske Scherens&lt;/a&gt; Fanclub’ (a double entendre in Dutch) is:&lt;/p&gt;
+&lt;p&gt;The final team, submitted as ‘&lt;a href=&quot;https://www.erfgoedcelleuven.be/nl/poeske-scherens&quot;&gt;Poeske Scherens&lt;/a&gt; Fanclub’ (a double entendre in Dutch), is:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Fuglsang Jakob&lt;/li&gt;
   &lt;li&gt;Kelderman Wilco&lt;/li&gt;
@@ -1164,7 +1332,7 @@ aniolkowski stanislaw 	    328 	   11000
   &lt;li&gt;Aniolkowski Stanislaw&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Though completely unbiased towards Belgian riders, we still have 3. The team quite clearly is oriented towards GC riders, in particular those who did well last year (Fuglsang, Kelderman, Almeida, Geoghegan Hart, Porte, Hindley, Roglic). One could argue that what we have basically done is find the most significant differences between the UCI ranking and ProCyclingStats. This team indicates that the UCI ranking is more favorable to GC riders than ProCyclingStats.&lt;/p&gt;
+&lt;p&gt;Though completely unbiased towards Belgian riders, we still have three of them. The team quite clearly is oriented towards GC riders, in particular those who did well last year (Fuglsang, Kelderman, Almeida, Geoghegan Hart, Porte, Hindley, Roglic). One could argue that what we have basically done is find the most significant differences between the UCI ranking and ProCyclingStats. This team indicates that the UCI ranking is more favorable to GC riders than ProCyclingStats.&lt;/p&gt;
 
 &lt;p&gt;The real question is of course: Which one is the most representative for the MegaTomBike ranking? Or even more precise: Which past ranking (or complex model with multiple years and multiple features) is the best predictor for a future MegaTomBike ranking? We could then even consider past MegaTomBike scores, which I don’t have access to currently.&lt;/p&gt;
 
