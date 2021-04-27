@@ -7,8 +7,6 @@ date: 2021-04-27
 background: '/img/bg-index.png'
 ---
 
-# A love letter: The matrix logarithm of an orthogonal matrix
-
 This post is a tribute to the fact that the matrix logarithm of a $3\times 3$ rotational matrix is
 
 $$
