@@ -783,7 +783,7 @@ df.sort_values('W', ascending=False)
 
 
 
-Aanvoerder van bovenstaande lijst is Jacques Ingelbrecht, 70-jarige speler bij het West-Vlaamse Zandvoorde. Hij voert bovenstaande lijst aan met 1039 overwinningen op meer dan 1700 wedstrijden. De reden dat Jacques zoveel wedstrijden op zijn teller heeft, is omdat hij als veteraan ook al jaren meedraait in de West-Vlaamse veteranen competitie, zodat hij wekelijks, naast 4 wedstrijden seniorencompetitie ook nog eens 3 wedstrijden veteranencompetitie speelt. Deze had ik er niet uitgefilterd...
+Aanvoerder van bovenstaande lijst is [Jacques Ingelbrecht](https://competitie.vttl.be/?season=22&sel=10480&result=1&category=1), 70-jarige speler bij het West-Vlaamse Zandvoorde. Hij voert bovenstaande lijst aan met 1039 overwinningen op meer dan 1700 wedstrijden. De reden dat Jacques zoveel wedstrijden op zijn teller heeft, is omdat hij als veteraan ook al jaren meedraait in de West-Vlaamse veteranen competitie, zodat hij wekelijks, naast 4 wedstrijden seniorencompetitie ook nog eens 3 wedstrijden veteranencompetitie speelt. Deze had ik er niet uitgefilterd...
 
 Als we die wedstrijden negeren (en toegegeven, zonder veteranen-, toernooi- en jeugdwedstrijden wordt het een beetje cherrypicking :)), dan voer ik weldegelijk de Vlaamse lijst aan van spelers met de meeste individuele overwinningen in seniorencompetitie! Joepie!
 
