@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-07-21T16:55:48+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Bits of math</title><subtitle>Sharing bits of mathematics that I've come across in my ~10 years as a professional mathematical engineer.</subtitle><author><name>Lense Swaenen</name></author><entry><title type="html">Table tennis home advantage analysis</title><link href="http://localhost:4000/2021/07/21/pingpong_thuisvoordeel.html" rel="alternate" type="text/html" title="Table tennis home advantage analysis" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-21T00:00:00+02:00</updated><id>http://localhost:4000/2021/07/21/pingpong_thuisvoordeel</id><content type="html" xml:base="http://localhost:4000/2021/07/21/pingpong_thuisvoordeel.html">&lt;h1 id=&quot;english-summary&quot;&gt;English summary&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-07-21T18:51:13+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Bits of math</title><subtitle>Sharing bits of mathematics that I've come across in my ~10 years as a professional mathematical engineer.</subtitle><author><name>Lense Swaenen</name></author><entry><title type="html">Table tennis home advantage analysis</title><link href="http://localhost:4000/2021/07/21/pingpong_thuisvoordeel.html" rel="alternate" type="text/html" title="Table tennis home advantage analysis" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-21T00:00:00+02:00</updated><id>http://localhost:4000/2021/07/21/pingpong_thuisvoordeel</id><content type="html" xml:base="http://localhost:4000/2021/07/21/pingpong_thuisvoordeel.html">&lt;h1 id=&quot;english-summary&quot;&gt;English summary&lt;/h1&gt;
 &lt;p&gt;As the most likely audience for this post are Flemish table tennis players, most of it is written in Dutch. Here a short summary:&lt;/p&gt;
 
 &lt;p&gt;I have played table tennis competitively for the last 15 years at table tennis club TTK Minderhout. Unfortunately a lot of visiting players do not like our accommodation and believe we have an unfair home advantage. All Flemish table tennis matches since season 2006-2007 are accessible through an open API. Analysing that data, shows that the average home advantage across all Antwerp clubs is about 5 percentage points (difference in win probability of home games versus out games). TTK Minderhout has no excessive home advantage whatsoever.&lt;/p&gt;
@@ -200,13 +200,15 @@ Request structure:&lt;/p&gt;
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;476, 371, 0.562, 426, 422, 0.502
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;In dit ene seizoen heeft TTK Minderhout 476 individuele overwinningen thuis gehad, tegenover 371 nederlagen, goed voor een winstpercentage van 56%. Op verplaatsing heeft TTK Minderhout 426 overwinningen geboekt tegenover 422 nederlagen, goed voor een winstpercentage van 50%.&lt;/p&gt;
+
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;home_wins&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;home_wins&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;home_loss&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;away_wins&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;away_wins&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;away_loss&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0.05962498050834242
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;In dit ene seizoen heeft TTK Minderhout een thuisvoordeel van 6 procentpunten gekend. Bovendien geen slecht seizoen voor de club met meer gewonnen dan verloren wedstrijden.&lt;/p&gt;
+&lt;p&gt;In dit specifieke seizoen heeft TTK Minderhout een thuisvoordeel van 6 procentpunten gekend. Bovendien geen slecht seizoen voor de club met meer gewonnen dan verloren wedstrijden.&lt;/p&gt;
 
 &lt;p&gt;Laten we nu itereren over alle beschikbaren seizoenen:&lt;/p&gt;
 
@@ -277,9 +279,9 @@ Request structure:&lt;/p&gt;
 21, 11, 12 -- 81, 95, 0.460, 82, 110, 0.427, 	 0.033
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Het schommelt dus rond de 5-6 procentpunten&lt;/p&gt;
+&lt;p&gt;Het schommelt dus rond de 3 en 8 procentpunten, met een gemiddelde van 5.3.&lt;/p&gt;
 
-&lt;h1 id=&quot;thuisvoordeel-alle-antwerpse-clubs&quot;&gt;Thuisvoordeel alle Antwerpse clubs&lt;/h1&gt;
+&lt;h1 id=&quot;thuisvoordeel-van-alle-antwerpse-clubs&quot;&gt;Thuisvoordeel van alle Antwerpse clubs&lt;/h1&gt;
 
 &lt;p&gt;De code hieronder genereert de lijst van alle Antwerpse clubs.&lt;/p&gt;
 

@@ -238,20 +238,18 @@ print("%i, %i, %.3f, %i, %i, %.3f" % (home_wins, home_loss, home_wins/(home_wins
 
     476, 371, 0.562, 426, 422, 0.502
     
-
+In dit ene seizoen heeft TTK Minderhout 476 individuele overwinningen thuis gehad, tegenover 371 nederlagen, goed voor een winstpercentage van 56%. Op verplaatsing heeft TTK Minderhout 426 overwinningen geboekt tegenover 422 nederlagen, goed voor een winstpercentage van 50%. 
 
 ```python
 home_wins/(home_wins + home_loss) - away_wins/(away_wins + away_loss)
 ```
 
 
-
-
     0.05962498050834242
 
 
 
-In dit ene seizoen heeft TTK Minderhout een thuisvoordeel van 6 procentpunten gekend. Bovendien geen slecht seizoen voor de club met meer gewonnen dan verloren wedstrijden.
+In dit specifieke seizoen heeft TTK Minderhout een thuisvoordeel van 6 procentpunten gekend. Bovendien geen slecht seizoen voor de club met meer gewonnen dan verloren wedstrijden.
 
 Laten we nu itereren over alle beschikbaren seizoenen:
 
@@ -324,9 +322,9 @@ for season in range(7, 22):
     21, 11, 12 -- 81, 95, 0.460, 82, 110, 0.427, 	 0.033
     
 
-Het schommelt dus rond de 5-6 procentpunten
+Het schommelt dus rond de 3 en 8 procentpunten, met een gemiddelde van 5.3.
 
-# Thuisvoordeel alle Antwerpse clubs
+# Thuisvoordeel van alle Antwerpse clubs
 
 De code hieronder genereert de lijst van alle Antwerpse clubs.
 
