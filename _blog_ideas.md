@@ -60,6 +60,7 @@
 	- Optimal control: Whitepaper, Vexar
 	- Bayesian DFOGN:
 	- Belief propagation & critique: https://gaussianbp.github.io/ ***
+	- GaBP & Blocked linear algebra
 - Projects:
 	- Dynobend Youtube videos
 	- ASML and patent
@@ -73,7 +74,7 @@
 	- Gauss Seidel and random matrices
 	- Constraint pruning / simplification
 	- Gamma processess for filling/degradation
-	- Split off unconstrained part (what are good test QPs?)*
+	- Unconstrained subspace --> Splitting or AS/IP internal optimization (e.g. cholesky)
 	- Generic finite differences***
 	- Tensor contractions & applications/speedups
 	- AMRs and CasADi
@@ -110,6 +111,7 @@
 	- Wesley Smiths rectangular matrix inverse
 	- 1000 variable Non-negative linear least squares with fminsearch (Nelder-Mead)
 	- min ||a - s*b||
+	- clip(x, l, u) vs clip(l, x, u)
 - Throwback thursday --> KULeuven
 	- Multigrid
 	- Numerical linear algebra homework on direct sparse matrices
