@@ -96,7 +96,7 @@
 		- Comparison/review of rating systems in practise.
 	- MegaTomBike 2021:
 		- Team creation
-		- Final scores & evaluation & end of season optimization
+		- Final scores & evaluation & end of season optimization***
 		- MegaTomBike distinct teams
 - Instructive:
 	- Viewpoints of Kalman filters
