@@ -97,7 +97,7 @@
 	- MegaTomBike 2021:
 		- Team creation
 		- Final scores & evaluation & end of season optimization***
-		- MegaTomBike distinct teams
+		- MegaTomBike distinct teams?
 - Instructive:
 	- Viewpoints of Kalman filters
 	- Viewpoints of regularization
