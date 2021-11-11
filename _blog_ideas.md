@@ -16,17 +16,16 @@
 - Google analytics
 - Fix layout on mobile devices
 - Decreased reading time
-- SEO (already on?)
+- SEO
 - Moved test page
+- Copyright + attribution Slimoentjes
+- Discuss with Robbert
 
 ## TODO:
 - Formatting: Output blocks in grey? Inline ```stuff``` nicer?
-- Make findable on Google
 - Check unsplash license conditions?
 - Check out Medium?!
-- Copyright + attribution Slimoentjes
 - Tags
-- Discuss with Robbert
 - Sioux background
 - Prioritize backlog
 - Fix ico, fix CNAME
@@ -35,6 +34,8 @@
 - Calibrate reading time
 - Clean up layout (minima + then some)
 - Upload notebooks? 
+- Downgrade to Ruby 2.7 on Dell Precision
+- favicon.png fix
 
 # Contents
 
@@ -44,11 +45,13 @@
 	- Extension: way of estimating/calculating Pi
 - MegaTomBike 2021 & knapsack problem
 - Love letter to matrix logarithm
-- Table tennis home advantage NL ***
+- Table tennis home advantage NL
 - Table tennis 1000 wins - NL
 
 ## Up next
 
+- MegaTomBike 2021: final results
+- DFO & new paradigm
 - Finite derivative
 - Love letter to precision matrix
 
@@ -129,13 +132,21 @@
 - Throwback thursday
 - Spotlight?
 
-## Steps
-1. ipynb --> md (with images embedded?!)
+# Tutorials
+
+## Making a new post
+1. ipynb --> md (with images embedded?!) -> _posts + rename
 2. Search for image on unsplash?
 3. Add header to md (+ mast photo?)
 4. Add footer
 5. Replace mast image?
-6. 'bundle exec jekyll serve' in git bash @ repo & debug/modify at http://127.0.0.1:4000/ (or localhost:4000)
+6. `bundle exec jekyll serve` in git bash @ repo & debug/modify at http://127.0.0.1:4000/ (or localhost:4000)
 7. Git Push
 8. Tweet
 9. Footer: update with tweet reference
+
+## Setting up a new development environment
+1. Install Ruby (preferably 2.7 i.s.o. 3.0 (Github-pages support...))
+2. Install Jekyll and Bundler (`gem install jekyll bundler`)
+3. Run `bundle`
+4. `bundle exec jekyll serve`
