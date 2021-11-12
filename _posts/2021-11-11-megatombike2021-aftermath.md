@@ -218,7 +218,7 @@ df.sort_values('points', ascending=False).head(15)
 
 
 
-Summing the values and points of the best 15 riders gives that scores 2693 points, but is way to expensive (2.85 million). But now we do now an upperbound of the maximum knapsack score: 2693 points.
+Summing the values and points of the best 15 riders gives that scores 2693 points, but is way too expensive (2.85 million). But now we do know an upperbound of the maximum knapsack score: 2693 points.
 
 
 ```python
@@ -303,9 +303,9 @@ print(results)
     
     
 
-We got our solution with 979 variables in the blink of an eye: 0.054 seconds. Even though the knapsack problem is NP-hard, it is a common misconception that reasonably sized problems can not be solved to optimality pretty fast. More famous is the Traveling Salesman Problem of which the [Traveling Sam Problem](https://github.com/Forceflow/Ambiance_TSP/blob/main/README.md) formulated by Nerdland is a a fun instance with 24 variables. Even though there are $24! \approx 6.2 \times 10^23$ solutions, which is way too big to be brute forced, good algorithm exists which can solve a 24 city problem to optimality in less than a second. In fact, the current world record for a TSP having been solved to optimality stands at [57,912 stops](https://www.math.uwaterloo.ca/tsp/nl/index.html) and is a Dutch cycling route along national monuments. 
+We got our solution with 979 variables in the blink of an eye: 0.054 seconds. Even though the knapsack problem is NP-hard, it is a common misconception that reasonably sized problems can not be solved to optimality pretty fast. More famous is the Traveling Salesman Problem of which the [Traveling Sam Problem](https://github.com/Forceflow/Ambiance_TSP/blob/main/README.md) formulated by Nerdland is a fun instance with 24 variables. Even though there are $24! \approx 6.2 \times 10^{23}$ solutions, which is way too big to be brute forced, good algorithms exists which can solve a 24 city problem to (provable) optimality in less than a second. In fact, the current world record for a TSP having been solved to proven optimality stands at [57,912 stops](https://www.math.uwaterloo.ca/tsp/nl/index.html) and is a Dutch cycling route along national monuments. 
 
-So what is NP-hardness? This is a statement about asymptotic complexity behavior for the number of cities $N \to \infty$, and that in this limit, the computation times grow exponentially fast (kind of). But it might be that fast growing behavior only appears beyond $N > 10^100$. Not saying that this is the case for TSPs or knapsack problems, but the statement about reasonably sized problems being solvable in reasonable time stands.
+So what does NP-hardness then mean? NP-hardness is a statement about asymptotic complexity behavior for the number of cities $N \to \infty$, and that in this limit, the computation times grow exponentially fast (kind of). But it might be that fast growing behavior only appears beyond $N > 10^{100}$. Not saying that this is the case for TSPs or knapsack problems, but the statement about reasonably sized problems being solvable in reasonable time stands.
 
 Apologies for this intermezzo, as you are obviously more interested in the optimal team, so here it is:
 
@@ -1203,7 +1203,7 @@ The maximum achievable score then is 1940, which is slightly less than the best 
 
 # Cheapest team that could have won
 
-We can also turn the knapsack problem on its head: What is the cheapest team, that could have won (= total score of 1564 or more). In the code, an objective and constraint need to be swapped.
+We can also turn the knapsack problem on its head: What is the cheapest team, that could have won (= total score of 1564 or more). In the code, the objective and the cost constraint need to be interchanged.
 
 
 ```python
@@ -1647,11 +1647,11 @@ df[df['selected'] > 0.5].sum()
 
 
 
-We managed to find a team that uses nearly all the money and still scores no points. This result could also be achieved with a MILP solver, and by selection all riders with no points, and then sorting them from expensive to cheap and take the 15 most expensive.
+We managed to find a team that uses nearly all the money and still scores no points. This result could also have been achieved without a MILP solver, and by selection all riders with no points, and then sorting them from expensive to cheap and take the 15 most expensive.
 
 # Closing thoughts
 
-As the bottleneck is in the quality of predicting scores (when combined with knapsack), perhaps I should consider building a machine-learning model to predict scores? Or perhaps apply a cool Bayesian rating system like Trueskill to the cycling data? Maybe this can be inspiration for extending Trueskill, which can handle both individual competition as team competition with the cycling-typical hybrid, where riders have both individual and team goals, which can sometimes be [conflicting](https://www.cyclingnews.com/news/dutch-tactics-gone-wrong-in-womens-road-race-at-the-world-championships/).
+As the bottleneck is in the quality of predicting scores (when combined with knapsack), perhaps I should consider building a machine-learning model to predict scores? Or perhaps apply a cool Bayesian rating system like Trueskill to the cycling data? Maybe this can be inspiration for extending Trueskill, which can handle both individual competition as well as team competition, but not a hybrid. The hybrid one is very typical in modern cycling where riders have both individual and team goals, which can sometimes be [conflicting](https://www.cyclingnews.com/news/dutch-tactics-gone-wrong-in-womens-road-race-at-the-world-championships/).
 
 -----
 
@@ -1659,4 +1659,4 @@ As the bottleneck is in the quality of predicting scores (when combined with kna
 - [MegaTomBike 2021 - team creation](/2021/03/27/megatombike2021.html)
 
 ## Want to leave a comment?
-Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an [email](mailto:lenseswaenen@gmail.com) or reply to [this tweet](https://twitter.com/LenseSwaenen/status/1377320440000053250).
+Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an [email](mailto:lenseswaenen@gmail.com).

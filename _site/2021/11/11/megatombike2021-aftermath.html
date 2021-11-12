@@ -368,7 +368,7 @@ The composition of the winning team is:</p>
 </table>
 </div>
 
-<p>Summing the values and points of the best 15 riders gives that scores 2693 points, but is way to expensive (2.85 million). But now we do now an upperbound of the maximum knapsack score: 2693 points.</p>
+<p>Summing the values and points of the best 15 riders gives that scores 2693 points, but is way too expensive (2.85 million). But now we do know an upperbound of the maximum knapsack score: 2693 points.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'points'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
 </code></pre></div></div>
@@ -435,9 +435,9 @@ Solution:
   number of solutions displayed: 0
 </code></pre></div></div>
 
-<p>We got our solution with 979 variables in the blink of an eye: 0.054 seconds. Even though the knapsack problem is NP-hard, it is a common misconception that reasonably sized problems can not be solved to optimality pretty fast. More famous is the Traveling Salesman Problem of which the <a href="https://github.com/Forceflow/Ambiance_TSP/blob/main/README.md">Traveling Sam Problem</a> formulated by Nerdland is a a fun instance with 24 variables. Even though there are $24! \approx 6.2 \times 10^23$ solutions, which is way too big to be brute forced, good algorithm exists which can solve a 24 city problem to optimality in less than a second. In fact, the current world record for a TSP having been solved to optimality stands at <a href="https://www.math.uwaterloo.ca/tsp/nl/index.html">57,912 stops</a> and is a Dutch cycling route along national monuments.</p>
+<p>We got our solution with 979 variables in the blink of an eye: 0.054 seconds. Even though the knapsack problem is NP-hard, it is a common misconception that reasonably sized problems can not be solved to optimality pretty fast. More famous is the Traveling Salesman Problem of which the <a href="https://github.com/Forceflow/Ambiance_TSP/blob/main/README.md">Traveling Sam Problem</a> formulated by Nerdland is a fun instance with 24 variables. Even though there are $24! \approx 6.2 \times 10^{23}$ solutions, which is way too big to be brute forced, good algorithms exists which can solve a 24 city problem to (provable) optimality in less than a second. In fact, the current world record for a TSP having been solved to proven optimality stands at <a href="https://www.math.uwaterloo.ca/tsp/nl/index.html">57,912 stops</a> and is a Dutch cycling route along national monuments.</p>
 
-<p>So what is NP-hardness? This is a statement about asymptotic complexity behavior for the number of cities $N \to \infty$, and that in this limit, the computation times grow exponentially fast (kind of). But it might be that fast growing behavior only appears beyond $N &gt; 10^100$. Not saying that this is the case for TSPs or knapsack problems, but the statement about reasonably sized problems being solvable in reasonable time stands.</p>
+<p>So what does NP-hardness then mean? NP-hardness is a statement about asymptotic complexity behavior for the number of cities $N \to \infty$, and that in this limit, the computation times grow exponentially fast (kind of). But it might be that fast growing behavior only appears beyond $N &gt; 10^{100}$. Not saying that this is the case for TSPs or knapsack problems, but the statement about reasonably sized problems being solvable in reasonable time stands.</p>
 
 <p>Apologies for this intermezzo, as you are obviously more interested in the optimal team, so here it is:</p>
 
@@ -1270,7 +1270,7 @@ Solution:
 
 <h1 id="cheapest-team-that-could-have-won">Cheapest team that could have won</h1>
 
-<p>We can also turn the knapsack problem on its head: What is the cheapest team, that could have won (= total score of 1564 or more). In the code, an objective and constraint need to be swapped.</p>
+<p>We can also turn the knapsack problem on its head: What is the cheapest team, that could have won (= total score of 1564 or more). In the code, the objective and the cost constraint need to be interchanged.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cost_limit</span> <span class="o">=</span> <span class="mi">1750000</span>
 <span class="n">count_required</span> <span class="o">=</span> <span class="mi">15</span>
@@ -1680,11 +1680,11 @@ efficiency                                                  0.0
 dtype: object
 </code></pre></div></div>
 
-<p>We managed to find a team that uses nearly all the money and still scores no points. This result could also be achieved with a MILP solver, and by selection all riders with no points, and then sorting them from expensive to cheap and take the 15 most expensive.</p>
+<p>We managed to find a team that uses nearly all the money and still scores no points. This result could also have been achieved without a MILP solver, and by selection all riders with no points, and then sorting them from expensive to cheap and take the 15 most expensive.</p>
 
 <h1 id="closing-thoughts">Closing thoughts</h1>
 
-<p>As the bottleneck is in the quality of predicting scores (when combined with knapsack), perhaps I should consider building a machine-learning model to predict scores? Or perhaps apply a cool Bayesian rating system like Trueskill to the cycling data? Maybe this can be inspiration for extending Trueskill, which can handle both individual competition as team competition with the cycling-typical hybrid, where riders have both individual and team goals, which can sometimes be <a href="https://www.cyclingnews.com/news/dutch-tactics-gone-wrong-in-womens-road-race-at-the-world-championships/">conflicting</a>.</p>
+<p>As the bottleneck is in the quality of predicting scores (when combined with knapsack), perhaps I should consider building a machine-learning model to predict scores? Or perhaps apply a cool Bayesian rating system like Trueskill to the cycling data? Maybe this can be inspiration for extending Trueskill, which can handle both individual competition as well as team competition, but not a hybrid. The hybrid one is very typical in modern cycling where riders have both individual and team goals, which can sometimes be <a href="https://www.cyclingnews.com/news/dutch-tactics-gone-wrong-in-womens-road-race-at-the-world-championships/">conflicting</a>.</p>
 
 <hr />
 
@@ -1694,7 +1694,7 @@ dtype: object
 </ul>
 
 <h2 id="want-to-leave-a-comment">Want to leave a comment?</h2>
-<p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a> or reply to <a href="https://twitter.com/LenseSwaenen/status/1377320440000053250">this tweet</a>.</p>
+<p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a>.</p>
 
 
         <hr>
