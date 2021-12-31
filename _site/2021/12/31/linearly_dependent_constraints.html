@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    Not so rare degenerate constraints - Bits of math
+    
+  </title>
+
+  <meta name="description" content="Inequality constrained optimization">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link rel="canonical" href="http://localhost:4000/2021/12/31/linearly_dependent_constraints.html">
+  <link rel="alternate" type="application/rss+xml" title="Bits of math" href="/feed.xml">
+
+  <!-- for mathjax support -->
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" }},
+	  tex2jax: { inlineMath: [ ['$','$'], ['\\(','\\)'] ]}
+      });
+    </script>
+    <!-- <script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+  <!-- For Jekyll SEO plugin -->
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Not so rare degenerate constraints | Bits of math</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Not so rare degenerate constraints" />
+<meta name="author" content="Lense Swaenen" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Inequality constrained optimization" />
+<meta property="og:description" content="Inequality constrained optimization" />
+<link rel="canonical" href="http://localhost:4000/2021/12/31/linearly_dependent_constraints.html" />
+<meta property="og:url" content="http://localhost:4000/2021/12/31/linearly_dependent_constraints.html" />
+<meta property="og:site_name" content="Bits of math" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-12-31T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Not so rare degenerate constraints" />
+<meta name="twitter:site" content="@LenseSwaenen" />
+<meta name="twitter:creator" content="@Lense Swaenen" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2021/12/31/linearly_dependent_constraints.html","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2021/12/31/linearly_dependent_constraints.html"},"author":{"@type":"Person","name":"Lense Swaenen"},"@type":"BlogPosting","description":"Inequality constrained optimization","headline":"Not so rare degenerate constraints","dateModified":"2021-12-31T00:00:00+01:00","datePublished":"2021-12-31T00:00:00+01:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <!-- For Google findability -->
+  <meta name="google-site-verification" content="HMALsEPUPk8UDAmx9EYoAWZ0cB2rgDoxBp6zhln4_H4" />
+</head>
+
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">Bits of math</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/lindepconstraints/output_19_0.png')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Not so rare degenerate constraints</h1>
+            
+            <h2 class="subheading">Bonus: a nice constraint visualization tool</h2>
+            
+            <span class="meta">Posted by
+              <a href="#">Lense Swaenen</a>
+              on December 31, 2021 &middot; <span class="reading-time" title="Estimated read time">
+  
+   16 mins  read </span>
+
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1 id="inequality-constrained-optimization">Inequality constrained optimization</h1>
+
+<p>The topic of this blog post is close to my daily activities at Sioux Technologies. Over the past years, an optimization topic I have worked a lot on, is quadratic programming (QP), which has many control-related applications. A quadratic programming problem is an optimization problem with a quadratic cost function and linear inequality constraints (I have omitted equality constraints):</p>
+
+\[\begin{align} \text{min}_x \qquad &amp; \frac12 x^THx + f^Tx\\
+ \text{subject to} \qquad &amp; Ax \leq b
+ \end{align}\]
+
+<p>with $A$ a $C \times V$-sized matrix: $C$ constraints and $V$ variables, so $x$ lives in $\mathbb{R}^V$. In many applications, $H$ is a positive semi-definite matrix, such that the QP is a convex optimization problem.</p>
+
+<p>Quadratic programs are, aside from linear programs, the simplest optimization problems with linear inequality constraints. A single linear inequality constraint $a_i x \leq b_i$ divides $\mathbb{R}^V$ into two half-spaces along a hyperplane, and eliminates half of $\mathbb{R}^V$ from being ‘feasible’.  When dealing with a list of such constraints, we take the intersection of all those half spaces, such that the feasible set is also a convex set. In many application, we have with a feasible region which is compact (so it does not extend to infinity), and consequently is a polytope in $V$ dimensions.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Wedge</span><span class="p">,</span> <span class="n">Polygon</span>
+<span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">PatchCollection</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">HalfPlane</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    
+    <span class="c1"># Ax &lt;= b (fill the forbidden area)
+</span>    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    
+    <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">pl</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="k">elif</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">pl</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1000</span><span class="p">])</span>
+        <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1000</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+
+        <span class="n">pl</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="mi">1000</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span><span class="p">)</span>
+        <span class="n">pr</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">+</span> <span class="mi">1000</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span><span class="p">)</span>
+    
+    <span class="n">pl2</span> <span class="o">=</span> <span class="n">pl</span> <span class="o">+</span> <span class="mi">1000</span><span class="o">*</span><span class="n">a</span>
+    <span class="n">pr2</span> <span class="o">=</span> <span class="n">pr</span> <span class="o">+</span> <span class="mi">1000</span><span class="o">*</span><span class="n">a</span>
+    
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">pl</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">pr2</span><span class="p">,</span> <span class="n">pl2</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">patches</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">patches</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">HalfPlane</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">PatchCollection</span><span class="p">(</span><span class="n">patches</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'b'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s">'equal'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/img/posts/lindepconstraints/output_6_0.png" alt="png" /></p>
+
+<p>The above figure illustrates a set of 4 linear inequality constraints in a 2D space. Each individual linear inequality constraint eliminates a half-space (blue). The white rhombus at the center are all the points satisfying all constraints. The linear inequality constraints have defined a polytope (which in 2D is a polygon).</p>
+
+<h2 id="quadratic-programming-methods">Quadratic programming methods</h2>
+<p>The classic book <a href="https://www.csie.ntu.edu.tw/~r97002/temp/num_optimization.pdf">‘Numerical Optimization’ by Nocedal and Wright</a> has a excellent introduction to constrained optimization in chapters 12 - 16. In particular chapter 16 on quadratic programming has been of a lot of use to me in the past years. Two big schools of methods are outlined there: active set methods and interior point methods.</p>
+<ul>
+  <li><strong>Active set methods</strong> find their way to the optimal solution of the optimization problem along the edge of the feasible region/polytope. For every constraint, the keep track of a binary variable, whether that constraint is active ($a_ix = b$) or not ($a_ix &lt; b$). In a basic active set method, at each iteration, either one constraint is added to the active set, or removed from the active set.</li>
+  <li><strong>Interior point methods</strong> find their way through the center of the feasible set. Constraints are never truly activated. The linear (in)dependency matter, is mostly of concern when using active set methods.</li>
+</ul>
+
+<figure>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Simplex-method-3-dimensions.png" width="300" height="300" />
+    <figcaption>An illustration of a polytopic feasible set, spanned by linear inequality constraints. The red line represents the path of an active set method (in particular the simplex algorithm)</figcaption>
+</figure>
+
+<h1 id="linearly-dependent-constraints">Linearly dependent constraints</h1>
+<p>In a lot of constrained optimization theory, such as in the book of Nocedal and Wright, the Linear Independency Constraint Qualificiation (LICQ) assumption is made, which simplifies both theory and algorithms/software. On page 320 of Nocedal and Wright, Definition 12.4 states:</p>
+
+<blockquote>
+  <p>Given the point $x$ and the active set $A(x)$ defined in Definition 12.1, we say that the linear independence constraint qualification (LICQ) holds if the set of active constraint gradients ${∇c_i(x),i∈A(x)}$ is linearly independent.</p>
+</blockquote>
+
+<p>The Nocedal theory applies to nonlinear constraints. For linear inquality constraints, these constraint gradients $\nabla c_i(x)$ are just the vectors $a_i$. Note that the LICQ concept is something that applies to a point $x$ and not to for example the entire set of linear inequality constraints.</p>
+
+<p>The importance of these conditions are evident when considering active set methods. When an active set method encounters a point at which the LICQ condition does not hold, there is a risk of it not converging propery, and that is rather starts <em>cycling</em>. Care must be taken!</p>
+
+<p>Cycling and also degeneracy and cycling are other keywords related to LICQ conditions not holding. Other terminology that I have come across is linearly (in)dependency of constraints. And my experience is also that this latter terminology can lead to a lot of confusion. Linear dependency of constraints is different from linear dependency of vectors or rows/colums of constraint matrix $A$. The simplest possible example to explain this is a very common one: symmetric lower and upper bounds on a 1D constrained optimization problem: $-1 \leq x \leq 1$</p>
+
+<p>In standard $Ax \leq b$ form, this is equivalent to 
+\(A = \begin{bmatrix} 1 \\ -1\end{bmatrix}, \qquad b = \begin{bmatrix} 1 \\ 1 \end{bmatrix}\)</p>
+
+<p>Matrix $A$ above is not of full rank, and the rows are linearly dependent. However, these constraints do not pose any LICQ difficulties, because the two constraints can never be activated at the same time as one would have $1 = x = -1$!</p>
+
+<p>If the above are not ‘linearly dependent constraints’, then what are? We better move up 1 dimension to 2D. Below is an example.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">patches</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">patches</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">HalfPlane</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">PatchCollection</span><span class="p">(</span><span class="n">patches</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'b'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s">'equal'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/img/posts/lindepconstraints/output_10_0.png" alt="png" /></p>
+
+<p>In the above figure, point $(1, 1)$ is a point at which the LICQ condition does not hold. At that point, 3 out of the 5 inequality constraints are active (the inequality $\leq$ is in fact an equality $=$):</p>
+
+\[A_{act} x = b_{act} \Rightarrow \begin{bmatrix} 1 &amp; 0 \\ 1 &amp; 1 \\ 2 &amp; 1 \end{bmatrix} \cdot \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}\]
+
+<p>In this case, the matrix $A_{act}$ is again not of full row-rank, and in this case this <em>is</em> problematic.</p>
+
+<p>A more geometric interpretation of degeneracy is 3 lines in 2D intersecting at a single point. This can be generalized to $n$ hyperplanes in $n-1$D intersecting at a single point, or even to $n$ hyperplanes in $m$ dimensions intersecting with a dimensionality of $n - m - 1$ or higher (where a point is a non-empty 0D set).</p>
+
+<p>One might argue that linear dependency is perhaps a trivial matter in 2D, as in general (and also in the example) some of the problematic constraints will be redundant: The feasible set would not change (/grow) if we omit that constraint. (Redundant constraints is a topic on the backlog for future blog posts.) If one removes all redundant constraints in 2D no linear dependency issues will remain. This is not true in 3D or higher, as the following example illustrates.</p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Platonic_Solids_Transparent.svg/1024px-Platonic_Solids_Transparent.svg.png" width="300" height="300" /></p>
+
+<p>Both the octahedron and icosahedron are polytopes in 3D with vertices at which &gt;3 (hyper)planes intersect. At each of the vertices, the LICQ condition does not hold.</p>
+
+<p>Whereas the LICQ condition holds for a point, in common terminology, what we mean when we say that a feasible set $Ax \leq b$ is linearly dependent is that there is a point in the feasible set at which the LICQ condition is not satisfied.</p>
+
+<h1 id="prevalence-of-linearly-dependent-constraints">Prevalence of linearly dependent constraints</h1>
+<p>The above exposition shows that linear dependency of constraints is a matter involving both $A$ and $b$. For random constraints (or for example, fixing $A$ and choosing random $b$), the probability of having linear dependency problems is 0. So, one might think this is rare in practise and that the LICQ assumption is reasonable. The central point of this blog post is that I have encountered such linearly dependent constraints multiple times in practise. <strong>They are not that rare at all</strong>. This causes simple implementations of active set methods headaches. For example, they get stuck in infinite loops of activating and deactivating constraints at the problematic vertices and never converge to the true optimum.</p>
+
+<h2 id="example">Example</h2>
+<p>One particularly simple occurrence of linearly dependent constraints appears in setpoint/trajectories calculations of mechatronic systems. Setpoints are parametrised by polynomial or piecewise polynomial functions of time, and the dynamic limitations of the hardware are imposed as range constraints, velocity constraints, acceleration constraints and sometimes even higher orders.<br />
+Setpoint trajectories may be parametrized for example as 3rd degree polynomials like</p>
+
+\[p(t) = p_0 + p_1t + p_2t^2 + p_3t^3\]
+
+<p>The variables of the optimization problem would be the parameters $p_i$, so we’d have a 4D optimization space.</p>
+
+<p>A range-constraint would be</p>
+
+\[\forall t \in [t_0, t_f]: -r \leq p(t) \leq r\]
+
+<p>A velocity constraint would be</p>
+
+\[\forall t \in [t_0, t_f]: -v \leq p'(t) \leq v\]
+
+<p>Note that the $\forall$-part makes this a non-standard type of constraint. It is not simply of the form $g(p) \leq 0$ for some explicit function $g$. It is a non-linear constraint, but definetly not a simple one. Also this might be a topic for another blog post.<br />
+A common approach to deal with this tricky $\forall$ in practise, is to not require the constraint at all values $t \in [t_0, t_f]$, but only at a finite number of samples (often chosen uniformly spaced) $t_j$ with $j = 1..N$. With $N$ samples, we now get $N$ twosided range constraints:</p>
+
+\[\forall j = 1..N: -r \leq p_0 + p_1t_j + p_2t_j^2 + p_3t_j^3 \leq r\]
+
+<p>This can be rewritten into a matrix format using a Vandermonde-matrix</p>
+
+\[\begin{bmatrix} -r \\ -r \\ \ldots \\ -r \end{bmatrix} 
+\leq \begin{bmatrix} 1 &amp; t_1 &amp; t_1^2 &amp; t_1^3 \\
+1 &amp; t_2 &amp; t_2^2 &amp; t_2^3 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; t_N &amp; t_N^2 &amp; t_N^3 \\
+\end{bmatrix} \begin{bmatrix} p_0 \\ p_1 \\ p_2 \\ p_3 \end{bmatrix} \leq \begin{bmatrix} r \\ r \\ \ldots \\ r \end{bmatrix}\]
+
+<p>By sampling, we have replaced a complex non-linear constraint with $2N$ linear inequality constraints. A higher $N$ will take more computational effort, but will allow less constraint violation in between the sample points. For the remainder of the section, lets assume 10 sample points for a cubic polynomial trajectory.
+Note that the same approach can be taken for velocity and higher order constraints.</p>
+
+<p>It is quite easy to show that these constraints suffer from linear dependency in some points of the feasible set. One particularly nasty point is the point</p>
+
+\[p(t) = R\]
+
+<p>This trajectory is in the feasible set, and the range constraint is active at each of the $N=10$ sample points. 10 active constraints in a 4D space is definitely a matter of LICQ violation.<br />
+In combination with velocity and higher order constraints, other problematic points might exist as well, and one could do a brute force search for them by checking the ranks of a combinatorial number of submatrices. Again, perhaps a topic for a future post…
+In any case, the main point of this section is that it is quite easy to find real world applications with constraints that have LICQ violating points. Moreover, the LICQ violation point above, is not an exotic / funky looking setpoint profile at all. It is quite reasonable to be a solution or an intermediate iterate for some real world QP.</p>
+
+<h1 id="handling-linearly-dependent-constraints">Handling linearly dependent constraints</h1>
+<h2 id="active-set-methods">Active set methods</h2>
+
+<p>So, what do Nocedal and Wright think of all of this?</p>
+<ul>
+  <li>Chapter 13 on linear programming with the simplex method has a section titled ‘Degenerate steps and cycling’, which is exactly about the linear dependency issues we are dealing with. If no care is taken, active set methods can reach a linear dependent point and start cycling. The book states
+    <blockquote>
+      <p>Cycling was once thought to be a rare phenomenon, but in recent times it has been
+observed frequently in the large linear programs that arise as relaxations of integer programming problems.</p>
+    </blockquote>
+
+    <p>This is not what we illustrated moments ago: Even small and quite common problems can face degeneracy. The section presents two mitigation strategies: a <em>perturbation</em> strategy and a <em>lexicographic</em> strategy.</p>
+  </li>
+  <li>Chapter 16 on quadratic programming, in the section on active set methods, refers with respect to degeneracy and cycling to chapter 13, and even states
+    <blockquote>
+      <p>Most QP implementations simply ignore the possibility of cycling.</p>
+    </blockquote>
+
+    <p>Again, this blog post tries to advocate this is a poor decision.</p>
+  </li>
+</ul>
+
+<p>The perturbation strategy perturbs the vector $b$ by a small amount in every entry as to break the linear dependency. Nocedal and Wright argue that the perturbations are applied consistently throughout iterations, then this resolves all problems. The only challenge is to choose the perturbation amount large enough that numerical linear dependency is resolved, but small enough that the original problem is not perturbed too much.
+The lexicographic approach eliminates the choice of a perturbation size by assuming infinitesimal perturbation and doing proper bookkeeping.</p>
+
+<h1 id="intermezzo-sage-for-visualizing-linear-inequality-constraints">Intermezzo: Sage for visualizing linear inequality constraints</h1>
+
+<h2 id="polytope-representations">Polytope representations</h2>
+<p>The previous section makes a nice bridge to a visualization tool for constraints in 3D, namely using the <a href="https://www.sagemath.org/">Sage</a> Mathemathical software and in particular the Polyhedron functionality.<br />
+In 2D constraint visualization is quite easy, as we illustrated above. Drawing entire hyperplanes in 3D makes for a poor visualization with a lot of clutter. Linear inequality constraints define polytopes (= polyhedra in 3D) so ideally we would just visualize the vertices, edges and faces of that. However, I have not stumbled across a lot of tools to convert linear inequalities into vertices, edges and faces. It is not trivial, as it is not obvious from a list of inequality constraints which ones will intersect at a point which is feasible (though on the boundary) and which ones intersect outside of the feasible region. By the way, the other way around is much easier (for every face, define the appropriate linear inequality constraint).<br />
+The only tool I have stumbled upon that does this conversion (and visualization) is Sage. Before the discovery of that, I tried some voxel and levelset type of visualizations, but none of them show the boundary of the feasible set in a very crisp manner.</p>
+
+<p>Before illustrating what Sage can do, one more remark about polytope representations. In general dimensions, two different ways of representing are</p>
+<ol>
+  <li>linear inequalities, or</li>
+  <li><a href="https://en.wikipedia.org/wiki/Extreme_point">extreme points</a> which a compact polytope has a finite number of.</li>
+</ol>
+
+<p>A convex set can be built up as all possible convex combinations of the extreme points. In 3D the vertices are the extreme points. Extreme points alone do not yet give the edges of the polyhedron which contribute to a nice visualization too though. I have not yet looked into the literature on whether there are any nice methods for conversion between linear inequalities and extreme points (and back) beyond brute force stuff of combinatorial complexity.</p>
+
+<h2 id="sage-code">Sage code</h2>
+<p>To start off, I’m not an experienced Sage user, and what I managed to do below was a matter of copy-paste programming. First off, Windows is not supported by Sage, so I had to resort to an Ubuntu VM. From there, Sage can be imported as a Python package (after installing, for example from <code class="language-plaintext highlighter-rouge">conda-forge</code>), but the graphics rendering does not work out of the box in a Jupyter notebook. The quickest solution was to write the graphics to file and render the file with <code class="language-plaintext highlighter-rouge">IPython.display.Image</code>. Alternatively, Sage can be played with in the browser using the <a href="https://sagecell.sagemath.org/">Sage Cell Server</a> and it seems that it can even be used with Jupyter Notebooks with a Sage kernel i.s.o. the Python kernel I’m using.</p>
+
+<p>The core functionality of Sage I’m now interested in, is the <code class="language-plaintext highlighter-rouge">Polyhedron</code> class, which allows definition of a polyhedron in terms of linear inequalities (through the <code class="language-plaintext highlighter-rouge">ieqs</code> keyword argument). The <a href="http://fe.math.kobe-u.ac.jp/icms2010-dvd/SAGE/www.sagemath.org/doc/reference/sage/geometry/polyhedra.html">documentation</a> specifies that <code class="language-plaintext highlighter-rouge">ieqs</code> needs to receive a list of lists in <code class="language-plaintext highlighter-rouge">[b, A]</code> format to represent inequalities \(Ax + b \geq 0\)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sage.all</span>
+<span class="kn">from</span> <span class="nn">sage.geometry.polyhedron.constructor</span> <span class="kn">import</span> <span class="n">Polyhedron</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+</code></pre></div></div>
+
+<p>The polyhedron we create is an 8-sided pyramid. The top of the pyramid is a degenerate point. A point in 3D is uniquely defined by 3 intersecting planes. The pyramid top has 8 intersecting planes. One can imagine an active set ending up at this point, will have a hard time choosing the right direction to continue the search in. For a 100-sided pyramid, the challenge is even greater.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">p</span> <span class="o">=</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">ieqs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="c1">#Ground plane
+</span>                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="c1">#1st side
+</span>                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span> <span class="c1">#8th side
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">g</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">g</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">'tmp.png'</span><span class="p">,</span> <span class="n">zoom</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">'tmp.png'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/img/posts/lindepconstraints/output_19_0.png" alt="png" /></p>
+
+<p>As the above code and figure show: we construct a polyhedron from inequality constraints, but Sage does render vertices and edges neatly.</p>
+
+<p>We can finally use this visualization tool to illustrate what happens with the <em>perturbation strategy</em> for handling linear dependency. We perturb vector $b$ by quite a lot for visualization purposes. In practise, one would work with much smaller perturbations</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">p</span> <span class="o">=</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">ieqs</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.81</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.93</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.84</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.87</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.88</span><span class="p">,</span><span class="o">-</span><span class="n">s</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.82</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.96</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.95</span><span class="p">,</span><span class="o">-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">g</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">g</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">'tmp2.png'</span><span class="p">,</span> <span class="n">zoom</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">'tmp2.png'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/img/posts/lindepconstraints/output_22_0.png" alt="png" /></p>
+
+<p>The point of the pyramid has split into multiple vertices, each one being the intersection of 3 planes in stead of 8. Each one being non-degenerate.</p>
+
+<h2 id="back-to-handling-linearly-dependent-constraints">Back to handling linearly dependent constraints</h2>
+<p>The discussion on handling linearly dependent constraints in an active set method, I’d like to finish with a shoutout to <a href="https://github.com/coin-or/qpOASES">qpOASES</a>. <code class="language-plaintext highlighter-rouge">qpOASES</code> is one of the best open source QP solvers out there. It is supported by the COIN-OR initiative, which is a testament to its quality. Moreover, it has its with one of my favorite professors when I studied in Leuven, so that does make me biased.</p>
+
+<p>OASES stands for ‘Online Active Set Strategy’, which actually refers to its ability to do hotstarting on multiparametric quadratic programs with changing constraints (which makes hotstarting nontrivial). This is very suited for Model Predictive Control applications.</p>
+
+<p>So <code class="language-plaintext highlighter-rouge">qpOASES</code> is a very cool and smart method, but when used as a basic QP solver, it behaves quite a lot like your typical active set method, albeit a very decent implementation.  The <a href="https://cdn.syscop.de/publications/Ferreau2014.pdf">qpOASES paper</a> details out quite extensively how it deals with ‘ties’ and degeneracy. My experience with <code class="language-plaintext highlighter-rouge">qpOASES</code> on real QPs with linearly dependent constraints (e.g. the sampled polynomial constraint example) has been very positive: It manages to converge without cycling.</p>
+
+<h2 id="interior-point-methods">Interior point methods</h2>
+<p>Finally, we come perhaps to the real conclusion: as interior point methods don’t work with the concept of active/inactive constraints, and as intermediate iterates of interior point method never lie exactly on the feasible set boundary, interior point methods quite naturally don’t have any problem with linearly dependent constraints. Because of the not-so-rare occurence of these types of constraints, when implementing a constrained solver from scratch, interior point methods are much easier to get robust.</p>
+
+<hr />
+
+<h2 id="related-posts">Related posts</h2>
+<p>None yet</p>
+
+<h2 id="want-to-leave-a-comment">Want to leave a comment?</h2>
+<p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a>.</p>
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/2021/11/11/megatombike2021-aftermath.html" data-toggle="tooltip" data-placement="top" title="MegaTomBike 2021">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="mailto:lenseswaenen@gmail.com">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/LenseSwaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/lenseswaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Lense Swaenen 2021</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQVCL505Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7RQVCL505Y');
+</script>
+
+
+
+</body>
+
+</html>

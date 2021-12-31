@@ -22,6 +22,7 @@
 - Discuss with Robbert
 
 ## TODO:
+- Internship portfolio?
 - Formatting: Output blocks in grey? Inline ```stuff``` nicer?
 - Check unsplash license conditions?
 - Check out Medium?!
@@ -47,10 +48,11 @@
 - Love letter to matrix logarithm
 - Table tennis home advantage NL
 - Table tennis 1000 wins - NL
+- MegaTomBike 2021: final results
+- Linear depenency of linear inequality constraints & prevalence (e.g. in poly PVAJ constraints)
 
 ## Up next
 
-- MegaTomBike 2021: final results
 - DFO & new paradigm
 - Finite derivative
 - Love letter to precision matrix
@@ -81,7 +83,6 @@
 	- Generic finite differences***
 	- Tensor contractions & applications/speedups
 	- AMRs and CasADi
-	- Linear depenency of linear inequality constraints & prevalence (e.g. in poly PVAJ constraints) ***
 - Puzzles/Recreational:
 	- Dots & MILP
 	- Pyomo & overhang*
@@ -97,9 +98,7 @@
 		- Comparison of TrueSkill and Glicko?
 		- TrueSkill in other prob. progr. languages (Pyro, ForneyLab)
 		- Comparison/review of rating systems in practise.
-	- MegaTomBike 2021:
-		- Team creation
-		- Final scores & evaluation & end of season optimization***
+	- MegaTomBike 2022:
 		- MegaTomBike distinct teams?
 - Instructive:
 	- Viewpoints of Kalman filters
