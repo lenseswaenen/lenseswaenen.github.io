@@ -84,6 +84,7 @@ $table-header-bg-color: lighten($brand-color, 43%) !default;
 $table-header-border:   lighten($brand-color, 37%) !default;
 $table-border-color:    $border-color-01 !default;
 table {
+  font-size: 15px;
   margin-bottom: $spacing-unit;
   width: 100%;
   text-align: $table-text-align;
@@ -96,7 +97,7 @@ table {
     }
   }
   th, td {
-    padding: ($spacing-unit / 3) ($spacing-unit / 2);
+    padding: ($spacing-unit / 8) ($spacing-unit / 2);
   }
   th {
     background-color: $table-header-bg-color;

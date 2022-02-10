@@ -20,8 +20,10 @@
 - Moved test page
 - Copyright + attribution Slimoentjes
 - Discuss with Robbert
+- More compact table formatting
 
 ## TODO:
+
 - Internship portfolio?
 - Formatting: Output blocks in grey? Inline ```stuff``` nicer?
 - Check unsplash license conditions?
@@ -54,6 +56,9 @@
 ## Up next
 
 - DFO & new paradigm
+- MegaTomBike 2022
+- clip(x, l, u) vs clip(l, x, u)
+- Wesley Smith matrix inverse
 - Finite derivative
 - Love letter to precision matrix
 
@@ -73,7 +78,7 @@
 - Elements from projects:
 	- Anisotropic stitching
 	- Generalized Tikhonov solver
-	- Orthogonal integrators
+	- Orthogonal integrators**
 	- CasADi & trajectory generation
 	- Minimum time & least squares approach
 	- Gauss Seidel and random matrices
@@ -110,7 +115,7 @@
 - Lore:
 	- Gembicki
 - Hall of shame
-	- Wesley Smiths rectangular matrix inverse
+	- Wesley Smiths rectangular matrix inverse**
 	- 1000 variable Non-negative linear least squares with fminsearch (Nelder-Mead)
 	- min ||a - s*b||
 	- clip(x, l, u) vs clip(l, x, u)
