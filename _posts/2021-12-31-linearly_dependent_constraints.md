@@ -89,8 +89,8 @@ ax.set_aspect('equal')
 The above figure illustrates a set of 4 linear inequality constraints in a 2D space. Each individual linear inequality constraint eliminates a half-space (blue). The white rhombus at the center are all the points satisfying all constraints. The linear inequality constraints have defined a polytope (which in 2D is a polygon).
 
 ## Quadratic programming methods
-The classic book ['Numerical Optimization' by Nocedal and Wright](https://www.csie.ntu.edu.tw/~r97002/temp/num_optimization.pdf) has a excellent introduction to constrained optimization in chapters 12 - 16. In particular chapter 16 on quadratic programming has been of a lot of use to me in the past years. Two big schools of methods are outlined there: active set methods and interior point methods. 
-- **Active set methods** find their way to the optimal solution of the optimization problem along the edge of the feasible region/polytope. For every constraint, the keep track of a binary variable, whether that constraint is active ($a_ix = b$) or not ($a_ix < b$). In a basic active set method, at each iteration, either one constraint is added to the active set, or removed from the active set.
+The classic book ['Numerical Optimization' by Nocedal and Wright](https://www.csie.ntu.edu.tw/~r97002/temp/num_optimization.pdf) has an excellent introduction to constrained optimization in chapters 12 - 16. In particular chapter 16 on quadratic programming has been of a lot of use to me in the past years. Two big schools of methods are outlined there: active set methods and interior point methods. 
+- **Active set methods** find their way to the optimal solution of the optimization problem along the edge of the feasible region/polytope. For every constraint, they keep track of a binary variable, whether that constraint is active ($a_ix = b$) or not ($a_ix < b$). In a basic active set method, at each iteration, either one constraint is added to the active set, or removed from the active set.
 - **Interior point methods** find their way through the center of the feasible set. Constraints are never truly activated. The linear (in)dependency matter, is mostly of concern when using active set methods.
 
 
@@ -104,11 +104,11 @@ In a lot of constrained optimization theory, such as in the book of Nocedal and 
 
 > Given the point $x$ and the active set $A(x)$ defined in Definition 12.1, we say that the linear independence constraint qualification (LICQ) holds if the set of active constraint gradients ${∇c_i(x),i∈A(x)}$ is linearly independent.
 
-The Nocedal theory applies to nonlinear constraints. For linear inquality constraints, these constraint gradients $\nabla c_i(x)$ are just the vectors $a_i$. Note that the LICQ concept is something that applies to a point $x$ and not to for example the entire set of linear inequality constraints. 
+The Nocedal theory applies to nonlinear constraints. For linear inquality constraints, these constraint gradients $\nabla c_i(x)$ are just the vectors $a_i$. Note that the LICQ concept is something that applies to a point $x$ and not to - for example - the entire set of linear inequality constraints. 
 
-The importance of these conditions are evident when considering active set methods. When an active set method encounters a point at which the LICQ condition does not hold, there is a risk of it not converging propery, and that is rather starts *cycling*. Care must be taken!
+The importance of these conditions are evident when considering active set methods. When an active set method encounters a point at which the LICQ condition does not hold, there is a risk of it not converging properly, and that is rather starts *cycling*. Care must be taken!
 
-Cycling and also degeneracy and cycling are other keywords related to LICQ conditions not holding. Other terminology that I have come across is linearly (in)dependency of constraints. And my experience is also that this latter terminology can lead to a lot of confusion. Linear dependency of constraints is different from linear dependency of vectors or rows/colums of constraint matrix $A$. The simplest possible example to explain this is a very common one: symmetric lower and upper bounds on a 1D constrained optimization problem: $-1 \leq x \leq 1$
+Cycling, degeneracy, ties are all keywords related to LICQ conditions not holding. Other terminology that I have come across is linearly (in)dependency of constraints. And my experience is also that this latter terminology can lead to a lot of confusion. Linear dependency of constraints is different from linear dependency of vectors or rows/colums of constraint matrix $A$. The simplest possible example to explain this is a very common one: symmetric lower and upper bounds on a 1D constrained optimization problem: $-1 \leq x \leq 1$
 
 In standard $Ax \leq b$ form, this is equivalent to 
 $$A = \begin{bmatrix} 1 \\ -1\end{bmatrix}, \qquad b = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$$
@@ -149,7 +149,7 @@ In this case, the matrix $A_{act}$ is again not of full row-rank, and in this ca
 
 A more geometric interpretation of degeneracy is 3 lines in 2D intersecting at a single point. This can be generalized to $n$ hyperplanes in $n-1$D intersecting at a single point, or even to $n$ hyperplanes in $m$ dimensions intersecting with a dimensionality of $n - m - 1$ or higher (where a point is a non-empty 0D set).
 
-One might argue that linear dependency is perhaps a trivial matter in 2D, as in general (and also in the example) some of the problematic constraints will be redundant: The feasible set would not change (/grow) if we omit that constraint. (Redundant constraints is a topic on the backlog for future blog posts.) If one removes all redundant constraints in 2D no linear dependency issues will remain. This is not true in 3D or higher, as the following example illustrates. 
+One might argue that linear dependency is perhaps a trivial matter in 2D, as in general (and also in the example) some of the problematic constraints will be redundant: The feasible set would not change (/grow) if we omit the right constraint. (Redundant constraints is a topic on the backlog for future blog posts.) If one removes all redundant constraints in 2D no linear dependency issues will remain. This is not true in 3D or higher, as the following example illustrates. 
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Platonic_Solids_Transparent.svg/1024px-Platonic_Solids_Transparent.svg.png" width="300" height="300" />
 
@@ -181,8 +181,8 @@ $$
 \forall t \in [t_0, t_f]: -v \leq p'(t) \leq v
 $$
 
-Note that the $\forall$-part makes this a non-standard type of constraint. It is not simply of the form $g(p) \leq 0$ for some explicit function $g$. It is a non-linear constraint, but definetly not a simple one. Also this might be a topic for another blog post.  
-A common approach to deal with this tricky $\forall$ in practise, is to not require the constraint at all values $t \in [t_0, t_f]$, but only at a finite number of samples (often chosen uniformly spaced) $t_j$ with $j = 1..N$. With $N$ samples, we now get $N$ twosided range constraints:
+Note that the $\forall$-part makes this a non-standard type of constraint. It is not simply of the form $g(p) \leq 0$ for some explicit function $g$. It is a non-linear constraint, but definitely not a simple one. Also this might be a topic for another blog post.  
+A common approach to deal with this tricky $\forall$ in practise, is to not require the constraint at all values $t \in [t_0, t_f]$, but only at a finite number of samples (often chosen uniformly spaced) $t_j$ with $j = 1..N$. With $N$ samples, we now get $N$ two-sided range constraints:
 
 $$ \forall j = 1..N: -r \leq p_0 + p_1t_j + p_2t_j^2 + p_3t_j^3 \leq r $$
 
@@ -239,7 +239,7 @@ Before illustrating what Sage can do, one more remark about polytope representat
 A convex set can be built up as all possible convex combinations of the extreme points. In 3D the vertices are the extreme points. Extreme points alone do not yet give the edges of the polyhedron which contribute to a nice visualization too though. I have not yet looked into the literature on whether there are any nice methods for conversion between linear inequalities and extreme points (and back) beyond brute force stuff of combinatorial complexity.
 
 ## Sage code
-To start off, I'm not an experienced Sage user, and what I managed to do below was a matter of copy-paste programming. First off, Windows is not supported by Sage, so I had to resort to an Ubuntu VM. From there, Sage can be imported as a Python package (after installing, for example from `conda-forge`), but the graphics rendering does not work out of the box in a Jupyter notebook. The quickest solution was to write the graphics to file and render the file with `IPython.display.Image`. Alternatively, Sage can be played with in the browser using the [Sage Cell Server](https://sagecell.sagemath.org/) and it seems that it can even be used with Jupyter Notebooks with a Sage kernel i.s.o. the Python kernel I'm using.
+To start off, I'm not an experienced Sage user, and what I managed to do below was a matter of copy-paste programming. First off, Windows is not supported by Sage, so I had to resort to an Ubuntu VM. From there, Sage can be imported as a Python package (after installing, for example from `conda-forge`), but the graphics rendering does not work out of the box in a Jupyter notebook. The quickest solution was to write the graphics to file and render the file with `IPython.display.Image`. Alternatively, one can play around with Sage in the browser using the [Sage Cell Server](https://sagecell.sagemath.org/) and it seems that it can even be used with Jupyter Notebooks with a Sage kernel i.s.o. the Python kernel I'm using.
 
 The core functionality of Sage I'm now interested in, is the `Polyhedron` class, which allows definition of a polyhedron in terms of linear inequalities (through the `ieqs` keyword argument). The [documentation](http://fe.math.kobe-u.ac.jp/icms2010-dvd/SAGE/www.sagemath.org/doc/reference/sage/geometry/polyhedra.html) specifies that `ieqs` needs to receive a list of lists in `[b, A]` format to represent inequalities $$Ax + b \geq 0$$
 
@@ -321,7 +321,7 @@ Image(filename='tmp2.png')
 The point of the pyramid has split into multiple vertices, each one being the intersection of 3 planes in stead of 8. Each one being non-degenerate.
 
 ## Back to handling linearly dependent constraints
-The discussion on handling linearly dependent constraints in an active set method, I'd like to finish with a shoutout to [qpOASES](https://github.com/coin-or/qpOASES). `qpOASES` is one of the best open source QP solvers out there. It is supported by the COIN-OR initiative, which is a testament to its quality. Moreover, it has its with one of my favorite professors when I studied in Leuven, so that does make me biased. 
+The discussion on handling linearly dependent constraints in an active set method, I'd like to finish with a shoutout to [qpOASES](https://github.com/coin-or/qpOASES). `qpOASES` is one of the best open source QP solvers out there. It is supported by the COIN-OR initiative, which is a testament to its quality. Moreover, it has its roots with one of my favorite professors when I studied in Leuven (prof. Moritz Diehl), so that does make me biased. 
 
 OASES stands for 'Online Active Set Strategy', which actually refers to its ability to do hotstarting on multiparametric quadratic programs with changing constraints (which makes hotstarting nontrivial). This is very suited for Model Predictive Control applications. 
 

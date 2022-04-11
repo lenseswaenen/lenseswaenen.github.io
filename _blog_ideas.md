@@ -52,15 +52,16 @@
 - Table tennis 1000 wins - NL
 - MegaTomBike 2021: final results
 - Linear depenency of linear inequality constraints & prevalence (e.g. in poly PVAJ constraints)
+- clip(x, l, u) vs clip(l, x, u)
 
 ## Up next
 
 - DFO & new paradigm
 - MegaTomBike 2022
-- clip(x, l, u) vs clip(l, x, u)
 - Wesley Smith matrix inverse
 - Finite derivative
 - Love letter to precision matrix
+- Dynobend youtube videos
 
 
 ## Backlog
@@ -88,6 +89,9 @@
 	- Generic finite differences***
 	- Tensor contractions & applications/speedups
 	- AMRs and CasADi
+	- 1D bang-bang snippets
+	- QR vs Cholesky (speed difference)
+	- BFGS vs BOBYQA Hessian convergence
 - Puzzles/Recreational:
 	- Dots & MILP
 	- Pyomo & overhang*
@@ -97,6 +101,8 @@
 	- Pi Day & Matt Parker (2022)
 	- sum(x) = 1: 3d slice in 4d space
 	- Comic: Trolleying Salesman Problem
+	- Variational physics, optimal solutions in nature
+	- Numberphile regular polyhedra & linear inequalities
 - Sports/games:
 	- Game design: leveling the playing field (EN+NL summary?)***
 	- Rating systems. Love letter to TrueSkill. Ranking the sports
@@ -119,6 +125,7 @@
 	- 1000 variable Non-negative linear least squares with fminsearch (Nelder-Mead)
 	- min ||a - s*b||
 	- clip(x, l, u) vs clip(l, x, u)
+	- MATLAB positive/negative zeros, max and infs, ...
 - Throwback thursday --> KULeuven
 	- Multigrid
 	- Numerical linear algebra homework on direct sparse matrices
