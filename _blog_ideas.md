@@ -118,6 +118,7 @@
 	- DFOGN vs LM. Newton vs regula falsi
 	- Complexities of Poisson solvers + typical computation times?
 	- Precision matrices
+	- Root finding & QR algorithm (MATLAB roots)
 - Lore:
 	- Gembicki
 - Hall of shame
