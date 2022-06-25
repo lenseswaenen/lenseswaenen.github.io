@@ -62,6 +62,7 @@
 - Finite derivative
 - Love letter to precision matrix
 - Dynobend youtube videos
+- Game design, leveling the playing field (EN + NL summary)
 
 
 ## Backlog
@@ -109,8 +110,11 @@
 		- Comparison of TrueSkill and Glicko?
 		- TrueSkill in other prob. progr. languages (Pyro, ForneyLab)
 		- Comparison/review of rating systems in practise.
+		- Racketlon: ratings & point win differences
+		- Table tennis: rating difference & win point/match win probability
 	- MegaTomBike 2022:
 		- MegaTomBike distinct teams?
+	- Decision tree / flow chart on toy, puzzle, activity, game, sport
 - Instructive:
 	- Viewpoints of Kalman filters
 	- Viewpoints of regularization
@@ -153,9 +157,12 @@
 4. Add footer
 5. Replace mast image?
 6. `bundle exec jekyll serve` in git bash @ repo & debug/modify at http://127.0.0.1:4000/ (or localhost:4000)
-7. Git Push
-8. Tweet
-9. Footer: update with tweet reference
+7. Fix internal links
+8. Related posts updates
+9. Git Push
+10. (Tweet)
+11. (Footer: update with tweet reference)
+12. Archive .ipynb
 
 ## Setting up a new development environment
 1. Install Ruby (preferably 2.7 i.s.o. 3.0 (Github-pages support...))
