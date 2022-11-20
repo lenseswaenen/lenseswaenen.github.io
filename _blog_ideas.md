@@ -54,16 +54,16 @@
 - Linear depenency of linear inequality constraints & prevalence (e.g. in poly PVAJ constraints)
 - clip(x, l, u) vs clip(l, x, u)
 - Game design, leveling the playing field (EN + NL summary)
+- Roots & eig
 
 ## Up next
 
-- Roots & SVD
-- DFO & composite
 - MegaTomBike 2022
+- Dynobend youtube videos
 - Wesley Smith matrix inverse
+- DFO & composite
 - Finite derivative
 - Love letter to precision matrix
-- Dynobend youtube videos
 
 
 ## Backlog
@@ -71,7 +71,7 @@
 - Roadmap items:
 	- Probabilistic programming & tracking: Whitepaper
 	- Optimal control: Whitepaper, Vexar
-	- Bayesian DFOGN:
+	- Bayesian DFOGN
 	- Belief propagation & critique: https://gaussianbp.github.io/ ***
 	- GaBP & Blocked linear algebra
 - Projects:
@@ -94,20 +94,19 @@
 	- 1D bang-bang snippets
 	- QR vs Cholesky (speed difference)
 	- BFGS vs BOBYQA Hessian convergence
-	- Matrix that crashed SVD computation...
+	- Matrix that crashed SVD computation...***
 - Puzzles/Recreational:
-	- Dots & MILP
+	- Dots & MILP (???)
 	- Pyomo & overhang*
 	- Sprinkler pattern
 	- Garage door shapes
 	- Traveling Sam Problem (w TSP Concorde)
 	- Pi Day & Matt Parker (2022)
-	- sum(x) = 1: 3d slice in 4d space
+	- sum(x) = 1: What does the 3d slice in 4d space look like?
 	- Comic: Trolleying Salesman Problem
 	- Variational physics, optimal solutions in nature
 	- Numberphile regular polyhedra & linear inequalities
 - Sports/games:
-	- Game design: leveling the playing field (EN+NL summary?)***
 	- Rating systems. Love letter to TrueSkill. Ranking the sports
 		- Comparison of TrueSkill and Glicko?
 		- TrueSkill in other prob. progr. languages (Pyro, ForneyLab)
@@ -119,19 +118,17 @@
 	- Decision tree / flow chart on toy, puzzle, activity, game, sport
 - Instructive:
 	- Viewpoints of Kalman filters
-	- Viewpoints of regularization
+	- Viewpoints of regularization (tikhonov, ridge regression, MAP, rubber banding, ...)
 	- Message passing, belief propagation, ...?
 	- DFOGN vs LM. Newton vs regula falsi
 	- Complexities of Poisson solvers + typical computation times?
 	- Precision matrices
-	- Root finding & QR algorithm (MATLAB roots)
 - Lore:
 	- Gembicki
 - Hall of shame
 	- Wesley Smiths rectangular matrix inverse**
 	- 1000 variable Non-negative linear least squares with fminsearch (Nelder-Mead)
 	- min ||a - s*b||
-	- clip(x, l, u) vs clip(l, x, u)
 	- MATLAB positive/negative zeros, max and infs, ...
 - Throwback thursday --> KULeuven
 	- Multigrid
