@@ -41,7 +41,7 @@ Uiteraard zijn tal van varianten op beide systemen mogelijk. Wat ik nog niet gev
 -----
 
 ## Related posts
-- [Two non-rating-based handicap systems](/2022/05/25/game_design_handicap.html).
+- [Two non-rating-based handicap systems](/2022/05/24/game_design_handicap.html).
 
 
 ## Want to leave a comment?

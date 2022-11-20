@@ -53,16 +53,17 @@
 - MegaTomBike 2021: final results
 - Linear depenency of linear inequality constraints & prevalence (e.g. in poly PVAJ constraints)
 - clip(x, l, u) vs clip(l, x, u)
+- Game design, leveling the playing field (EN + NL summary)
 
 ## Up next
 
-- DFO & new paradigm
+- Roots & SVD
+- DFO & composite
 - MegaTomBike 2022
 - Wesley Smith matrix inverse
 - Finite derivative
 - Love letter to precision matrix
 - Dynobend youtube videos
-- Game design, leveling the playing field (EN + NL summary)
 
 
 ## Backlog
@@ -80,7 +81,7 @@
 - Elements from projects:
 	- Anisotropic stitching
 	- Generalized Tikhonov solver
-	- Orthogonal integrators**
+	- Orthogonal integrators** (https://thenumb.at/Exponential-Rotations/)
 	- CasADi & trajectory generation
 	- Minimum time & least squares approach
 	- Gauss Seidel and random matrices
@@ -93,6 +94,7 @@
 	- 1D bang-bang snippets
 	- QR vs Cholesky (speed difference)
 	- BFGS vs BOBYQA Hessian convergence
+	- Matrix that crashed SVD computation...
 - Puzzles/Recreational:
 	- Dots & MILP
 	- Pyomo & overhang*
@@ -169,3 +171,5 @@
 2. Install Jekyll and Bundler (`gem install jekyll bundler`)
 3. Run `bundle`
 4. `bundle exec jekyll serve`
+
+# Errata
