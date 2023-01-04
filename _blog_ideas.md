@@ -95,6 +95,7 @@
 	- QR vs Cholesky (speed difference)
 	- BFGS vs BOBYQA Hessian convergence
 	- Matrix that crashed SVD computation...***
+	- Unconstrained variables in a QP (2 methods)
 - Puzzles/Recreational:
 	- Dots & MILP (???)
 	- Pyomo & overhang*
