@@ -55,16 +55,15 @@
 - clip(x, l, u) vs clip(l, x, u)
 - Game design, leveling the playing field (EN + NL summary)
 - Roots & eig
+- MegaTomBike 2022
+- Dynobend youtube videos
 
 ## Up next
 
-- MegaTomBike 2022
-- Dynobend youtube videos
 - Wesley Smith matrix inverse
 - DFO & composite
 - Finite derivative
 - Love letter to precision matrix
-
 
 ## Backlog
 
@@ -75,8 +74,8 @@
 	- Belief propagation & critique: https://gaussianbp.github.io/ ***
 	- GaBP & Blocked linear algebra
 - Projects:
-	- Dynobend Youtube videos
 	- ASML and patent
+	- Kadaster
 	- ASML & tensor contractions
 - Elements from projects:
 	- Anisotropic stitching
@@ -96,6 +95,7 @@
 	- BFGS vs BOBYQA Hessian convergence
 	- Matrix that crashed SVD computation...***
 	- Unconstrained variables in a QP (2 methods)
+	- Sparse direct solvers!
 - Puzzles/Recreational:
 	- Dots & MILP (???)
 	- Pyomo & overhang*
@@ -107,6 +107,8 @@
 	- Comic: Trolleying Salesman Problem
 	- Variational physics, optimal solutions in nature
 	- Numberphile regular polyhedra & linear inequalities
+	- ChatGPT?
+	- First steps with sympy (notes on variance?!)
 - Sports/games:
 	- Rating systems. Love letter to TrueSkill. Ranking the sports
 		- Comparison of TrueSkill and Glicko?
@@ -117,6 +119,8 @@
 	- MegaTomBike 2022:
 		- MegaTomBike distinct teams?
 	- Decision tree / flow chart on toy, puzzle, activity, game, sport
+	- Table tennis ELO handicap
+	- Table tennis bounce analysis
 - Instructive:
 	- Viewpoints of Kalman filters
 	- Viewpoints of regularization (tikhonov, ridge regression, MAP, rubber banding, ...)

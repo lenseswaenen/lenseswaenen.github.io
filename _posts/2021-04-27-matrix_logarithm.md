@@ -17,7 +17,7 @@ where $\theta$ satisfies $1 + 2\cos(\theta) = \text{trace}(R)$.
 
 I think this is beautiful and surprising: The matrix logarithm is proportional to the simplest skew-symmetric matrix one can create from $R$: $R^T - R$.
 
-We will show that a matrix logarithm of a rotational matrix will output a skew-symmetric matrix, but that a priori does not have to mean the relationship is as simple as it is!
+We will argue that a matrix logarithm of a rotational matrix will output a skew-symmetric matrix, but that a priori does not have to mean the relationship is as simple as it is!
 
 A more thorough treatment of this topic can be found in this [paper](https://www.sciencedirect.com/science/article/pii/S0377042709007791).
 
@@ -35,7 +35,7 @@ $$
 e^A = 1 + A + \frac{1}{2} A^2 + \frac{1}{3!}A^3 + \ldots + \frac{1}{n!}A^n + \ldots
 $$
 
-There is a famous paper by MATLAB founder Cleve Moler on how there are many ways to compute is, but all of them are [dubious](https://www.cs.cornell.edu/cv/ResearchPDF/19ways+.pdf). Luckily, we will only be dealing with a specific type of small systems in this post: $3 \times 3$ skew-symmetric systems. A skew-symmetric system is one that satisfies
+There is a famous paper by MATLAB founder Cleve Moler on how there are many ways to compute it, but all of them are [dubious](https://www.cs.cornell.edu/cv/ResearchPDF/19ways+.pdf). Luckily, we will only be dealing with a specific type of small systems in this post: $3 \times 3$ skew-symmetric systems. A skew-symmetric system is one that satisfies
 
 $$ 
 S^T = - S
@@ -77,7 +77,7 @@ Et voila, we have our skew-symmetric matrix! Solving these differential equation
 
 Note that these are not general skew-symmetric matrices, as the $(1, 3)$ and $(3, 1)$ entries are zero. Parallel transport frames and [Darboux frames](https://en.wikipedia.org/wiki/Darboux_frame) are alternative frames for which these entries might not be zero.
 
-Why would one be interested in using all of these equations? Well, the applications are plenty: rollercoasters are real life examples of freeform curves, flight paths of planes and drones as well, freeform curves are used in many design applications, etc..
+Why would one be interested in using all of these equations? Well, the applications are plenty: rollercoasters are real life examples of freeform curves, flight paths of planes and drones as well, [freeform metal tubes](/2023/03/25/dynobend_tube_optimizer.html) are used in many design applications, etc... 
 
 # 3D rotation formalisms
 
@@ -197,7 +197,7 @@ scipy.linalg.logm(R) / (R.T - R)
 -----
 
 ## Related posts
-None yet
+- [Dynobend Tube Optimizer](/2023/03/25/dynobend_tube_optimizer.html)
 
 ## Want to leave a comment?
 Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an [email](mailto:lenseswaenen@gmail.com)

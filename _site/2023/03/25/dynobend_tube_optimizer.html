@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    Dynobend Tube Optimizer - Bits of math
+    
+  </title>
+
+  <meta name="description" content="In 2015, I got tasked with a new project for Dynobend. This has been one of my favourite projects at Sioux (still LIME in 2015), so I figured it would be nic...">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link rel="canonical" href="http://localhost:4000/2023/03/25/dynobend_tube_optimizer.html">
+  <link rel="alternate" type="application/rss+xml" title="Bits of math" href="/feed.xml">
+
+  <!-- for mathjax support -->
+  
+  <!-- For Jekyll SEO plugin -->
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Dynobend Tube Optimizer | Bits of math</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Dynobend Tube Optimizer" />
+<meta name="author" content="Lense Swaenen" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In 2015, I got tasked with a new project for Dynobend. This has been one of my favourite projects at Sioux (still LIME in 2015), so I figured it would be nice to write something about it." />
+<meta property="og:description" content="In 2015, I got tasked with a new project for Dynobend. This has been one of my favourite projects at Sioux (still LIME in 2015), so I figured it would be nice to write something about it." />
+<link rel="canonical" href="http://localhost:4000/2023/03/25/dynobend_tube_optimizer.html" />
+<meta property="og:url" content="http://localhost:4000/2023/03/25/dynobend_tube_optimizer.html" />
+<meta property="og:site_name" content="Bits of math" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-03-25T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Dynobend Tube Optimizer" />
+<meta name="twitter:site" content="@LenseSwaenen" />
+<meta name="twitter:creator" content="@Lense Swaenen" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2023/03/25/dynobend_tube_optimizer.html","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/03/25/dynobend_tube_optimizer.html"},"author":{"@type":"Person","name":"Lense Swaenen"},"@type":"BlogPosting","description":"In 2015, I got tasked with a new project for Dynobend. This has been one of my favourite projects at Sioux (still LIME in 2015), so I figured it would be nice to write something about it.","headline":"Dynobend Tube Optimizer","dateModified":"2023-03-25T00:00:00+01:00","datePublished":"2023-03-25T00:00:00+01:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <!-- For Google findability -->
+  <meta name="google-site-verification" content="HMALsEPUPk8UDAmx9EYoAWZ0cB2rgDoxBp6zhln4_H4" />
+</head>
+
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">Bits of math</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/dynobend/dynobend_rembrandt.jpg')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Dynobend Tube Optimizer</h1>
+            
+            <h2 class="subheading">Project in the spotlight</h2>
+            
+            <span class="meta">Posted by
+              <a href="#">Lense Swaenen</a>
+              on March 25, 2023 &middot; <span class="reading-time" title="Estimated read time">
+  
+   3 mins  read </span>
+
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <p>In 2015, I got tasked with a new project for <a href="https://www.dynobend.com/en/">Dynobend</a>. This has been one of my favourite projects at Sioux (still LIME in 2015), so I figured it would be nice to write something about it.</p>
+
+<p>Dynobend is a company of about 50-100 people, located in Haaksbergen and manufacturer of bending machines: Machines that take in straight metal pipes and bend them into all kinds of curved shapes. Words don’t really do these machines any justice…</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KIR2KjVyjtI?start=6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+<p>The freeform machines push the pipe through some rollers which can be purposely misaligned to impart some curvature (plastic deformation) to the metal pipe. The pushing rod moreover can twist, which unlocks the third dimension for 3D freeform shapes.</p>
+
+<p>Equally impressive as the mechanism of these machines, is the wide range of applications these freeform tubes have, from stair lifts, to designer furniture, to spinal implants, to heat exchanger tubing to <a href="https://www.dynobend.com/nl/projecten/king-abdulaziz-centre/">facades in high-end architecture</a>.</p>
+
+<p>The very first project LIME did for Dynobend happened before I joined LIME, and was about setpoint generation for this pushing rod/cart. To achieve a high throughput of the machine (= bend a shape as quickly as possible), you want to move the pushing cart as fast as possible. However, when the rolls are severely misaligned, as to impart a high curvature, the forces when moving the cart fast just become too big to handle. So, like a racecar, sharp curves are to be taken more slowly, straight sections can be taken full speed. A very nice mathematical challenge, and even a pity I never got to solve it myself. Setpoint generation problems are some of my favourite, and luckily I do have a few more on my track record by now.</p>
+
+<p>The challenge that Dynobend gave to us in 2015, was about ‘shape control’. They already had a way to calibrate the machines, but when bending complex 3D shapes, the shapes still weren’t coming out quite right. The mismatch between target and result could already be quantified, by dimensional metrology tooling such as the AICON (now Hexagon) TubeInspect measurement cabinets.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mpQ-L5d3fzE?start=32" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+<p>The TubeInspect itself is already a very cool demo of applied mathematics and computer vision.</p>
+
+<p>The figure below shows an example of a target shape (in blue) and an uncorrected measured shape (from an uncalibrated machine, for demonstration purposes) in orange. Typical shape errors we quantified in some millimeter unit, and the errors typically were about 10-20 millimeters. The example shown was even as big as 50mm (due to intentionally not calibrating).</p>
+
+<p><img src="/img/posts/dynobend/dynobend_before.png" width="500" /></p>
+
+<p>However, knowing you’re wrong is only worth so much. What Dynobend was really looking for is a way to correct for the bending errors and reduce the shape error. Being mostly a mechanics-oriented company, they didn’t have the necessary mathematical skills in house, and multiple people had already tried and failed on correction of 3D shapes. Luckily, they found us :)</p>
+
+<p>One of the reasons this has been one of my favourite projects, is because of the good results. Through our mathematics, we have been able to, typically, drive down the shape error from 10-20mm to 1-2mm, for a whopping 10x improvement! Moreover, this is generally achieved in 1-2 iterations of bending and correcting. In fact, even the exagerated case above, with the &gt;50mm initial error could be brought down to 2mm in a single iteration. The correction approach can largely make calibrating unnecessary. Below is the corresponding visualization of the measurement of the bent tube obtained from a corrected shapefile.</p>
+
+<p><img src="/img/posts/dynobend/dynobend_after.png" width="500" /></p>
+
+<p>The shape correction approach has been wrapped by Dynobend into a product called the ‘Dynobend Tube Optimizer’ (DTO), which has been introduced at the huge German ‘Tube and Wire’ fair in 2018.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LWMorvd62WA?start=32" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+<p>If you want to the bending and correction process in action in real-time, you can check out the <a href="https://www.youtube.com/watch?v=Cw73v1c2ZYw">DTO webinar</a> on the Dynobend YouTube channel.</p>
+
+<p>Finally, other reasons for liking the project are the tangibility off it all. I have worked many years for ASML without ever seeing a real EUV scanner up close. With Dynobend, I can modify a line of code, and see what it does to a metal pipe in a matter of minutes.
+Secondly, I enjoyed very much that there was a blank sheet to start from. Comparing to ASML again, there one usually improves one particular method that other smart have already preceded you on. Here, everything had to be started from scratch, and a lot of different pieces of applied mathematics had to be stitched together to get the complete pipeline working. Inevitably, computational geometry and the especially the mathematics describing 3D curves apply, as in previous post on the <a href="/2021/04/27/matrix_logarithm.html">Matrix logarithm of rotational matrices</a>. Unfortunately, that is about as much as I can tell about the solution. Dynobend considers it important intellectual property, which is being protected through secrecy rather than patents.</p>
+
+<hr />
+
+<h2 id="related-posts">Related posts</h2>
+<ul>
+  <li><a href="/2021/04/27/matrix_logarithm.html">Matrix logarithm of rotational matrices</a></li>
+</ul>
+
+<h2 id="want-to-leave-a-comment">Want to leave a comment?</h2>
+<p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a>.</p>
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/2023/01/04/megatombike2022-aftermath.html" data-toggle="tooltip" data-placement="top" title="MegaTomBike 2022 Aftermath">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="mailto:lenseswaenen@gmail.com">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/LenseSwaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/lenseswaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Lense Swaenen 2023</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQVCL505Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7RQVCL505Y');
+</script>
+
+
+
+</body>
+
+</html>

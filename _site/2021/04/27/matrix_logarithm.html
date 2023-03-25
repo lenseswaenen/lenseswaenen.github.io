@@ -128,7 +128,7 @@
 
 <p>I think this is beautiful and surprising: The matrix logarithm is proportional to the simplest skew-symmetric matrix one can create from $R$: $R^T - R$.</p>
 
-<p>We will show that a matrix logarithm of a rotational matrix will output a skew-symmetric matrix, but that a priori does not have to mean the relationship is as simple as it is!</p>
+<p>We will argue that a matrix logarithm of a rotational matrix will output a skew-symmetric matrix, but that a priori does not have to mean the relationship is as simple as it is!</p>
 
 <p>A more thorough treatment of this topic can be found in this <a href="https://www.sciencedirect.com/science/article/pii/S0377042709007791">paper</a>.</p>
 
@@ -142,7 +142,7 @@
 
 \[e^A = 1 + A + \frac{1}{2} A^2 + \frac{1}{3!}A^3 + \ldots + \frac{1}{n!}A^n + \ldots\]
 
-<p>There is a famous paper by MATLAB founder Cleve Moler on how there are many ways to compute is, but all of them are <a href="https://www.cs.cornell.edu/cv/ResearchPDF/19ways+.pdf">dubious</a>. Luckily, we will only be dealing with a specific type of small systems in this post: $3 \times 3$ skew-symmetric systems. A skew-symmetric system is one that satisfies</p>
+<p>There is a famous paper by MATLAB founder Cleve Moler on how there are many ways to compute it, but all of them are <a href="https://www.cs.cornell.edu/cv/ResearchPDF/19ways+.pdf">dubious</a>. Luckily, we will only be dealing with a specific type of small systems in this post: $3 \times 3$ skew-symmetric systems. A skew-symmetric system is one that satisfies</p>
 
 \[S^T = - S\]
 
@@ -181,7 +181,7 @@
 
 <p>Note that these are not general skew-symmetric matrices, as the $(1, 3)$ and $(3, 1)$ entries are zero. Parallel transport frames and <a href="https://en.wikipedia.org/wiki/Darboux_frame">Darboux frames</a> are alternative frames for which these entries might not be zero.</p>
 
-<p>Why would one be interested in using all of these equations? Well, the applications are plenty: rollercoasters are real life examples of freeform curves, flight paths of planes and drones as well, freeform curves are used in many design applications, etc..</p>
+<p>Why would one be interested in using all of these equations? Well, the applications are plenty: rollercoasters are real life examples of freeform curves, flight paths of planes and drones as well, <a href="/2023/03/25/dynobend_tube_optimizer.html">freeform metal tubes</a> are used in many design applications, etc…</p>
 
 <h1 id="3d-rotation-formalisms">3D rotation formalisms</h1>
 
@@ -283,7 +283,9 @@
 <hr />
 
 <h2 id="related-posts">Related posts</h2>
-<p>None yet</p>
+<ul>
+  <li><a href="/2023/03/25/dynobend_tube_optimizer.html">Dynobend Tube Optimizer</a></li>
+</ul>
 
 <h2 id="want-to-leave-a-comment">Want to leave a comment?</h2>
 <p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a></p>
@@ -352,7 +354,7 @@
           
           
         </ul>
-        <p class="copyright text-muted">Copyright &copy; Lense Swaenen 2022</p>
+        <p class="copyright text-muted">Copyright &copy; Lense Swaenen 2023</p>
       </div>
     </div>
   </div>

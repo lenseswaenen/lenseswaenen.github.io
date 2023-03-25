@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    MegaTomBike 2022 Aftermath - Bits of math
+    
+  </title>
+
+  <meta name="description" content="Like the 2021 post, we compute what would have been the optimal team for Megatombike 2022, a local fantasy cycling competition.">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link rel="canonical" href="http://localhost:4000/2023/01/04/megatombike2022-aftermath.html">
+  <link rel="alternate" type="application/rss+xml" title="Bits of math" href="/feed.xml">
+
+  <!-- for mathjax support -->
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" }},
+	  tex2jax: { inlineMath: [ ['$','$'], ['\\(','\\)'] ]}
+      });
+    </script>
+    <!-- <script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+  <!-- For Jekyll SEO plugin -->
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>MegaTomBike 2022 Aftermath | Bits of math</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="MegaTomBike 2022 Aftermath" />
+<meta name="author" content="Lense Swaenen" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Like the 2021 post, we compute what would have been the optimal team for Megatombike 2022, a local fantasy cycling competition." />
+<meta property="og:description" content="Like the 2021 post, we compute what would have been the optimal team for Megatombike 2022, a local fantasy cycling competition." />
+<link rel="canonical" href="http://localhost:4000/2023/01/04/megatombike2022-aftermath.html" />
+<meta property="og:url" content="http://localhost:4000/2023/01/04/megatombike2022-aftermath.html" />
+<meta property="og:site_name" content="Bits of math" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-04T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="MegaTomBike 2022 Aftermath" />
+<meta name="twitter:site" content="@LenseSwaenen" />
+<meta name="twitter:creator" content="@Lense Swaenen" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2023/01/04/megatombike2022-aftermath.html","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/01/04/megatombike2022-aftermath.html"},"author":{"@type":"Person","name":"Lense Swaenen"},"@type":"BlogPosting","description":"Like the 2021 post, we compute what would have been the optimal team for Megatombike 2022, a local fantasy cycling competition.","headline":"MegaTomBike 2022 Aftermath","dateModified":"2023-01-04T00:00:00+01:00","datePublished":"2023-01-04T00:00:00+01:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <!-- For Google findability -->
+  <meta name="google-site-verification" content="HMALsEPUPk8UDAmx9EYoAWZ0cB2rgDoxBp6zhln4_H4" />
+</head>
+
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">Bits of math</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/megatombike/simon-connellan-TQZlo6cC4s0-unsplash.jpg')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>MegaTomBike 2022 Aftermath</h1>
+            
+            <h2 class="subheading">and the new Scipy MILP solver</h2>
+            
+            <span class="meta">Posted by
+              <a href="#">Lense Swaenen</a>
+              on January 04, 2023 &middot; <span class="reading-time" title="Estimated read time">
+  
+   19 mins  read </span>
+
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <p>Like <a href="/2021/11/11/megatombike2021-aftermath.html">the 2021 post</a>, we compute what would have been the optimal team for Megatombike 2022, a local fantasy cycling competition.</p>
+
+<p>This year, I didn’t get round to making a post on how I assembled my team. For the better, in hindsight, as it performed terribly. I hoped to get a team of overachievers as a combination of</p>
+<ul>
+  <li>up-and-coming talents who are still undervalued (like De Lie, Pidcock and Evenepoel)</li>
+  <li>former big riders who had a poor season last year (Froome, Dumoulin, …)</li>
+</ul>
+
+<p>Especially the latter turned out to be a bad idea. Also, out of the expensive, high scoring riders, I kicked out Van Aert to make room for Alaphilippe at the last moment…</p>
+
+<p>Anyways, on to more succesful teams. The winner of this year, once again, was <em>Hala Die Mannschaft</em> with a score of 2435, this year by a margin of almost 100 points over the second team. Very impressive!</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Rider</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LÓPEZ Miguel Ángel</td>
+      <td>74</td>
+    </tr>
+    <tr>
+      <td>JAKOBSEN Fabio</td>
+      <td>115</td>
+    </tr>
+    <tr>
+      <td>VAN AERT Wout</td>
+      <td>401</td>
+    </tr>
+    <tr>
+      <td>CAMPENAERTS Victor</td>
+      <td>74</td>
+    </tr>
+    <tr>
+      <td>VINE Jay</td>
+      <td>74</td>
+    </tr>
+    <tr>
+      <td>FOSS Tobias</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <td>POGAČAR Tadej</td>
+      <td>473</td>
+    </tr>
+    <tr>
+      <td>EVENEPOEL Remco</td>
+      <td>394</td>
+    </tr>
+    <tr>
+      <td>VALVERDE Alejandro</td>
+      <td>176</td>
+    </tr>
+    <tr>
+      <td>MOHORIČ Matej</td>
+      <td>125</td>
+    </tr>
+    <tr>
+      <td>LAMPAERT Yves</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>MARTÍNEZ Daniel Felipe</td>
+      <td>191</td>
+    </tr>
+    <tr>
+      <td>SHEFFIELD Magnus</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <td>VADER Milan</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>DE LIE Arnaud</td>
+      <td>191</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note that the overall scores this year are about 60% higher than last year, because of an extended calender incorporating many smaller races</p>
+
+<h1 id="the-optimal-team">The optimal team</h1>
+<p>I have copied some math and code from previous year to show the mathematical model and how to solve that using the combination of the Pyomo optimization modelling languange along with open-source MILP (mixed integer linear programming) solver CBC.
+However, we have a new kid on the block as well, stay tuned!</p>
+
+<h2 id="mathematical-model">Mathematical model</h2>
+<p>Let us repeat the mathematical model once more:</p>
+
+\[\begin{align*}
+\text{maximize}_{x_i} \quad &amp; \sum_{i=1}^n p_i x_i \\
+\text{subject to} \quad &amp; \sum_{i=1}^n c_i x_i \leq C \\
+&amp; \sum_{i=1}^n x_i = N \\
+&amp; x_i \in \{0,1\}
+\end{align*}\]
+
+<p>where $p_i$ is the number of points collected by a rider, $c_i$ is the cost of a rider, $C$ is the total team cost limit (= 1.750.000), and $N$ is the total number of riders (= 15). $x_i$ is a binary variable which either selects or does not select rider $i$.</p>
+
+<p>So, we are maximizing the total number of points, given all the constraints.</p>
+
+<p>Constraint \(\sum_{i=1}^n x_i = N = 15\) is how this problem differs from the standard 0-1 knapsack problem.</p>
+
+<h2 id="data">Data</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">notebook</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">r</span><span class="s">"C:\Users\swaenenl\OneDrive - Sioux Group B.V\Documents\Personal\website\notebooks\megatombike\2022_results\2022_results\riders.csv"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">';'</span><span class="p">)</span>
+
+<span class="n">df</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>name</th>
+      <th>price</th>
+      <th>points</th>
+      <th>id.1</th>
+      <th>name.1</th>
+      <th>selected</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>527</td>
+      <td>POGAČAR Tadej</td>
+      <td>437000</td>
+      <td>473</td>
+      <td>18</td>
+      <td>UAE Team Emirates</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>322</td>
+      <td>VAN AERT Wout</td>
+      <td>320000</td>
+      <td>401</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>395</td>
+      <td>EVENEPOEL Remco</td>
+      <td>152500</td>
+      <td>394</td>
+      <td>14</td>
+      <td>Quick-Step Alpha Vinyl Team</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>328</td>
+      <td>VINGEGAARD Jonas</td>
+      <td>144000</td>
+      <td>247</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>113</td>
+      <td>VLASOV Aleksandr</td>
+      <td>174000</td>
+      <td>213</td>
+      <td>4</td>
+      <td>BORA - hansgrohe</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>315</td>
+      <td>LAPORTE Christophe</td>
+      <td>96500</td>
+      <td>213</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>96</td>
+      <td>HIGUITA Sergio</td>
+      <td>87500</td>
+      <td>195</td>
+      <td>4</td>
+      <td>BORA - hansgrohe</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>561</td>
+      <td>VAN DER POEL Mathieu</td>
+      <td>260000</td>
+      <td>195</td>
+      <td>19</td>
+      <td>Alpecin-Fenix</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>219</td>
+      <td>MARTÍNEZ Daniel Felipe</td>
+      <td>75000</td>
+      <td>191</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>335</td>
+      <td>DE LIE Arnaud</td>
+      <td>15000</td>
+      <td>191</td>
+      <td>12</td>
+      <td>Lotto Soudal</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>189</td>
+      <td>KÜNG Stefan</td>
+      <td>121500</td>
+      <td>187</td>
+      <td>7</td>
+      <td>Groupama - FDJ</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>61</td>
+      <td>BILBAO Pello</td>
+      <td>102500</td>
+      <td>187</td>
+      <td>3</td>
+      <td>Bahrain - Victorious</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>548</td>
+      <td>MERLIER Tim</td>
+      <td>144000</td>
+      <td>181</td>
+      <td>19</td>
+      <td>Alpecin-Fenix</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>383</td>
+      <td>VALVERDE Alejandro</td>
+      <td>159500</td>
+      <td>176</td>
+      <td>13</td>
+      <td>Movistar Team</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>434</td>
+      <td>MATTHEWS Michael</td>
+      <td>150000</td>
+      <td>153</td>
+      <td>15</td>
+      <td>Team BikeExchange - Jayco</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The csv file, once again delivered to me by organizer Bob, has the riders already sorted according to their points. The table does have some duplicates which we need to fix.
+We see 2 Belgian riders in the top 3! I believe one of the reasons of some of my Megatombike successes around 2012 were due to me not having a bias towards Belgian riders unlike most MTB participants. Back then, that was an advantage. Nowadays, not so much!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s">'name'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'points'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>id                                                       4826
+name        POGAČAR TadejVAN AERT WoutEVENEPOEL RemcoVINGE...
+price                                                 2439000
+points                                                   3597
+id.1                                                      169
+name.1      UAE Team EmiratesJumbo-VismaQuick-Step Alpha V...
+selected                                                  7.0
+dtype: object
+</code></pre></div></div>
+
+<p>Summing the values and points of the best 15 riders gives a team that scores 3597 points, but is way too expensive (2.4 million). Still, this doesn’t exceed the 1.75 million budget as much as last year (then it was 2.85 million). And in fact, starting from the top, we would be able to buy the 9 highest scoring riders, for a point total of 2522. Enough to beat out <em>Hala Die Mannschaft</em>!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'points'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">9</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>id                                                       2876
+name        POGAČAR TadejVAN AERT WoutEVENEPOEL RemcoVINGE...
+price                                                 1746500
+points                                                   2522
+id.1                                                      100
+name.1      UAE Team EmiratesJumbo-VismaQuick-Step Alpha V...
+selected                                                  5.0
+dtype: object
+</code></pre></div></div>
+
+<h2 id="pyomo--cbc-solve">Pyomo + CBC solve</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pyomo.environ</span> <span class="k">as</span> <span class="n">pyo</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">points</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">cost</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">count</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">dups</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span>
+    
+    <span class="n">points</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="s">'points'</span><span class="p">]</span>
+    <span class="n">cost</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="s">'price'</span><span class="p">]</span>
+    <span class="n">count</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cost_limit</span> <span class="o">=</span> <span class="mi">1750000</span>
+<span class="n">count_required</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+<span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">points</span><span class="p">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="n">M</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">(</span><span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">Binary</span><span class="p">)</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">maximize</span><span class="p">)</span>
+<span class="n">M</span><span class="p">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">cost</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">cost_limit</span><span class="p">)</span>
+<span class="n">M</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">==</span> <span class="n">count_required</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Let’s run this thing!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">opt</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s">"cbc.exe"</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">solve</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Problem: 
+- Lower bound: -inf
+  Upper bound: inf
+  Number of objectives: 1
+  Number of constraints: 2
+  Number of variables: 963
+  Sense: unknown
+Solver: 
+- Status: ok
+  Message: CBC 2.10.3 optimal, objective -3263; 0 nodes, 19 iterations, 0.025 seconds
+  Termination condition: optimal
+  Id: 0
+  Error rc: 0
+  Time: 0.07400059700012207
+Solution: 
+- number of solutions: 0
+  number of solutions displayed: 0
+</code></pre></div></div>
+
+<p>It never ceases to amaze how fast MILP solvers can solve (with guaranteed optimality) these NP-hard problems. If we take the point of view that the number of candidate solutions is dictated by choosing a <em>combination</em> of 15 elements out of 963, we can use the <code class="language-plaintext highlighter-rouge">scipy</code> implementation of $N$-choose-$k$ to get an impression of the size of the solution space and the NP-hardness of it:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scipy.special</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scipy</span><span class="p">.</span><span class="n">special</span><span class="p">.</span><span class="n">comb</span><span class="p">(</span><span class="mi">963</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3.893159932009228e+32
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">results</code> structure output reports a computation time of ~65 milliseconds to find the optimal solution among $3.89 \times 10^{32}$ candidate solutions. Of course, it does so much faster than brute forcing its way through all those candidates.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%%</span><span class="n">timeit</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s">"cbc.exe"</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">solve</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>111 ms ± 412 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</code></pre></div></div>
+
+<p>If we do a custom timing of the solve, that computation time doubles to 120-130 milliseconds. CBC is included in Pyomo as an executable and the interfacing is file-system-based: Pyomo writes to files which get loaded by <code class="language-plaintext highlighter-rouge">cbc.exe</code> (which you have to put somewhere in the path, e.g. in the same directory as the Jupyter notebook I was using.</p>
+
+<p>But you were interested in the optimal team, right?! Here goes:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">component_data_objects</span><span class="p">(</span><span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">)]</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">].</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'points'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>name</th>
+      <th>price</th>
+      <th>points</th>
+      <th>id.1</th>
+      <th>name.1</th>
+      <th>selected</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>527</td>
+      <td>POGAČAR Tadej</td>
+      <td>437000</td>
+      <td>473</td>
+      <td>18</td>
+      <td>UAE Team Emirates</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>322</td>
+      <td>VAN AERT Wout</td>
+      <td>320000</td>
+      <td>401</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>395</td>
+      <td>EVENEPOEL Remco</td>
+      <td>152500</td>
+      <td>394</td>
+      <td>14</td>
+      <td>Quick-Step Alpha Vinyl Team</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>328</td>
+      <td>VINGEGAARD Jonas</td>
+      <td>144000</td>
+      <td>247</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>315</td>
+      <td>LAPORTE Christophe</td>
+      <td>96500</td>
+      <td>213</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>96</td>
+      <td>HIGUITA Sergio</td>
+      <td>87500</td>
+      <td>195</td>
+      <td>4</td>
+      <td>BORA - hansgrohe</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>219</td>
+      <td>MARTÍNEZ Daniel Felipe</td>
+      <td>75000</td>
+      <td>191</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>335</td>
+      <td>DE LIE Arnaud</td>
+      <td>15000</td>
+      <td>191</td>
+      <td>12</td>
+      <td>Lotto Soudal</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>189</td>
+      <td>KÜNG Stefan</td>
+      <td>121500</td>
+      <td>187</td>
+      <td>7</td>
+      <td>Groupama - FDJ</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>61</td>
+      <td>BILBAO Pello</td>
+      <td>102500</td>
+      <td>187</td>
+      <td>3</td>
+      <td>Bahrain - Victorious</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>445</td>
+      <td>ARENSMAN Thymen</td>
+      <td>22000</td>
+      <td>134</td>
+      <td>16</td>
+      <td>Team DSM</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>226</td>
+      <td>RODRIGUEZ Carlos</td>
+      <td>57500</td>
+      <td>120</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>252</td>
+      <td>MEINTJES Louis</td>
+      <td>41500</td>
+      <td>117</td>
+      <td>9</td>
+      <td>Intermarché - Wanty - Gobert Matériaux</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>507</td>
+      <td>AYUSO Juan</td>
+      <td>40000</td>
+      <td>110</td>
+      <td>18</td>
+      <td>UAE Team Emirates</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>247</td>
+      <td>HERMANS Quinten</td>
+      <td>30000</td>
+      <td>103</td>
+      <td>9</td>
+      <td>Intermarché - Wanty - Gobert Matériaux</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">].</span><span class="nb">sum</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>id                                                       4464
+name        POGAČAR TadejVAN AERT WoutEVENEPOEL RemcoVINGE...
+price                                                 1742500
+points                                                   3263
+id.1                                                      159
+name.1      UAE Team EmiratesJumbo-VismaQuick-Step Alpha V...
+selected                                                 15.0
+dtype: object
+</code></pre></div></div>
+
+<p>This team would have scored a whopping 3263 points: more than 800 points more than the winner. Easier said than done, of course!</p>
+
+<p>A little bit more analysis:
+We saw before how the total price of the top 15 scorers doesn’t exceed the budget as much as last year. Now we see that the optimal team has 9 out of the 11 highest scoring riders in it. Only numbers 4 and 7 are not selected: Vlasov and van der Poel.</p>
+
+<p>These observations may indicate that riders are relatively cheap this year, and one can buy almost all of the highest scoring riders. Once you get to the point that you can buy all 15 highest scoring riders with the given budget, the <em>knapsack</em> aspect of the fantasy cycling competition becomes a bit moot, and it becomes <em>only</em> about predicting who will be the highest scoring riders.</p>
+
+<p>However, if one looks at the 15 most expensive riders this season, only 2 of them make it to the optimal team, and there is quite a discrepancy between rider prices and scores. In fact, the 15 most expensive riders together would have scored in total 2226 points, which would not even have won the 2022 MTB competition!</p>
+
+<p>Anyways, I’m not sure whether this all means I should recommend the organisers to make the budgets tighter again, or not…</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s">'price'</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>name</th>
+      <th>price</th>
+      <th>points</th>
+      <th>id.1</th>
+      <th>name.1</th>
+      <th>selected</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>527</td>
+      <td>POGAČAR Tadej</td>
+      <td>437000</td>
+      <td>473</td>
+      <td>18</td>
+      <td>UAE Team Emirates</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>318</td>
+      <td>ROGLIČ Primož</td>
+      <td>377000</td>
+      <td>148</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>322</td>
+      <td>VAN AERT Wout</td>
+      <td>320000</td>
+      <td>401</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>385</td>
+      <td>ALAPHILIPPE Julian</td>
+      <td>280000</td>
+      <td>32</td>
+      <td>14</td>
+      <td>Quick-Step Alpha Vinyl Team</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>561</td>
+      <td>VAN DER POEL Mathieu</td>
+      <td>260000</td>
+      <td>195</td>
+      <td>19</td>
+      <td>Alpecin-Fenix</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>505</td>
+      <td>ALMEIDA João</td>
+      <td>219000</td>
+      <td>118</td>
+      <td>18</td>
+      <td>UAE Team Emirates</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>541</th>
+      <td>208</td>
+      <td>BERNAL Egan</td>
+      <td>193000</td>
+      <td>0</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>209</td>
+      <td>CARAPAZ Richard</td>
+      <td>182500</td>
+      <td>133</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>92</th>
+      <td>504</td>
+      <td>ACKERMANN Pascal</td>
+      <td>175500</td>
+      <td>47</td>
+      <td>18</td>
+      <td>UAE Team Emirates</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>113</td>
+      <td>VLASOV Aleksandr</td>
+      <td>174000</td>
+      <td>213</td>
+      <td>4</td>
+      <td>BORA - hansgrohe</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>141</th>
+      <td>64</td>
+      <td>COLBRELLI Sonny</td>
+      <td>161000</td>
+      <td>33</td>
+      <td>3</td>
+      <td>Bahrain - Victorious</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>237</td>
+      <td>YATES Adam</td>
+      <td>160500</td>
+      <td>135</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>383</td>
+      <td>VALVERDE Alejandro</td>
+      <td>159500</td>
+      <td>176</td>
+      <td>13</td>
+      <td>Movistar Team</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>185</td>
+      <td>GAUDU David</td>
+      <td>154000</td>
+      <td>76</td>
+      <td>7</td>
+      <td>Groupama - FDJ</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>297</td>
+      <td>WOODS Michael</td>
+      <td>153000</td>
+      <td>46</td>
+      <td>10</td>
+      <td>Israel - Premier Tech</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s">'price'</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>id                                                       4818
+name        POGAČAR TadejROGLIČ PrimožVAN AERT WoutALAPHIL...
+price                                                 3406000
+points                                                   2226
+id.1                                                      170
+name.1      UAE Team EmiratesJumbo-VismaJumbo-VismaQuick-S...
+selected                                                  0.0
+dtype: object
+</code></pre></div></div>
+
+<p>A final bit of analysis: In 2021, the highest team scored 1564 points, while the maximum achievable was 2223. The ratio of these two numbers is 70%. In 2022, we have a ratio of $2435/3263  \approx 75\%$. So there seems to be some consistency on how optimal you have to be to win MTB.</p>
+
+<h1 id="auxiliary">Auxiliary</h1>
+<h2 id="cheapest-team-that-could-have-won">Cheapest team that could have won</h2>
+
+<p>We can also turn the knapsack problem on its head: What is the cheapest team, that could have won (= total score of 2436 or more). In the code, an objective and constraint need to be swapped.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cost_limit</span> <span class="o">=</span> <span class="mi">1750000</span>
+<span class="n">count_required</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+<span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">points</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">M</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">(</span><span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">Binary</span><span class="p">)</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2436</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">M</span><span class="p">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">cost</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">minimize</span><span class="p">)</span>
+<span class="n">M</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">==</span> <span class="n">count_required</span><span class="p">)</span>
+
+<span class="n">opt</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s">"cbc.exe"</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">solve</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Problem: 
+- Lower bound: -inf
+  Upper bound: inf
+  Number of objectives: 1
+  Number of constraints: 2
+  Number of variables: 963
+  Sense: unknown
+Solver: 
+- Status: ok
+  Message: CBC 2.10.3 optimal, objective 908000; 0 nodes, 50 iterations, 0.072 seconds
+  Termination condition: optimal
+  Id: 0
+  Error rc: 0
+  Time: 0.11903929710388184
+Solution: 
+- number of solutions: 0
+  number of solutions displayed: 0
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">component_data_objects</span><span class="p">(</span><span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">)]</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">].</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'points'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>name</th>
+      <th>price</th>
+      <th>points</th>
+      <th>id.1</th>
+      <th>name.1</th>
+      <th>selected</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>395</td>
+      <td>EVENEPOEL Remco</td>
+      <td>152500</td>
+      <td>394</td>
+      <td>14</td>
+      <td>Quick-Step Alpha Vinyl Team</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>328</td>
+      <td>VINGEGAARD Jonas</td>
+      <td>144000</td>
+      <td>247</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>315</td>
+      <td>LAPORTE Christophe</td>
+      <td>96500</td>
+      <td>213</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>96</td>
+      <td>HIGUITA Sergio</td>
+      <td>87500</td>
+      <td>195</td>
+      <td>4</td>
+      <td>BORA - hansgrohe</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>219</td>
+      <td>MARTÍNEZ Daniel Felipe</td>
+      <td>75000</td>
+      <td>191</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>335</td>
+      <td>DE LIE Arnaud</td>
+      <td>15000</td>
+      <td>191</td>
+      <td>12</td>
+      <td>Lotto Soudal</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>61</td>
+      <td>BILBAO Pello</td>
+      <td>102500</td>
+      <td>187</td>
+      <td>3</td>
+      <td>Bahrain - Victorious</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>445</td>
+      <td>ARENSMAN Thymen</td>
+      <td>22000</td>
+      <td>134</td>
+      <td>16</td>
+      <td>Team DSM</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>226</td>
+      <td>RODRIGUEZ Carlos</td>
+      <td>57500</td>
+      <td>120</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>252</td>
+      <td>MEINTJES Louis</td>
+      <td>41500</td>
+      <td>117</td>
+      <td>9</td>
+      <td>Intermarché - Wanty - Gobert Matériaux</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>507</td>
+      <td>AYUSO Juan</td>
+      <td>40000</td>
+      <td>110</td>
+      <td>18</td>
+      <td>UAE Team Emirates</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>312</td>
+      <td>KOOIJ Olav</td>
+      <td>41500</td>
+      <td>109</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>247</td>
+      <td>HERMANS Quinten</td>
+      <td>30000</td>
+      <td>103</td>
+      <td>9</td>
+      <td>Intermarché - Wanty - Gobert Matériaux</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>228</td>
+      <td>SHEFFIELD Magnus</td>
+      <td>2500</td>
+      <td>80</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>980</td>
+      <td>POZZOVIVO Domenico</td>
+      <td>0</td>
+      <td>55</td>
+      <td>9</td>
+      <td>Intermarché - Wanty - Gobert Matériaux</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">].</span><span class="nb">sum</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>id                                                       4946
+name        EVENEPOEL RemcoVINGEGAARD JonasLAPORTE Christo...
+price                                                  908000
+points                                                   2446
+id.1                                                      151
+name.1      Quick-Step Alpha Vinyl TeamJumbo-VismaJumbo-Vi...
+selected                                                 15.0
+dtype: object
+</code></pre></div></div>
+
+<p>The cheapest team that could have won, costs 908.000 euro, which means that only about 50 percent of the budget is used! This team shares 12 riders with the optimal team, and swaps out</p>
+<ul>
+  <li>Pogacar</li>
+  <li>Van Aert</li>
+  <li>Kung</li>
+</ul>
+
+<p>for</p>
+<ul>
+  <li>Kooij</li>
+  <li>Sheffield</li>
+  <li>Pozzovivo</li>
+</ul>
+
+<p>This corroborates the discrepancy between prices and scores this year: Many riders that scored high were quite cheap. And vice versa many expensive riders scored below par. Only Pogacar and Van Aert lived up to the expectations.</p>
+
+<h2 id="worst-team">Worst team</h2>
+<p>Finally, the worst team is a trivial problem: just select 15 (cheap?) riders with no points. One way to have a more interesting worst team, could be to set a lower limit on the team cost, e.g. 1.745.000 euro.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">count_required</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+<span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">points</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">M</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">(</span><span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">Binary</span><span class="p">)</span>
+
+<span class="n">M</span><span class="p">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="p">.</span><span class="n">minimize</span><span class="p">)</span>
+<span class="n">M</span><span class="p">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">cost</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">cost_limit</span> <span class="o">-</span> <span class="mi">5000</span><span class="p">)</span>
+<span class="n">M</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">M</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">ITEMS</span><span class="p">)</span> <span class="o">==</span> <span class="n">count_required</span><span class="p">)</span>
+
+<span class="n">opt</span> <span class="o">=</span> <span class="n">pyo</span><span class="p">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s">"cbc.exe"</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="n">solve</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Problem: 
+- Lower bound: -inf
+  Upper bound: inf
+  Number of objectives: 1
+  Number of constraints: 2
+  Number of variables: 963
+  Sense: unknown
+Solver: 
+- Status: ok
+  Message: CBC 2.10.3 optimal, objective 70; 0 nodes, 19 iterations, 0.031 seconds
+  Termination condition: optimal
+  Id: 0
+  Error rc: 0
+  Time: 0.0669410228729248
+Solution: 
+- number of solutions: 0
+  number of solutions displayed: 0
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">M</span><span class="p">.</span><span class="n">component_data_objects</span><span class="p">(</span><span class="n">pyo</span><span class="p">.</span><span class="n">Var</span><span class="p">)]</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">].</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'points'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>name</th>
+      <th>price</th>
+      <th>points</th>
+      <th>id.1</th>
+      <th>name.1</th>
+      <th>selected</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>147</th>
+      <td>385</td>
+      <td>ALAPHILIPPE Julian</td>
+      <td>280000</td>
+      <td>32</td>
+      <td>14</td>
+      <td>Quick-Step Alpha Vinyl Team</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>232</th>
+      <td>235</td>
+      <td>VIVIANI Elia</td>
+      <td>146500</td>
+      <td>14</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>245</th>
+      <td>396</td>
+      <td>HONORÉ Mikkel Frølich</td>
+      <td>115000</td>
+      <td>11</td>
+      <td>14</td>
+      <td>Quick-Step Alpha Vinyl Team</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>308</th>
+      <td>99</td>
+      <td>KELDERMAN Wilco</td>
+      <td>109500</td>
+      <td>6</td>
+      <td>4</td>
+      <td>BORA - hansgrohe</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>348</th>
+      <td>109</td>
+      <td>SCHACHMANN Maximilian</td>
+      <td>137500</td>
+      <td>4</td>
+      <td>4</td>
+      <td>BORA - hansgrohe</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>391</th>
+      <td>401</td>
+      <td>MASNADA Fausto</td>
+      <td>78500</td>
+      <td>1</td>
+      <td>14</td>
+      <td>Quick-Step Alpha Vinyl Team</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>413</th>
+      <td>305</td>
+      <td>DUMOULIN Tom</td>
+      <td>127500</td>
+      <td>1</td>
+      <td>11</td>
+      <td>Jumbo-Visma</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>419</th>
+      <td>17</td>
+      <td>PARET-PEINTRE Aurélien</td>
+      <td>88000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>AG2R Citroën Team</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>541</th>
+      <td>208</td>
+      <td>BERNAL Egan</td>
+      <td>193000</td>
+      <td>0</td>
+      <td>8</td>
+      <td>INEOS Grenadiers</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>542</th>
+      <td>508</td>
+      <td>BENNETT George</td>
+      <td>86500</td>
+      <td>0</td>
+      <td>18</td>
+      <td>UAE Team Emirates</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>544</th>
+      <td>784</td>
+      <td>ZAKARIN Ilnur</td>
+      <td>71500</td>
+      <td>0</td>
+      <td>29</td>
+      <td>Gazprom - RusVelo</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>545</th>
+      <td>78</td>
+      <td>POELS Wout</td>
+      <td>80000</td>
+      <td>0</td>
+      <td>3</td>
+      <td>Bahrain - Victorious</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>546</th>
+      <td>389</td>
+      <td>CATTANEO Mattia</td>
+      <td>69500</td>
+      <td>0</td>
+      <td>14</td>
+      <td>Quick-Step Alpha Vinyl Team</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>548</th>
+      <td>47</td>
+      <td>MOSCON Gianni</td>
+      <td>85000</td>
+      <td>0</td>
+      <td>2</td>
+      <td>Astana Qazaqstan Team</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>605</th>
+      <td>167</td>
+      <td>PADUN Mark</td>
+      <td>80000</td>
+      <td>0</td>
+      <td>6</td>
+      <td>EF Education-EasyPost</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">].</span><span class="nb">sum</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>id                                                       3902
+name        ALAPHILIPPE JulianVIVIANI EliaHONORÉ Mikkel Fr...
+price                                                 1759500
+points                                                     71
+id.1                                                      142
+name.1      Quick-Step Alpha Vinyl TeamINEOS GrenadiersQui...
+selected                                                 15.0
+dtype: object
+</code></pre></div></div>
+
+<p>Last year, we could find a team that used all the money and scored no points. This year, if we spent nearly all the money, we’re still getting about 70 points. Julien Alaphilippe and Tom Dumoulin are two of the worst riders one could have chosen… which I did…</p>
+
+<h1 id="scipy-solution">Scipy solution</h1>
+<p>This final section is for those interested in the mathematical optimization aspect.</p>
+
+<p>I feel like there is quite a lot of movement in the MILP solver landscape. In the land of commercial solvers, some new, mostly Chinese, solvers are speeding their ways up to the tops of the <a href="http://plato.asu.edu/bench.html">benchmarks</a>. And some other contenders are pulling out of the benchmarks due to some Gurobi scandal. The developers of the Chinese COPT seem to be confident that they will overtake Gurobi in the next years: https://www.youtube.com/watch?v=iqiBXoJQVD8&amp;t=258s</p>
+
+<p>In open source land, <a href="https://highs.dev/">HiGHs</a> is the big newcomer. A major development with respect to last years post, is that in the summer of 2022, with Scipy version 1.9.0, the <code class="language-plaintext highlighter-rouge">scipy.optimize</code> submodule got extended with a <code class="language-plaintext highlighter-rouge">milp</code> routine, which runs HiGHs in the backend. I think this is quite a big deal. Scipy is a much more common Python library/dependency than Pyomo. For example, the Anaconda conda-forge channel has (at the time of writing) 600k installs for Pyomo, while Scipy has 31M, which is 50 times more! Moreover you don’t need to install an open source MILP solver like CBC separately. This makes MILP solvers much more broadly accessible. The main current downside is that the interface is much more barebones, and you don’t get all the nice modeling tools (named variables etc.) that you get with Pyomo.</p>
+
+<p>Below, we work out the MTB knapsack problem with <code class="language-plaintext highlighter-rouge">scipy.optimize.milp</code>. This is really easy to do, as the Scipy documentation already has a knapsack example: https://scipy.github.io/devdocs/tutorial/optimize.html#knapsack-problem-example
+All we need to add is the constraint that the number of riders needs to equal 15.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="n">sciopt</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scipy</span><span class="p">.</span><span class="n">__version__</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'1.9.3'
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">points_arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">points</span><span class="p">.</span><span class="n">values</span><span class="p">()))</span>
+<span class="n">cost_arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">cost</span><span class="p">.</span><span class="n">values</span><span class="p">()))</span>
+<span class="n">count_arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">count</span><span class="p">.</span><span class="n">values</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bounds</span> <span class="o">=</span> <span class="n">sciopt</span><span class="p">.</span><span class="n">Bounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 0 &lt;= x_i &lt;= 1
+</span><span class="n">integrality</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">points_arr</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>  <span class="c1"># x_i are integers
+</span>
+<span class="n">cost_constraints</span> <span class="o">=</span> <span class="n">sciopt</span><span class="p">.</span><span class="n">LinearConstraint</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">cost_arr</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">cost_limit</span><span class="p">)</span>
+<span class="n">count_constraints</span> <span class="o">=</span> <span class="n">sciopt</span><span class="p">.</span><span class="n">LinearConstraint</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">count_arr</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="n">count_required</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">count_required</span><span class="p">)</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">sciopt</span><span class="p">.</span><span class="n">milp</span><span class="p">(</span><span class="n">c</span><span class="o">=-</span><span class="n">points_arr</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="p">[</span><span class="n">cost_constraints</span><span class="p">,</span> <span class="n">count_constraints</span><span class="p">],</span>
+           <span class="n">integrality</span><span class="o">=</span><span class="n">integrality</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">res</span><span class="p">.</span><span class="n">fun</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-3263.0
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sel</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'selected'</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nb">abs</span><span class="p">(</span><span class="n">res</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">sel</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>The solver finds the exact same solution with the same maximum point total of 3263.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%%</span><span class="n">timeit</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">sciopt</span><span class="p">.</span><span class="n">milp</span><span class="p">(</span><span class="n">c</span><span class="o">=-</span><span class="n">points_arr</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="p">[</span><span class="n">cost_constraints</span><span class="p">,</span> <span class="n">count_constraints</span><span class="p">],</span>
+           <span class="n">integrality</span><span class="o">=</span><span class="n">integrality</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>20.9 ms ± 716 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</code></pre></div></div>
+
+<p>If we benchmark it, we see that on this problem Scipy+HiGHs is 3 - 6 times faster than the Pyomo+CBC combination (depending on which timing number you take)! Part of it is probably due to the solver being interfaced as a normal library rather than a seperate executable running in a different process.</p>
+
+<h1 id="scip">SCIP</h1>
+<p>Finally, I’d like to report some related news on the <a href="https://www.scipopt.org/">SCIP</a> MILP solver, which has always dwelled a bit in between open source and commercial solvers (both in license and in benchmark results). In November 2022, SCIP switched to the fully open source Apache 2.0 license. SCIP can be used from Python through the <a href="https://github.com/scipopt/PySCIPOpt">PySCIPOpt</a> package. This has 130k downloads through conda-forge so seems the least popular option at the moment, though that may change due to the recent license changes. I haven’t gotten round to giving it a go. I wouldn’t be surprised if it turns out to be the fastest open source solver on this knapsack problem.</p>
+
+<hr />
+
+<h2 id="related-posts">Related posts</h2>
+<ul>
+  <li><a href="/2021/11/11/megatombike2021-aftermath.html">MegaTomBike 2022 - aftermath</a></li>
+  <li><a href="/2021/03/27/megatombike2021.html">MegaTomBike 2021 - team creation</a></li>
+</ul>
+
+<h2 id="want-to-leave-a-comment">Want to leave a comment?</h2>
+<p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a>.</p>
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/2022/10/20/roots_eig_connection.html" data-toggle="tooltip" data-placement="top" title="The surprising MATLAB *roots* command">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+          <a class="btn btn-primary float-right" href="/2023/03/25/dynobend_tube_optimizer.html" data-toggle="tooltip" data-placement="top" title="Dynobend Tube Optimizer">Next<span class="d-none d-md-inline">
+              Post</span> &rarr;</a>
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="mailto:lenseswaenen@gmail.com">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/LenseSwaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/lenseswaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Lense Swaenen 2023</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQVCL505Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7RQVCL505Y');
+</script>
+
+
+
+</body>
+
+</html>
