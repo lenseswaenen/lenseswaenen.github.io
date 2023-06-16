@@ -74,7 +74,7 @@
 	- Belief propagation & critique: https://gaussianbp.github.io/ ***
 	- GaBP & Blocked linear algebra
 - Projects:
-	- ASML and patent
+	- ASML and patent: https://www.asml.com/en/news/stories/2023/novel-lens-manipulator?utm_source=social&utm_medium=TWITTER&utm_content=100003968663288&utm_campaign=Always%20On&s=09
 	- Kadaster
 	- ASML & tensor contractions
 - Elements from projects:
@@ -96,6 +96,8 @@
 	- Matrix that crashed SVD computation...***
 	- Unconstrained variables in a QP (2 methods)
 	- Sparse direct solvers!
+	- Kadaster & updating covariance matrices
+	- EKF failing on sine fitting
 - Puzzles/Recreational:
 	- Dots & MILP (???)
 	- Pyomo & overhang*
@@ -160,13 +162,14 @@
 3. Add header to md (+ mast photo?)
 4. Add footer
 5. Replace mast image?
-6. `bundle exec jekyll serve` in git bash @ repo & debug/modify at http://127.0.0.1:4000/ (or localhost:4000)
-7. Fix internal links
-8. Related posts updates
-9. Git Push
-10. (Tweet)
-11. (Footer: update with tweet reference)
-12. Archive .ipynb
+6. Delete output of some Python cells
+7. `bundle exec jekyll serve` in git bash @ repo & debug/modify at http://127.0.0.1:4000/ (or localhost:4000)
+8. Fix internal links
+9. Related posts updates
+10. Git Push
+11. (Tweet)
+12. (Footer: update with tweet reference)
+13. Archive .ipynb
 
 ## Setting up a new development environment
 1. Install Ruby (preferably 2.7 i.s.o. 3.0 (Github-pages support...))

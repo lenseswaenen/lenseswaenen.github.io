@@ -8,9 +8,9 @@ background: /img/posts/emma-gossett-B645igbiKCw-unsplash.jpg
 
 # The surprising MATLAB *roots* command
 
-A few years ago, as part of commercial Sioux project with a focus on minimizing computation times, I dove into the MATLAB `roots` command to get a feeling of the complexity/computation time of the algorithm. What I found surprised me. It was not something I learning in any university course, and I found particularly enjoying, as it is exactly opposite of something that a lot of people who've had some basic linear algebra course do come across.
+A few years ago, as part of a commercial Sioux project with a focus on minimizing computation times, I dove into the MATLAB `roots` command to get a feeling of the complexity/computation time of the algorithm. What I found surprised me. It was not something I learning in any university course, and I found particularly enjoying, as it is exactly opposite of something that a lot of people who've had some basic linear algebra course do come across.
 
-Hoping for the same surprise and enjoyment in whoever reads this, let's get started
+Hoping for the same surprise and enjoyment in whoever reads this, let's get started.
 
 # Linear algebra and eigenvalues
 We start out in a different branch of mathematics, namely linear algebra, and show a connection in that domain to polynomial rootfinding, namely through the eigenvalue problem.
@@ -285,12 +285,12 @@ np.diag(Ap)
 
 
 
-A few final notes: In Golub & Van Loan we can find some more details about the convergence rate of the QR algorithm, which relates to the ratios of eigenvalues (after sorting in descending order $|\lambda_1| \geq \ldots \geq |\lambda_n|$)
+A few final notes: In Golub & Van Loan we can find theory on the convergence rate of the QR algorithm. The convergence rate relates to the ratios of eigenvalues (after sorting in descending order $|\lambda_1| \geq \ldots \geq |\lambda_n|$)
 $$ \left| \frac{\lambda_{p+1}}{\lambda_p} \right|$$
 Eigenvalues close to eachother slow down convergence, and identical eigenvalues will not be resolved. Slow convergence can partly be remedied by a shifting strategy, which adds and subtracts a matrix $\mu I$ at the right places in the algorithm, to yield rates like
 $$ \left| \frac{\lambda_{p+1} - \mu}{\lambda_p - \mu} \right|$$
 
-A final remark is that typical usage of the QR algorithm for diagonalization of a matrix is preceded by a transformation to an upper Hessenberg form. A QR decomposition on a full matrix requires $O(n^3)$ operations, while on a Hessenberg matrix (which is upper triangular plus on off-diagonal) is only $O(n^2)$. Moreover, the QR algorithm perserves the Hessenberg form, such that the initial cost to form the Hessenberg matrix is offset by each iteration being considerably cheaper.
+A final remark is that typical usage of the QR algorithm for diagonalization of a matrix is preceded by a transformation to an upper Hessenberg form. A QR decomposition on a full matrix requires $O(n^3)$ operations, while on a Hessenberg matrix (which is upper triangular plus one off-diagonal) is only $O(n^2)$. Moreover, the QR algorithm perserves the Hessenberg form, such that the initial cost to form the Hessenberg matrix is offset by each iteration being considerably cheaper.
 The companion matrix as constructed above, is of Hessenberg form by construction, so that is a nice coincidence.
 
 # Conclusion

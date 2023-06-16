@@ -120,9 +120,9 @@
 
         <h1 id="the-surprising-matlab-roots-command">The surprising MATLAB <em>roots</em> command</h1>
 
-<p>A few years ago, as part of commercial Sioux project with a focus on minimizing computation times, I dove into the MATLAB <code class="language-plaintext highlighter-rouge">roots</code> command to get a feeling of the complexity/computation time of the algorithm. What I found surprised me. It was not something I learning in any university course, and I found particularly enjoying, as it is exactly opposite of something that a lot of people who’ve had some basic linear algebra course do come across.</p>
+<p>A few years ago, as part of a commercial Sioux project with a focus on minimizing computation times, I dove into the MATLAB <code class="language-plaintext highlighter-rouge">roots</code> command to get a feeling of the complexity/computation time of the algorithm. What I found surprised me. It was not something I learning in any university course, and I found particularly enjoying, as it is exactly opposite of something that a lot of people who’ve had some basic linear algebra course do come across.</p>
 
-<p>Hoping for the same surprise and enjoyment in whoever reads this, let’s get started</p>
+<p>Hoping for the same surprise and enjoyment in whoever reads this, let’s get started.</p>
 
 <h1 id="linear-algebra-and-eigenvalues">Linear algebra and eigenvalues</h1>
 <p>We start out in a different branch of mathematics, namely linear algebra, and show a connection in that domain to polynomial rootfinding, namely through the eigenvalue problem.</p>
@@ -338,12 +338,12 @@ We can loop over a range of $\lambda$ values and numerically evaluate the determ
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([-5.00066328,  3.00090486,  1.99976051, -1.00000209])
 </code></pre></div></div>
 
-<p>A few final notes: In Golub &amp; Van Loan we can find some more details about the convergence rate of the QR algorithm, which relates to the ratios of eigenvalues (after sorting in descending order $|\lambda_1| \geq \ldots \geq |\lambda_n|$)
+<p>A few final notes: In Golub &amp; Van Loan we can find theory on the convergence rate of the QR algorithm. The convergence rate relates to the ratios of eigenvalues (after sorting in descending order $|\lambda_1| \geq \ldots \geq |\lambda_n|$)
 \(\left| \frac{\lambda_{p+1}}{\lambda_p} \right|\)
 Eigenvalues close to eachother slow down convergence, and identical eigenvalues will not be resolved. Slow convergence can partly be remedied by a shifting strategy, which adds and subtracts a matrix $\mu I$ at the right places in the algorithm, to yield rates like
 \(\left| \frac{\lambda_{p+1} - \mu}{\lambda_p - \mu} \right|\)</p>
 
-<p>A final remark is that typical usage of the QR algorithm for diagonalization of a matrix is preceded by a transformation to an upper Hessenberg form. A QR decomposition on a full matrix requires $O(n^3)$ operations, while on a Hessenberg matrix (which is upper triangular plus on off-diagonal) is only $O(n^2)$. Moreover, the QR algorithm perserves the Hessenberg form, such that the initial cost to form the Hessenberg matrix is offset by each iteration being considerably cheaper.
+<p>A final remark is that typical usage of the QR algorithm for diagonalization of a matrix is preceded by a transformation to an upper Hessenberg form. A QR decomposition on a full matrix requires $O(n^3)$ operations, while on a Hessenberg matrix (which is upper triangular plus one off-diagonal) is only $O(n^2)$. Moreover, the QR algorithm perserves the Hessenberg form, such that the initial cost to form the Hessenberg matrix is offset by each iteration being considerably cheaper.
 The companion matrix as constructed above, is of Hessenberg form by construction, so that is a nice coincidence.</p>
 
 <h1 id="conclusion">Conclusion</h1>
