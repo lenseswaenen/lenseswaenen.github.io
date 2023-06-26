@@ -57,6 +57,7 @@
 - Roots & eig
 - MegaTomBike 2022
 - Dynobend youtube videos
+- Unbiased variance estimation & sympy
 
 ## Up next
 
@@ -97,7 +98,7 @@
 	- Unconstrained variables in a QP (2 methods)
 	- Sparse direct solvers!
 	- Kadaster & updating covariance matrices
-	- EKF failing on sine fitting
+	- EKF failing on sine fitting** (https://dsp.stackexchange.com/questions/79451/kalman-filter-on-sinusoidal-signal)
 - Puzzles/Recreational:
 	- Dots & MILP (???)
 	- Pyomo & overhang*
@@ -110,7 +111,6 @@
 	- Variational physics, optimal solutions in nature
 	- Numberphile regular polyhedra & linear inequalities
 	- ChatGPT?
-	- First steps with sympy (notes on variance?!)
 - Sports/games:
 	- Rating systems. Love letter to TrueSkill. Ranking the sports
 		- Comparison of TrueSkill and Glicko?
@@ -118,8 +118,6 @@
 		- Comparison/review of rating systems in practise.
 		- Racketlon: ratings & point win differences
 		- Table tennis: rating difference & win point/match win probability
-	- MegaTomBike 2022:
-		- MegaTomBike distinct teams?
 	- Decision tree / flow chart on toy, puzzle, activity, game, sport
 	- Table tennis ELO handicap
 	- Table tennis bounce analysis
@@ -133,7 +131,7 @@
 - Lore:
 	- Gembicki
 - Hall of shame
-	- Wesley Smiths rectangular matrix inverse**
+	- Wesley Smiths rectangular matrix inverse***
 	- 1000 variable Non-negative linear least squares with fminsearch (Nelder-Mead)
 	- min ||a - s*b||
 	- MATLAB positive/negative zeros, max and infs, ...

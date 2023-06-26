@@ -281,7 +281,7 @@ The problem is in the square root operator which creeps in between the sum over 
 
 The Wikipedia page on the unbiased estimation of the standard deviation also states that
 
-    ... [this] provides an example where imposing the requirement for unbiased estimation might be seen as just adding inconvenience, with no real benefit.
+>... [this] provides an example where imposing the requirement for unbiased estimation might be seen as just adding inconvenience, with no real benefit.
     
 Which brings us to the more philosophical part: Why would you want unbiasedness in a practical application? My imagination currently has settled on: If I make some estimates on part of the data (let's call them partial estimates), then I want to be able to combine the partial estimates later on into a more accurate aggregated estimate. If I have classical unbiasedness, I can even use the simple (arithmetic) mean calculation to do that aggregation. For the standard deviation, the mean doesn't work, but could something else? Well, in fact, we don't have to look far: If we square things, we get in the domain of the unbiased variance estimation. So for the standard deviation, a root-mean-square aggregation operator is able to combine partial estimates into a more accurate aggregated estimate. And if we keep aggregating, we will converge to the true value again.
 
