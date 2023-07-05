@@ -934,7 +934,7 @@ We start off with Bayes' rule, to get a bivariate posterior in $v_x$ and $v_y$.
 
 $$ P(v_x, v_y | m ) \propto P(m | v_x, v_y) P(v_x, v_y)$$
 
-The prior we'll assume flat or Heaviside. But can we rewrite $P(m | v_x, v_y)$ into expressions that depend on only $v_x$ and/or only $v_y$? To do so, we introduce helper variables $X$ and $Y$ over which we integrate, like
+The prior we'll assume flat or Heaviside. But can we rewrite $P(m \mid v_x, v_y)$ into expressions that depend on only $v_x$ and/or only $v_y$? To do so, we introduce helper variables $X$ and $Y$ over which we integrate, like
 
 $$ P(m | v_x, v_y) = \iint P(m | X, Y)\ P(X | v_x)\ P(Y | v_y)\ dX dY$$
 

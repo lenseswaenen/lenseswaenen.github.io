@@ -176,3 +176,4 @@
 4. `bundle exec jekyll serve`
 
 # Errata
+- Bayes post: ...flat or Heaviside... --> Renders as table

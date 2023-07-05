@@ -56,7 +56,7 @@
 <meta name="twitter:site" content="@LenseSwaenen" />
 <meta name="twitter:creator" content="@Lense Swaenen" />
 <script type="application/ld+json">
-{"url":"http://localhost:4000/2023/06/16/unbiased_variance_inference_sympy.html","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/06/16/unbiased_variance_inference_sympy.html"},"author":{"@type":"Person","name":"Lense Swaenen"},"@type":"BlogPosting","description":"In this blog post I dip my toes into the world of statistics, and to make it a bit more hip: Bayesian modeling. Disclaimer: I am not a statistician, so whoever has the solution to my problem (spoiler alert: I do not reach a fully satisfactory solution in the end…), please enlighten me! This is work coming out of a real world problem. However, as I do not reach a fully satisfactory solution, the developments will likely not make it into production. So, I thought, let me at least consolidate things on my blog (and below is only toy model stuff anyways). I did learn a lot of new things along the way, hence the looong post! We even get almost philosophical in our discussion of bias, and touching on frequentism vs Bayesianism.","headline":"Unbiased variance estimation","dateModified":"2023-06-16T00:00:00+02:00","datePublished":"2023-06-16T00:00:00+02:00","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","headline":"Unbiased variance estimation","dateModified":"2023-06-16T00:00:00+02:00","datePublished":"2023-06-16T00:00:00+02:00","url":"http://localhost:4000/2023/06/16/unbiased_variance_inference_sympy.html","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/06/16/unbiased_variance_inference_sympy.html"},"author":{"@type":"Person","name":"Lense Swaenen"},"description":"In this blog post I dip my toes into the world of statistics, and to make it a bit more hip: Bayesian modeling. Disclaimer: I am not a statistician, so whoever has the solution to my problem (spoiler alert: I do not reach a fully satisfactory solution in the end…), please enlighten me! This is work coming out of a real world problem. However, as I do not reach a fully satisfactory solution, the developments will likely not make it into production. So, I thought, let me at least consolidate things on my blog (and below is only toy model stuff anyways). I did learn a lot of new things along the way, hence the looong post! We even get almost philosophical in our discussion of bias, and touching on frequentism vs Bayesianism.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   <!-- For Google findability -->
@@ -823,14 +823,7 @@ Common sense would say that this problem is underdetermined, but with Bayesian m
 
 \[P(v_x, v_y | m ) \propto P(m | v_x, v_y) P(v_x, v_y)\]
 
-<table>
-  <tbody>
-    <tr>
-      <td>The prior we’ll assume flat or Heaviside. But can we rewrite $P(m</td>
-      <td>v_x, v_y)$ into expressions that depend on only $v_x$ and/or only $v_y$? To do so, we introduce helper variables $X$ and $Y$ over which we integrate, like</td>
-    </tr>
-  </tbody>
-</table>
+<p>The prior we’ll assume flat or Heaviside. But can we rewrite $P(m \mid v_x, v_y)$ into expressions that depend on only $v_x$ and/or only $v_y$? To do so, we introduce helper variables $X$ and $Y$ over which we integrate, like</p>
 
 \[P(m | v_x, v_y) = \iint P(m | X, Y)\ P(X | v_x)\ P(Y | v_y)\ dX dY\]
 
