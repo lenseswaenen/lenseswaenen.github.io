@@ -62,6 +62,7 @@
 ## Up next
 
 - Wesley Smith matrix inverse
+- Linear inequality visualization with matplotlib and con2vert
 - DFO & composite
 - Finite derivative
 - Love letter to precision matrix
@@ -99,6 +100,7 @@
 	- Sparse direct solvers!
 	- Kadaster & updating covariance matrices
 	- EKF failing on sine fitting** (https://dsp.stackexchange.com/questions/79451/kalman-filter-on-sinusoidal-signal)
+	- Native Python linear inequality constraint visualization with matplotlib & con2vert (MATLAB > Python with ChatGPT?!)**
 - Puzzles/Recreational:
 	- Dots & MILP (???)
 	- Pyomo & overhang*
@@ -176,4 +178,10 @@
 4. `bundle exec jekyll serve`
 
 # Errata
-- Bayes post: ...flat or Heaviside... --> Renders as table
+x Bayes post: ...flat or Heaviside... --> Renders as table
+x Bayes post: ...This is even kind off... --> kind of
+x Bayes post: ...Where biases are relatively bi? --> big
+x Bayes post: ...because of it satisfies... --> because it satisfies
+x Bayes post: ...before we move on the Bayesian --> move on TO
+x Bayes post: definetely --> definitely
+x Rotation matrix post: factor 2 mistake (Brian Delhaisse)

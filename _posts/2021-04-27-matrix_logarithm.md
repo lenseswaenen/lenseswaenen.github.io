@@ -10,7 +10,7 @@ background: '/img/bg-index.png'
 This post is a tribute to the fact that the matrix logarithm of a $3\times 3$ rotational matrix is
 
 $$
-\log{R} = \frac{\theta}{\sin{\theta}}(R^T - R) \label{eq:logm} \tag{1}
+\log{R} = \frac{\theta}{2\sin{\theta}}(R^T - R) \label{eq:logm} \tag{1}
 $$
 
 where $\theta$ satisfies $1 + 2\cos(\theta) = \text{trace}(R)$.

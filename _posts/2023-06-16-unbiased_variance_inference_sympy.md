@@ -27,7 +27,7 @@ The subscript to $X_1$ and $Y_2$ are to indicate realizations of the random vari
 This toy model is (almost) the simplest one I could think of to work with in this post. The real application behind it is a lot more complicated and hush-hush. To give some physical intuition: $X$ and $Y$ may be two random processes that have significantly different time scales. $X$ varies slowly and $Y$ varies quickly. And $m_1$ and $m_2$ are observed on day 1, while $m_3$ and $m_4$ are observed on day 2.
 Notice that we assume to know that the means of $X$ and $Y$ are zero. This is not very common: Usually people try to infer the mean, or infer the mean and standard deviation, but rarely only the standard deviation. We make this choice as it simplifies some of the math.
 
-In the blog post we consider two solution strategies to this problem. The first one is currently being used in the real application. This solution is now preferred because of it satisfies the property of **unbiasedness**. However, the method also allows for negative estimates of the variances, which hopefully strikes you as very undesireable too! So afterwards, I try and solve this, to no avail, but with a lot of lessons learned.
+In the blog post we consider two solution strategies to this problem. The first one is currently being used in the real application. This solution is now preferred because it satisfies the property of **unbiasedness**. However, the method also allows for negative estimates of the variances, which hopefully strikes you as very undesireable too! So afterwards, I try and solve this, to no avail, but with a lot of lessons learned.
 
 # Unbiasedness
 I've put the term **unbiasedness** in bold twice above now, so before we go into the solution strategies, let's expand on this topic. What is unbiasedness? Why should we want it? 
@@ -218,7 +218,7 @@ This is of course the famous case of every introductory statistics class, where 
 
 $$ v^{PV}_N(X_i) = \frac{1}{N-1} \sum_i^N \left(X_i - \mu^{PM}_N(X_i)\right)^2$$
 
-This is also known as [Bessel's correction](https://en.wikipedia.org/wiki/Bessel%27s_correction). Because we are calculating a mean squared deviation to a value (the population mean) that itself is already coming from the data, we tend to underestimate the spread, because the population mean is more centered for the data then the real mean actually is. This is even kind off consistent when having only one datapoint. The population mean would equal the data point, and the numerator of the variance formula would be $0$. If we divide by $N=1$ we have a grossly underestimated variance estimate of $0$ which should be $1$. If we divide by $N-1 = 0$, we get $\frac{0}{0}$ which I'd argue is 'more correct'.
+This is also known as [Bessel's correction](https://en.wikipedia.org/wiki/Bessel%27s_correction). Because we are calculating a mean squared deviation to a value (the population mean) that itself is already coming from the data, we tend to underestimate the spread, because the population mean is more centered for the data then the real mean actually is. This is even kind of consistent when having only one datapoint. The population mean would equal the data point, and the numerator of the variance formula would be $0$. If we divide by $N=1$ we have a grossly underestimated variance estimate of $0$ which should be $1$. If we divide by $N-1 = 0$, we get $\frac{0}{0}$ which I'd argue is 'more correct'.
 
 How could the NumPy implementation be so wrong? Well actually, the `np.var` function has a flag called `ddof`, which, when set to 1, gives us the population variance formula from above. The explanation is something about degrees of freedom already taken up by the population mean etc... We will not dive into that.
 
@@ -441,7 +441,7 @@ np.mean(ests, axis=1)
 
 Taking the mean, we also observe that the estimates are indeed unbiased. However, it is also worth noting that the spread (variance) of our estimates is very big, due to the low number of observations used for a single estimate. A little bit of bias might go unnoticed for a long time...
 
-Before we move on the Bayesian approach to try and fix the negativity, we simplify the toy model even further (as the equations in the Bayesian approach get a little long and hard for `sympy` to handle...)
+Before we move on to the Bayesian approach to try and fix the negativity, we simplify the toy model even further (as the equations in the Bayesian approach get a little long and hard for `sympy` to handle...)
 
 If we only consider observations $m_1$ and $m_2$ in our toy model: $X \sim \mathcal{N}(0, v_x)$ and $Y \sim \mathcal{N}(0, v_y)$ :
 
@@ -996,7 +996,7 @@ $$ m_1 = X_1 + Y_1$$
 
 $$ m_2 = X_1 + Y_2$$
 
-Note that a maximum likelihood approach could in practice definetely be used through numerical rather than symbolic computing, but the symbolic approach gives more insights.
+Note that a maximum likelihood approach could in practice definitely be used through numerical rather than symbolic computing, but the symbolic approach gives more insights.
 
 Back at it with Bayes' rule:
 
@@ -1221,7 +1221,7 @@ So what about unbiasedness! Well, the unconstrained ML estimate was unbiased, so
 
 # Discussion
 So this is kind of where my journey stands at the moment, without complete satisfaction. We started with a baseline/frequentist approach to variance estimation that is unbiased but suffers from negative estimates. My ambition was to relax the 'unbiasedness for the arithmetic mean' requirement to a more 'generalized unbiasedness' with perhaps a different operation than the arithmetic mean. A property to be perserved would be the ability to get aggregate estimates from partial estimates without having to remember all the data.
-Through Bayesian theory, we derived that the maximum likelihood estimator for the variance parameters is very closely related to the baseline approach. The ML approach has some pros in its flexibility to handle the non-negativity. The approach does not satisfy all the desired properties of consistency, generalized unbiasedness and aggregation of partial estimates at the moment. Perhaps the latter should be ditched (data storage is cheap, definitely as we are dealing with little data here where biases are relatively bi). Or perhaps the notion of unbiasedness, which we lose anyways when we use Bayesian statistics with informative priors...
+Through Bayesian theory, we derived that the maximum likelihood estimator for the variance parameters is very closely related to the baseline approach. The ML approach has some pros in its flexibility to handle the non-negativity. The approach does not satisfy all the desired properties of consistency, generalized unbiasedness and aggregation of partial estimates at the moment. Perhaps the latter should be ditched (data storage is cheap, definitely as we are dealing with little data here where biases are relatively big). Or perhaps the notion of unbiasedness, which we lose anyways when we use Bayesian statistics with informative priors...
 
 Also fitting to the discussion is this entertaining (near R-rated) [blog post](https://dansblog.netlify.app/posts/2021-10-11-n-sane-in-the-membrane/n-sane-in-the-membrane.html) that argues that the whole "DIVIDE BY N-1 OR THE BIAS MONSTER IS GONNA GET YA"
 is bullshit. That that bias $O(1/N)$ is usually small compared to the variance of the estimator $O(1/\sqrt{N})$. That "the old guys who went wild about bias are now mostly dead" and that we should rather "teach them how to bootstrap and teach the damn thing properly". 
