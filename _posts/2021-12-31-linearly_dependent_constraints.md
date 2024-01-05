@@ -333,7 +333,7 @@ Finally, we come perhaps to the real conclusion: as interior point methods don't
 -----
 
 ## Related posts
-None yet
+- [A much nicer constraint visualization tool](/2024/01/05/constraint_visualization.html) 
 
 ## Want to leave a comment?
 Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an [email](mailto:lenseswaenen@gmail.com).

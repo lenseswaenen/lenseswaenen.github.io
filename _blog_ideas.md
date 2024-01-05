@@ -157,19 +157,22 @@
 # Tutorials
 
 ## Making a new post
-1. ipynb --> md (with images embedded?!) -> _posts + rename
-2. Search for image on unsplash?
-3. Add header to md (+ mast photo?)
-4. Add footer
-5. Replace mast image?
-6. Delete output of some Python cells
-7. `bundle exec jekyll serve` in git bash @ repo & debug/modify at http://127.0.0.1:4000/ (or localhost:4000)
-8. Fix internal links
-9. Related posts updates
-10. Git Push
-11. (Tweet)
-12. (Footer: update with tweet reference)
-13. Archive .ipynb
+1. ipynb --> md (CL jupyter nbconvert foo.ipynb --to markdown) + img folder 
+2. md -> _posts + rename (with date)
+3. pngs -> assets/images/ 
+4. Replace "foo_files" with "/assets/images" for output images
+5. Search for image on unsplash?
+6. Add header to md (+ mast photo?)
+7. Add footer
+8. Replace mast image?
+9. Delete output of some Python cells
+10. `bundle exec jekyll serve` in git bash @ repo & debug/modify at http://127.0.0.1:4000/ (or localhost:4000)
+11. Fix internal links
+12. Related posts updates
+13. Git Push
+14. (Tweet)
+15. (Footer: update with tweet reference)
+16. Archive .ipynb
 
 ## Setting up a new development environment
 1. Install Ruby (preferably 2.7 i.s.o. 3.0 (Github-pages support...))

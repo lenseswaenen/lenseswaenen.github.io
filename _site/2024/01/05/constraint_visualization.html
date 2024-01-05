@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    Constraint visualization revisited - Bits of math
+    
+  </title>
+
+  <meta name="description" content="2 years ago, also during the Christmas holidays, I wrote up a blog post about linearly dependent constraints and how they are often discarded in theory, but ...">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link rel="canonical" href="http://localhost:4000/2024/01/05/constraint_visualization.html">
+  <link rel="alternate" type="application/rss+xml" title="Bits of math" href="/feed.xml">
+
+  <!-- for mathjax support -->
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" }},
+	  tex2jax: { inlineMath: [ ['$','$'], ['\\(','\\)'] ]}
+      });
+    </script>
+    <!-- <script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+  <!-- For Jekyll SEO plugin -->
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Constraint visualization revisited | Bits of math</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Constraint visualization revisited" />
+<meta name="author" content="Lense Swaenen" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="2 years ago, also during the Christmas holidays, I wrote up a blog post about linearly dependent constraints and how they are often discarded in theory, but are quite prevalent in practice. The subtitle was: “Bonus: a nice constraint visualization tool”. Sage was used to generate the figures below" />
+<meta property="og:description" content="2 years ago, also during the Christmas holidays, I wrote up a blog post about linearly dependent constraints and how they are often discarded in theory, but are quite prevalent in practice. The subtitle was: “Bonus: a nice constraint visualization tool”. Sage was used to generate the figures below" />
+<link rel="canonical" href="http://localhost:4000/2024/01/05/constraint_visualization.html" />
+<meta property="og:url" content="http://localhost:4000/2024/01/05/constraint_visualization.html" />
+<meta property="og:site_name" content="Bits of math" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-01-05T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Constraint visualization revisited" />
+<meta name="twitter:site" content="@LenseSwaenen" />
+<meta name="twitter:creator" content="@Lense Swaenen" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Constraint visualization revisited","dateModified":"2024-01-05T00:00:00+01:00","datePublished":"2024-01-05T00:00:00+01:00","url":"http://localhost:4000/2024/01/05/constraint_visualization.html","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2024/01/05/constraint_visualization.html"},"author":{"@type":"Person","name":"Lense Swaenen"},"description":"2 years ago, also during the Christmas holidays, I wrote up a blog post about linearly dependent constraints and how they are often discarded in theory, but are quite prevalent in practice. The subtitle was: “Bonus: a nice constraint visualization tool”. Sage was used to generate the figures below","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <!-- For Google findability -->
+  <meta name="google-site-verification" content="HMALsEPUPk8UDAmx9EYoAWZ0cB2rgDoxBp6zhln4_H4" />
+</head>
+
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">Bits of math</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/assets/images/constraint_visualization_53_1.png')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Constraint visualization revisited</h1>
+            
+            <h2 class="subheading">Through a ChatGPT-based con2vert</h2>
+            
+            <span class="meta">Posted by
+              <a href="#">Lense Swaenen</a>
+              on January 05, 2024 &middot; <span class="reading-time" title="Estimated read time">
+  
+   24 mins  read </span>
+
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <p>2 years ago, also during the Christmas holidays, I wrote up a <a href="https://lenseswaenen.github.io/2021/12/31/linearly_dependent_constraints.html">blog post about linearly dependent constraints</a> and how they are often discarded in theory, but are quite prevalent in practice. The subtitle was: “Bonus: a nice constraint visualization tool”. Sage was used to generate the figures below</p>
+
+<p><img src="/img/posts/lindepconstraints/output_19_0.png" alt="png" />
+<img src="/img/posts/lindepconstraints/output_22_0.png" alt="png" /></p>
+
+<p>The first one, an octogonal pyramid, has a top vertex which is degenerate from a linear inequality constraint point-of-view. A perturbation to the linear inequality constraints yields the second polyhedron which has no degenerate vertices.</p>
+
+<p>However, that ‘nice constraint visualization tool’ was a bit of a hyperbole. Sage could be used through some web portal, but to run it locally I used a Ubuntu VM. The plotting engine did not give very fancy pictures either. In this blog post, we’ll improve greatly upon that approach with a Matplotlib (and Numpy + SciPy) based visualization!</p>
+
+<h1 id="a-little-project-background">A little project background</h1>
+<p>What set this new post in motion, is the discovery (on my part) of the MATLAB <code class="language-plaintext highlighter-rouge">con2vert</code> function which was the missing piece of the puzzle. I learned about this function through a new commercial project for a small company from Roosendaal called <a href="https://kameleonsolar.com/">Kameleon Solar</a>. Kameleon Solar is a company with a very cool proposition: Replacing traditional facade construction materials (like brick) with solar panels. To satisfy aesthetic desires, the solar panels can be any color or even an image, by printing on them. Printing on a solar panels lowers their power yield, and my sound crazy. But Kameleon Solar argues that one should rather compare to the traditional facade materials like brick, which don’t yield any power. You save money by not having to use these materials. And the resulting payback period for the printed solar panels would turn out very well, despite the lower power yield.</p>
+
+<p>One of the mathematical challenges that Kameleon Solar faces is all about color theory and the challenge of printing on a dark background. In color theory, one encounters convex combinations of pure colors / ink channels, which is how I came in contact with <code class="language-plaintext highlighter-rouge">con2vert</code> and <code class="language-plaintext highlighter-rouge">vert2con</code>: MATLAB routines to convert between two representations of convex polyhedra: constraints (read: linear inequality constraint) and vertices (and closely related, a mesh with vertices, edges and faces).</p>
+
+<p>But before we dive into those, the first minimal requirement for visualizing constraints with <code class="language-plaintext highlighter-rouge">matplotlib</code> is to check out its mesh/polygon visualization capabilities</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d.art3d</span> <span class="kn">import</span> <span class="n">Poly3DCollection</span>
+
+<span class="kn">import</span> <span class="nn">scipy.spatial</span>
+</code></pre></div></div>
+
+<h1 id="plotting-3d-polygons-with-matplotlib">Plotting 3D polygons with matplotlib</h1>
+<p>We start out with some code snippet from a great <a href="https://stackoverflow.com/a/77655603">Stackoverflow answer</a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span>  <span class="p">[</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+       <span class="p">[</span><span class="n">z</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">z</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">]</span>      <span class="c1"># 8 vertices
+</span><span class="n">f4</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="p">]</span>
+<span class="n">fa</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span> <span class="p">]</span>
+<span class="n">fb</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="p">]</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">f4</span> <span class="o">+</span> <span class="n">fa</span> <span class="o">+</span> <span class="n">fb</span>                                         <span class="c1"># 10 faces
+</span><span class="n">verts</span> <span class="o">=</span>  <span class="p">[</span> <span class="p">[</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>                <span class="c1"># list comprehension
+</span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s">'teal'</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="p">[</span><span class="s">'indianred'</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="p">[</span><span class="s">'olivedrab'</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span>  <span class="c1"># 10 colors
+</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">plt</span><span class="p">.</span><span class="n">figaspect</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_collection3d</span><span class="p">(</span><span class="n">Poly3DCollection</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'k'</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_3_0.png" alt="png" /></p>
+
+<p>Hooray, we can plot polygons in 3D. The <code class="language-plaintext highlighter-rouge">Poly3DCollection</code> takes a list of polygons for input. Each ‘polygon’ in that case is a $N \times 3$ array (or similar is list format) with the $N$ vertices of the polygon. The post also nicely devulges into what happens if $N &gt; 3$ vertices are not coplanar, which yields rendering artifacts. Additional arguments to the <code class="language-plaintext highlighter-rouge">Poly3DCollection</code> are lists of face and edge colors, and also a <code class="language-plaintext highlighter-rouge">shade</code> boolean argument that we’ll play around with later.</p>
+
+<h1 id="plotting-convex-hulls">Plotting convex hulls</h1>
+<p>Before expanding on the <code class="language-plaintext highlighter-rouge">con2vert</code> function, one could infer that this returns vertices, rather than polygons. However, as we will be dealing with convex polygons (as only those correspond to linear inequality constraints), lets visualize a convex hull of some random points.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">hull</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">spatial</span><span class="p">.</span><span class="n">ConvexHull</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">hull</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'scipy.spatial._qhull.ConvexHull'&gt;
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">hull</span><span class="p">.</span><span class="n">__dict__</span><span class="p">.</span><span class="n">keys</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['_qhull', 'simplices', 'neighbors', 'equations', 'coplanar', 'good', 'volume', 'area', '_vertices', 'nsimplex', '_points', 'ndim', 'npoints', 'min_bound', 'max_bound']
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">scipy.spatial.ConvexHull</code> is a wrapper to the ubiquitous <a href="http://www.qhull.org/">Qhull</a> library. A key attribute of the output datastructure for our visualization purposes will be the <code class="language-plaintext highlighter-rouge">simplices</code> attribute. This is also the main output of the MATLAB</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hull</span><span class="p">.</span><span class="n">simplices</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(40, 3)
+</code></pre></div></div>
+
+<p>The convex hull of our 100 random points has 40 simplices that bound the polygon. The simplices attribute is a $40 \times 3$ array of indices that references the first dimension of the input point cloud <code class="language-plaintext highlighter-rouge">xyz</code>, which is also stored in the <code class="language-plaintext highlighter-rouge">ConvexHull</code> datastructure <code class="language-plaintext highlighter-rouge">points</code> attribute. 2D simplices, which are nothing more than triangles, reference 3 corner points, hence the width or 3 (not to be confused the width of 3 of the points attribute…).</p>
+
+<p>This list of simplex corner indices is also the primary output of the MATLAB <code class="language-plaintext highlighter-rouge">convhull</code> and <code class="language-plaintext highlighter-rouge">convhulln</code> routines.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">unique</span><span class="p">(</span><span class="n">hull</span><span class="p">.</span><span class="n">simplices</span><span class="p">.</span><span class="n">flatten</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>22
+</code></pre></div></div>
+
+<p>The 40 simplices are spanned by 22 points, which means that the other 78 points of our random set are in the interior of the convex hull.</p>
+
+<p>Finally, a welcome surprise to analysing the <code class="language-plaintext highlighter-rouge">ConvHull</code> datastructure was to find an <code class="language-plaintext highlighter-rouge">equations</code> attribute!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s">'simplices'</span><span class="p">,</span> <span class="s">'equations'</span><span class="p">,</span> <span class="s">'_points'</span><span class="p">]:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="s">': '</span><span class="p">,</span> <span class="n">hull</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">attr</span><span class="p">].</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>simplices :  (40, 3)
+equations :  (40, 4)
+_points :  (100, 3)
+</code></pre></div></div>
+
+<p>This $40 \times 4$ array is a horizonal concatenation of the $A$ matrix and $b$ vector in the inequality constraints convention $Ax + b \geq 0$. We will be using the $Ax \leq b$ convention however… This discovery means we actually already have found our <code class="language-plaintext highlighter-rouge">vert2con</code> implementation!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_collection3d</span><span class="p">(</span><span class="n">Poly3DCollection</span><span class="p">(</span><span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">hull</span><span class="p">.</span><span class="n">simplices</span><span class="p">],</span> <span class="n">edgecolors</span><span class="o">=</span><span class="p">[</span><span class="s">'k'</span><span class="p">],</span> <span class="n">facecolors</span><span class="o">=</span><span class="p">[</span><span class="s">'C0'</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[(-2.0, 2.0), (-2.0, 2.0), (-2.0, 2.0)]
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_16_1.png" alt="png" /></p>
+
+<h2 id="plotting-convex-hulls-with-shading">Plotting convex hulls with shading</h2>
+<p>If we try to enable the <code class="language-plaintext highlighter-rouge">shade</code> flag of the <code class="language-plaintext highlighter-rouge">Poly3DCollection</code> function, we don’t get any nice shading unfortunately:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_collection3d</span><span class="p">(</span><span class="n">Poly3DCollection</span><span class="p">(</span><span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">hull</span><span class="p">.</span><span class="n">simplices</span><span class="p">],</span> <span class="n">edgecolors</span><span class="o">=</span><span class="p">[</span><span class="s">'k'</span><span class="p">],</span> <span class="n">facecolors</span><span class="o">=</span><span class="p">[</span><span class="s">'C0'</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[(-2.0, 2.0), (-2.0, 2.0), (-2.0, 2.0)]
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_18_1.png" alt="png" /></p>
+
+<p>The reason is that, unfortunately, the simplices that the ConvexHull routine returns are not ordered consistently such that the normals point outward… And we so write a function that fixes these normals: We take any internal point, e.g. by averaging all points of the <code class="language-plaintext highlighter-rouge">points</code> attribute, and check whether the normal (cross product of oriented edges) has the same ‘sign’ as the vector from the internal point to any point of that particular simplex. If not, then we reverse the order of the 3 corners.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">fix_normals</span><span class="p">(</span><span class="n">hull</span><span class="p">):</span>
+    <span class="n">xyz_ip</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">simplices_fixed</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hull</span><span class="p">.</span><span class="n">simplices</span><span class="p">):</span>
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+    
+        <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">p0</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">xyz_ip</span>
+    
+        <span class="c1">#print(i, s, np.sign(np.dot(n, v)), A[i, :] @ xyz_ip &lt;= b[i] )
+</span>    
+        <span class="k">if</span> <span class="n">np</span><span class="p">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">simplices_fixed</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">simplices_fixed</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">simplices_fixed</span>
+    
+
+<span class="k">def</span> <span class="nf">plot_hull_v1</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull</span><span class="p">):</span>
+    <span class="n">simplices_fixed</span> <span class="o">=</span> <span class="n">fix_normals</span><span class="p">(</span><span class="n">hull</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">.</span><span class="n">add_collection3d</span><span class="p">(</span><span class="n">Poly3DCollection</span><span class="p">(</span><span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">simplices_fixed</span><span class="p">],</span> <span class="n">edgecolors</span><span class="o">=</span><span class="p">[</span><span class="s">'k'</span><span class="p">],</span> <span class="n">facecolors</span><span class="o">=</span><span class="p">[</span><span class="s">'C0'</span><span class="p">],</span> <span class="n">shade</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">plot_hull_v1</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_21_1.png" alt="png" /></p>
+
+<h1 id="vert2con-a-q-hull-approach">vert2con: a Q-hull approach</h1>
+<p>As the MATLAB convex hull routines only output the simplices, but not the inequalities, the MATLAB <code class="language-plaintext highlighter-rouge">vert2con</code> function that can be found on the MATLAB File Exchange requires an additional 10-20 lines of code to convert the simplices into constraints. In Python we are lucky as the SciPy’s convex hull function already returns inequalities by default:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">vert2con</span><span class="p">(</span><span class="n">vert</span><span class="p">):</span>
+    <span class="s">""" Convention A @ x &lt;= b """</span>
+    <span class="n">hull</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">spatial</span><span class="p">.</span><span class="n">ConvexHull</span><span class="p">(</span><span class="n">vert</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">hull</span><span class="p">.</span><span class="n">equations</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="o">-</span> <span class="n">hull</span><span class="p">.</span><span class="n">equations</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span>
+</code></pre></div></div>
+
+<h1 id="con2vert-a-chatgpt-based-translation">con2vert: A ChatGPT-based translation</h1>
+<p>For our purpose of visualizing linear constraints, <code class="language-plaintext highlighter-rouge">vert2con</code> is actually not strictly needed, but <code class="language-plaintext highlighter-rouge">con2vert</code> definitely is: We need to be able to get vertices for the plotting routines from our inequality constraints $Ax \leq b$. On the MATLAB File Exchange, one can find a <code class="language-plaintext highlighter-rouge">con2vert</code> <a href="https://nl.mathworks.com/matlabcentral/fileexchange/7894-con2vert-constraints-to-vertices?s_tid=srchtitle">implementation</a> by Michael Kleder, who also authored the related <code class="language-plaintext highlighter-rouge">vert2con</code>. The functions used in the project were actually more recent and general variants called <a href="https://nl.mathworks.com/matlabcentral/fileexchange/7894-con2vert-constraints-to-vertices?s_tid=srchtitle"><code class="language-plaintext highlighter-rouge">vert2lcon</code> and <code class="language-plaintext highlighter-rouge">lcon2vert</code></a> which also can deal with linear equality constraints, e.g. when your vertices all lie in a lower dimensional subspace.</p>
+
+<p>I could not quickly find a Python code that does something like <code class="language-plaintext highlighter-rouge">con2vert</code> and I thought it would be a nice exercise for ChatGPT (we are 2023…). The <code class="language-plaintext highlighter-rouge">lcon2vert</code> code is significantly longer and more complex than <code class="language-plaintext highlighter-rouge">con2vert</code>, and we don’t need that equality constraint feature for now, so I translated <code class="language-plaintext highlighter-rouge">con2vert</code>, which is like 25 lines of MATLAB code, using ChatGPT.</p>
+
+<p>My prompt was: The MATLAB code below calculates the vertices of a polyhedron represented by inequality constraints A*x &lt;= b. Please translate to Python code using only Numpy as a dependency</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A = randn(20, 3);
+b = ones(20, 3);
+
+c = A\b;
+if ~all(A*c &lt; b);
+    [c,f,ef] = fminsearch(@obj,c,'params',{A,b});
+    if ef ~= 1
+        error('Unable to locate a point within the interior of a feasible region.')
+    end
+end
+b = b - A*c;
+D = A ./ repmat(b,[1 size(A,2)]);
+[k,v2] = convhulln([D;zeros(1,size(D,2))]);
+[k,v1] = convhulln(D);
+if v2 &gt; v1
+    error('Non-bounding constraints detected. (Consider box constraints on variables.)')
+end
+nr = unique(k(:));
+G  = zeros(size(k,1),size(D,2));
+for ix = 1:size(k,1)
+    F = D(k(ix,:),:);
+    G(ix,:)=F\ones(size(F,1),1);
+end
+V = G + repmat(c',[size(G,1),1]);
+[null,I]=unique(num2str(V,6),'rows');
+V=V(I,:);
+return
+function d = obj(c,params)
+A=params{1};
+b=params{2};
+d = A*c-b;
+k=(d&gt;=-1e-15);
+d(k)=d(k)+1;
+d = max([0;d]);
+</code></pre></div></div>
+
+<p>ChatGPT replied with the following code:
+    import numpy as np
+    from scipy.optimize import fmin</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def obj(c, params):
+    A, b = params
+    d = A @ c - b
+    k = (d &gt;= -1e-15)
+    d[k] = d[k] + 1
+    d = np.maximum(0, d)
+    return np.max(d)
+
+A = np.random.randn(20, 3)
+b = np.ones((20, 3))
+
+c = np.linalg.lstsq(A, b, rcond=None)[0]
+if not np.all(A @ c &lt; b):
+    c = fmin(obj, c, args=([A, b]))
+    if not np.all(A @ c &lt; b):
+        raise ValueError('Unable to locate a point within the interior of a feasible region.')
+
+b = b - A @ c
+D = A / np.tile(b, (1, A.shape[1]))
+k, v2 = ConvexHull(np.vstack([D, np.zeros(D.shape[1])]))
+k, v1 = ConvexHull(D)
+
+if v2 &gt; v1:
+    raise ValueError('Non-bounding constraints detected. (Consider box constraints on variables.)')
+
+nr = np.unique(k.flatten())
+G = np.zeros((k.shape[0], D.shape[1]))
+
+for ix in range(k.shape[0]):
+    F = D[k[ix, :], :]
+    G[ix, :] = np.linalg.lstsq(F, np.ones(F.shape[0]), rcond=None)[0]
+
+V = G + np.tile(c, (G.shape[0], 1))
+_, I = np.unique(V, axis=0, return_index=True)
+V = V[I, :]
+
+def ConvexHull(points):
+    from scipy.spatial import ConvexHull
+    hull = ConvexHull(points)
+    return hull.simplices, hull.volume
+
+# Example usage:
+# vertices = calculate_polyhedron_vertices(A, b)
+# print(vertices)
+</code></pre></div></div>
+
+<p>Very impressive! It did not completely work out of the box. Two fixes I had to make were:</p>
+<ul>
+  <li>Something with repmat and tiling and how MATLAB matrices and NumPy’s arrays are fundamentally a bit different. MATLAB can not have arrays of shape <code class="language-plaintext highlighter-rouge">(10,)</code> for example…</li>
+  <li>The algorithm has a step which eliminates duplicate inequality constraints. The inequality constraints are represented by floats and comparing floats is tricky… The MATLAB implementation was doing a <code class="language-plaintext highlighter-rouge">num2str</code> call with 6 digits or so. That operation got lost in translation. So I inserted something similar back in, but I used <code class="language-plaintext highlighter-rouge">np.round(..., 6)</code></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fmin</span>
+    
+<span class="k">def</span> <span class="nf">con2vert</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">obj</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">c</span> <span class="o">-</span> <span class="n">b</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mf">1e-15</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="bp">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="p">.</span><span class="nb">all</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">fmin</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="p">.</span><span class="nb">all</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">'Unable to locate a point within the interior of a feasible region.'</span><span class="p">)</span>
+    
+    <span class="n">b</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">A</span> <span class="o">@</span> <span class="n">c</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">A</span> <span class="o">/</span> <span class="n">b</span><span class="p">[:,</span> <span class="n">np</span><span class="p">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="c1"># A / np.tile(b, (1, A.shape[1]))
+</span>    
+    <span class="n">hull</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">spatial</span><span class="p">.</span><span class="n">ConvexHull</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">D</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]))</span>
+    <span class="n">k</span><span class="p">,</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">hull</span><span class="p">.</span><span class="n">simplices</span><span class="p">,</span> <span class="n">hull</span><span class="p">.</span><span class="n">volume</span>
+    
+    <span class="n">hull</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">spatial</span><span class="p">.</span><span class="n">ConvexHull</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+    <span class="n">k</span><span class="p">,</span> <span class="n">v1</span> <span class="o">=</span> <span class="n">hull</span><span class="p">.</span><span class="n">simplices</span><span class="p">,</span> <span class="n">hull</span><span class="p">.</span><span class="n">volume</span>
+    
+    <span class="k">if</span> <span class="n">v2</span> <span class="o">&gt;</span> <span class="n">v1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">'Non-bounding constraints detected. (Consider box constraints on variables.)'</span><span class="p">)</span>
+    
+    <span class="n">nr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">unique</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">k</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">D</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    
+    <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">F</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">k</span><span class="p">[</span><span class="n">ix</span><span class="p">,</span> <span class="p">:],</span> <span class="p">:]</span>
+        <span class="n">G</span><span class="p">[</span><span class="n">ix</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">(</span><span class="n">F</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">rcond</span><span class="o">=</span><span class="bp">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">V</span> <span class="o">=</span> <span class="n">G</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">tile</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="n">G</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">unique</span><span class="p">(</span><span class="n">V</span><span class="p">.</span><span class="nb">round</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="n">I</span><span class="p">,</span> <span class="p">:]</span>
+    
+    <span class="k">return</span> <span class="n">V</span>
+</code></pre></div></div>
+
+<p>At this moment, I actually don’t even really understand how the algorithm works. Like <code class="language-plaintext highlighter-rouge">vert2con</code> it uses a convex hull, but now not of the vertices but of the (normalized) linear inequality constraints. But who needs understanding when you’ve got ChatGPT!</p>
+
+<p><code class="language-plaintext highlighter-rouge">vert2con</code> and <code class="language-plaintext highlighter-rouge">con2vert</code> are approximately inverse operations, and we can use that to do some quick sanity checks on output sizes. They are not exact inverses in the sense that <code class="language-plaintext highlighter-rouge">vert2con</code> will ignore internal vertices by the hull operation and will return inequalities without any redundant constraints. <code class="language-plaintext highlighter-rouge">con2vert</code> will ignore redundant constraints and will also not return any ‘internal’ vertices. This means that <code class="language-plaintext highlighter-rouge">vert2con(con2vert(A, b))</code> can actually be used for constraint pruning. Constraints pruning is something I have had on the backlog for my blog for a long time now. I have some code that does it by solving a linear program for each constraint (+ a few tricks). I wonder how this stacks up against this <code class="language-plaintext highlighter-rouge">con2vert2con</code> approach?! Perhaps stuff for a future blog post…</p>
+
+<p>Let’s do those sanity checks:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xyz</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(100, 3)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">vert2con</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(40, 3)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xyz2</span> <span class="o">=</span> <span class="n">con2vert</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xyz2</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(22, 3)
+</code></pre></div></div>
+
+<p>This matches with our earlier observation that out of the 100 random points, there are 22 extremal ones.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A2</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">vert2con</span><span class="p">(</span><span class="n">xyz2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A2</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(40, 3)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">A2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6.510828877941378
+</code></pre></div></div>
+
+<p>The shapes are consistent, but the matrices are not the same… This is due to the ordering of the constraints and vertices being arbitrary…</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">A</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">].</span><span class="n">argsort</span><span class="p">()]</span> <span class="o">-</span> <span class="n">A2</span><span class="p">[</span><span class="n">A2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">].</span><span class="n">argsort</span><span class="p">()])</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.5065165444983475e-13
+</code></pre></div></div>
+
+<p>If we sort both according to the entries in the first column we get a match. Actually this could still have failed as inequality constraints can have different scaling ($x \leq 2 \Leftrightarrow 2x \leq 4$), but <code class="language-plaintext highlighter-rouge">vert2con</code> seems to do something consistent…</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xyz3</span> <span class="o">=</span> <span class="n">con2vert</span><span class="p">(</span><span class="n">A2</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">xyz2</span><span class="p">[</span><span class="n">xyz2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">].</span><span class="n">argsort</span><span class="p">()]</span> <span class="o">-</span> <span class="n">xyz3</span><span class="p">[</span><span class="n">xyz3</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">].</span><span class="n">argsort</span><span class="p">()])</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>7.067546271189727e-14
+</code></pre></div></div>
+
+<p>And this checks out too!</p>
+
+<h1 id="revisit-pyramid-case">Revisit pyramid case</h1>
+<p>And with that, it is time to revisit the linear inequality system that we visualized in the <a href="https://lenseswaenen.github.io/2021/12/31/linearly_dependent_constraints.html">preceeding blog post</a>. We defined a pyramid to illustrate how the top vertex is degenerate, and how perturbing the inequalities (e.g. $b$ in $Ax\leq b$) splits that vertex into multiple ones.</p>
+
+<p>We copy paste that <code class="language-plaintext highlighter-rouge">ieqs</code> fields that Sage received (with the peculiar convention of <code class="language-plaintext highlighter-rouge">ieqs = [b; A]</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">ieqs</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="c1">#Ground plane
+</span>                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="c1">#1st side
+</span>                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span> <span class="c1">#8th side
+</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">ieqs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="n">ieqs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">verts</span> <span class="o">=</span> <span class="n">con2vert</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">verts</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">hull_perfect_pyramid</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">spatial</span><span class="p">.</span><span class="n">ConvexHull</span><span class="p">(</span><span class="n">verts</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">plot_hull_v1</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull_perfect_pyramid</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_46_2.png" alt="png" /></p>
+
+<h2 id="perturbed-pyramid">Perturbed pyramid</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">ieqs</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.81</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.93</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.84</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.87</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.88</span><span class="p">,</span><span class="o">-</span><span class="n">s</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.82</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.96</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.95</span><span class="p">,</span><span class="o">-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">ieqs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="n">ieqs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">verts</span> <span class="o">=</span> <span class="n">con2vert</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">verts</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">hull_pert_pyramid</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">spatial</span><span class="p">.</span><span class="n">ConvexHull</span><span class="p">(</span><span class="n">verts</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">plot_hull_v1</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull_pert_pyramid</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_48_2.png" alt="png" /></p>
+
+<p>We observe how the perfect octagonal pyramid has 9 vertices, whereas the perturbed one has 14. And one could be content with these visualizations… But I’m not…</p>
+
+<p>The problem with <code class="language-plaintext highlighter-rouge">scipy.spatial.ConvexHull</code> is that it returns faces to the polygon as simplices only. So the current plot function cannot have quadrilateral or octoganal faces, even though <code class="language-plaintext highlighter-rouge">Poly3DCollection</code> wouldn’t mind… For the perfect pyramid, this means the bottom octagon is triangulated. For the perturbed pyramid it is actually much worse, as the Sage visualization showed much fewer edges than we have now, because many of the side faces are not triangular…</p>
+
+<p>This can be traced back to SciPy calling Qhull by default with the <a href="http://www.qhull.org/html/qhull.htm">‘Qt’ option</a>, which divides any face into triangles. So we have two options to go from here: Find a way to call Qhull from Python without the <code class="language-plaintext highlighter-rouge">Qt</code> option, or implement a way to merge back the triangles that were split. I went with the second option.</p>
+
+<h1 id="undo-convex-hull-triangulation">Undo convex hull triangulation</h1>
+<ul>
+  <li>Step 1 was to check that the <code class="language-plaintext highlighter-rouge">simplices</code> and <code class="language-plaintext highlighter-rouge">equalities</code> attributes to the ConvexHull objects have consistent ordering, which checked out.</li>
+  <li>Step 2 was to group simplices and inequalities that correspond to the same face. I did this on the inequalities, which can be normalized by
+    <ul>
+      <li>first translating an arbitrary internal point to the origin. This has the consequence that vector $b$ has all positive entries (as now $x=0$ is a point satisfying the constraints strictly, such that $0 = Ax &lt; b$</li>
+      <li>next dividing each inequality $i$ by $b_i$ such that $b$ becomes a vector of ones.</li>
+      <li>finally performing a <code class="language-plaintext highlighter-rouge">np.unique</code> operation, taking into account that we will want to round to 6-7 digits when comparing floats (very similar to part of the <code class="language-plaintext highlighter-rouge">vert2con</code> code actually, and using the <code class="language-plaintext highlighter-rouge">np.unique</code> flag <code class="language-plaintext highlighter-rouge">return_inverse</code> which contains the info on which collections of entries were equal.</li>
+    </ul>
+  </li>
+  <li>Step 3 is the merging of grouped simplices/triangles. Also this was a little bit of a puzzle as we don’t know anything about the order of the simplices in the grouping. I settled on an approach that starts with a polygon that is a single triangle at first, and this polygon gets extended with a new vertex for every triangle we encounter that shares an edge with this polygon. It is important to insert the new vertex in the right place in the polygon (which is a list of vertex indices). After every triangle has been processed, we have our merged face. From a complexity point-of-view we are definetely overdoing some work, but one these examples it doesn’t matter.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge_triangles</span><span class="p">(</span><span class="n">triangles</span><span class="p">):</span>
+    <span class="n">polygon</span> <span class="o">=</span> <span class="n">triangles</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">triangles</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">triangle</span> <span class="ow">in</span> <span class="n">triangles</span><span class="p">:</span>
+            <span class="n">joint_verts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">triangle</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">joint_verts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">joint_verts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="c1"># joint edge
+</span>                <span class="n">new</span> <span class="o">=</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">triangle</span><span class="p">)</span> <span class="o">-</span> <span class="n">joint_verts</span><span class="p">).</span><span class="n">pop</span><span class="p">()</span>
+                <span class="n">old1</span> <span class="o">=</span> <span class="n">joint_verts</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="n">old2</span> <span class="o">=</span> <span class="n">joint_verts</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+        
+                <span class="n">id1</span> <span class="o">=</span> <span class="n">polygon</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="n">old1</span><span class="p">)</span>
+                <span class="n">id2</span> <span class="o">=</span> <span class="n">polygon</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="n">old2</span><span class="p">)</span>
+                <span class="n">id_min</span><span class="p">,</span> <span class="n">id_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)</span>
+        
+                <span class="k">if</span> <span class="n">id_max</span> <span class="o">==</span> <span class="n">id_min</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="c1">#insert somewhere in the middle
+</span>                    <span class="n">polygon</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">id_max</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span> 
+                <span class="k">else</span><span class="p">:</span> <span class="c1">#new vertex should be placed between last vertex and first one
+</span>                    <span class="c1">#Assert id_min == 0, id_max == ...
+</span>                    <span class="k">assert</span> <span class="n">id_min</span> <span class="o">==</span> <span class="mi">0</span>
+                    <span class="n">polygon</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">id_max</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span> 
+        
+                <span class="n">triangles</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">triangle</span><span class="p">)</span>
+                <span class="k">break</span>
+    
+    <span class="k">return</span> <span class="n">polygon</span>
+
+<span class="k">def</span> <span class="nf">undo_triangulation</span><span class="p">(</span><span class="n">hull</span><span class="p">):</span>
+    <span class="n">simplices_fixed</span> <span class="o">=</span> <span class="n">fix_normals</span><span class="p">(</span><span class="n">hull</span><span class="p">)</span>
+    <span class="n">simplices_fixed</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">simplices_fixed</span><span class="p">)</span>
+
+    <span class="c1"># Normalize inequalities
+</span>    <span class="n">xyz_ip</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">hull</span><span class="p">.</span><span class="n">equations</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="o">-</span> <span class="n">hull</span><span class="p">.</span><span class="n">equations</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_norm</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">A</span> <span class="o">@</span> <span class="n">xyz_ip</span>
+    <span class="n">A_norm</span> <span class="o">=</span> <span class="n">A</span> <span class="o">/</span> <span class="n">b_norm</span><span class="p">[:,</span> <span class="n">np</span><span class="p">.</span><span class="n">newaxis</span><span class="p">]</span>
+    
+    <span class="c1"># Group duplicate inequalities
+</span>    <span class="n">_</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">idx_inv</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">unique</span><span class="p">(</span><span class="n">A_norm</span><span class="p">.</span><span class="nb">round</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="c1"># Merge triangles into polygons
+</span>    <span class="n">polygons</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
+        <span class="n">triangles_grouped</span> <span class="o">=</span> <span class="n">simplices_fixed</span><span class="p">[</span><span class="n">idx_inv</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="p">:].</span><span class="n">tolist</span><span class="p">()</span> <span class="c1">#find all triangles corresponding to an inequality
+</span>        <span class="n">polygon</span> <span class="o">=</span> <span class="n">merge_triangles</span><span class="p">(</span><span class="n">triangles_grouped</span><span class="p">)</span>
+        <span class="n">polygons</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">polygons</span>
+
+<span class="k">def</span> <span class="nf">plot_hull_v2</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull</span><span class="p">,</span> <span class="n">undo_triangulation_flag</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">facecolors</span><span class="p">:</span>
+        <span class="n">facecolors</span><span class="o">=</span><span class="p">[</span><span class="s">'C0'</span><span class="p">]</span>
+        
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">undo_triangulation_flag</span><span class="p">:</span>
+        <span class="n">simplices_fixed</span> <span class="o">=</span> <span class="n">fix_normals</span><span class="p">(</span><span class="n">hull</span><span class="p">)</span>
+        <span class="n">verts</span> <span class="o">=</span> <span class="p">[</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span> <span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">p</span><span class="p">])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">simplices_fixed</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">polygons</span> <span class="o">=</span> <span class="n">undo_triangulation</span><span class="p">(</span><span class="n">hull</span><span class="p">)</span>
+        <span class="n">verts</span> <span class="o">=</span> <span class="p">[</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span> <span class="n">hull</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">p</span><span class="p">])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">polygons</span><span class="p">]</span>
+    
+    <span class="n">ax</span><span class="p">.</span><span class="n">add_collection3d</span><span class="p">(</span><span class="n">Poly3DCollection</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="p">[</span><span class="s">'k'</span><span class="p">],</span> <span class="n">facecolors</span><span class="o">=</span><span class="n">facecolors</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="n">shade</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">plot_hull_v2</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull_perfect_pyramid</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_52_1.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">plot_hull_v2</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull_pert_pyramid</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_53_1.png" alt="png" /></p>
+
+<p>Eureka!</p>
+
+<p>And with white faces it look pretty cool too (and more similar to the original Sage figures)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">plot_hull_v2</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull_pert_pyramid</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="p">[</span><span class="s">'white'</span><span class="p">],</span> <span class="n">shade</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_55_1.png" alt="png" /></p>
+
+<h1 id="bonus-cube-test">Bonus: Cube test</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">verts</span> <span class="o">=</span> <span class="n">con2vert</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">hull_cube</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">spatial</span><span class="p">.</span><span class="n">ConvexHull</span><span class="p">(</span><span class="n">verts</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">plot_hull_v2</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull_cube</span><span class="p">,</span> <span class="n">undo_triangulation_flag</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_58_1.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">plot_hull_v2</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">hull_cube</span><span class="p">,</span> <span class="n">undo_triangulation_flag</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span> <span class="n">zlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/constraint_visualization_59_1.png" alt="png" /></p>
+
+<h1 id="ending-notes">Ending notes</h1>
+<p>More work than anticipated, but we got there! Near the end of this work, I encountered <a href="https://stackoverflow.com/a/70453426">this Stackoverflow answer</a> that references <code class="language-plaintext highlighter-rouge">pycddlib</code>, a Python wrapper to <code class="language-plaintext highlighter-rouge">cddlib</code> in which the <code class="language-plaintext highlighter-rouge">dd</code> stands for double description (of convex polyhedra). This library can also convert between both formats. However, a quick search gave me the impression that readily available builds are only for Linux and OSX. Moreover, for visualization with Matplotlib, the Stackoverflow post still uses SciPy’s ConvexHull, such that we would still have to deal with fixing the normals and merging the triangles into non-triangular faces…</p>
+
+<hr />
+
+<h2 id="related-posts">Related posts</h2>
+<ul>
+  <li><a href="/2021/12/31/linearly_dependent_constraints.html">Not-so-rare linearly dependent constraints</a></li>
+</ul>
+
+<h2 id="want-to-leave-a-comment">Want to leave a comment?</h2>
+<p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a>.</p>
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/2023/06/16/unbiased_variance_inference_sympy.html" data-toggle="tooltip" data-placement="top" title="Unbiased variance estimation">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="mailto:lenseswaenen@gmail.com">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/LenseSwaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/lenseswaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Lense Swaenen 2024</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQVCL505Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7RQVCL505Y');
+</script>
+
+
+
+</body>
+
+</html>
