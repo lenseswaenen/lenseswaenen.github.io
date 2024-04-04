@@ -58,11 +58,12 @@
 - MegaTomBike 2022
 - Dynobend youtube videos
 - Unbiased variance estimation & sympy
+- Linear inequality visualization with matplotlib and con2vert
+- Radially symmetric PSD 2D kernel (and KKN)
 
 ## Up next
 
 - Wesley Smith matrix inverse
-- Linear inequality visualization with matplotlib and con2vert
 - DFO & composite
 - Finite derivative
 - Love letter to precision matrix
@@ -157,10 +158,11 @@
 # Tutorials
 
 ## Making a new post
+0. %matplotlib ipympl --> %matplotlib inline (& rerun notebook)
 1. ipynb --> md (CL jupyter nbconvert foo.ipynb --to markdown) + img folder 
 2. md -> _posts + rename (with date)
 3. pngs -> assets/images/ 
-4. Replace "foo_files" with "/assets/images" for output images
+4. Replace "foo_files" with "/assets/images/foo_files" for output images
 5. Search for image on unsplash?
 6. Add header to md (+ mast photo?)
 7. Add footer
@@ -169,10 +171,11 @@
 10. `bundle exec jekyll serve` in git bash @ repo & debug/modify at http://127.0.0.1:4000/ (or localhost:4000)
 11. Fix internal links
 12. Related posts updates
-13. Git Push
-14. (Tweet)
-15. (Footer: update with tweet reference)
-16. Archive .ipynb
+13. Update _blog_ideas.md
+14. Git Push
+15. (Tweet)
+16. (Footer: update with tweet reference)
+17. Archive .ipynb
 
 ## Setting up a new development environment
 1. Install Ruby (preferably 2.7 i.s.o. 3.0 (Github-pages support...))
@@ -181,10 +184,3 @@
 4. `bundle exec jekyll serve`
 
 # Errata
-x Bayes post: ...flat or Heaviside... --> Renders as table
-x Bayes post: ...This is even kind off... --> kind of
-x Bayes post: ...Where biases are relatively bi? --> big
-x Bayes post: ...because of it satisfies... --> because it satisfies
-x Bayes post: ...before we move on the Bayesian --> move on TO
-x Bayes post: definetely --> definitely
-x Rotation matrix post: factor 2 mistake (Brian Delhaisse)
