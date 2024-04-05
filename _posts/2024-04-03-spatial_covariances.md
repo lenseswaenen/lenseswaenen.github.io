@@ -11,7 +11,7 @@ This post will be about [Gaussian Processes](https://en.wikipedia.org/wiki/Krigi
 
 # Gaussian Process Regression
 
-![Typical GPR illustration (from scikit-learn)](https://scikit-learn.org/stable/_images/sphx_glr_plot_gpr_noisy_targets_002.png)
+![Typical GPR illustration (from scikit-learn)](/assets/images/spatial_covariances_files/sphx_glr_plot_gpr_noisy_targets_002.png)
 
 Gaussian Process Regression (GPR) is lately turning up almost every commercial project I'm working on. I have a kind of love-hate relationship with them. Some things I like about Gaussian Processes:
 - Considered a Machine Learning technique, which sells well. And selling projects is quite a big part of my work.
@@ -32,7 +32,7 @@ Fundamental to (iterative) adjustment theory is statistics and Bayes' rule (thou
 # The Baarda-Alberda matrix and other sparse covariance matrix issues
 To a large extent, following the Bayesian update rule, will yield a covariance matrix that has spatial features similar to Gaussian Process Kernel Matrices, but it will not be exactly the same due to the organic/historical/random nature of points and observations in the Netherlands. However, there were a few times in the project where we did see a need to create a custom (spatial) covariance matrix (using a kernel) from scratch.
 
-The first application is the Baarde-Alberda matrix. To start the process of updating the current Kadastral map through Bayes' rule, we need our starting point, the current Kadastral map, also to be described by a probability distribution. The current Kadastral map is the logical candidate for the mean, but what do we take for the covariance matrix? The HTW suggests the Baarda-Alberda matrix, which is uses a triangular kernel function:
+The first application is the Baarda-Alberda matrix. To start the process of updating the current Kadastral map through Bayes' rule, we need our starting point, the current Kadastral map, also to be described by a probability distribution. The current Kadastral map is the logical candidate for the mean, but what do we take for the covariance matrix? The HTW suggests the Baarda-Alberda matrix, which is uses a triangular kernel function:
 
 $$ \Sigma(x, x') = \max \left(0, \sigma^2 \left(1 - \frac{r}{r_{max}}\right)\right)$$
 
@@ -104,11 +104,21 @@ This means, that our iterative procedure requires us to bring in more and more c
 
 # Requirements for a new kernel
 And so, after much ado, we get some requirements for a new kernel function:
-- [ ] Positive definite (in 2D)
-- [ ] Radial symmetry (in 2D)
-- [ ] Finite support / correlation length
-- [ ] Flat near the origin (= derivative of 0)
-- [ ] Simple analytical formula (preferrably)
+- Positive definite (in 2D)
+- Radial symmetry (in 2D)
+- Finite support / correlation length
+- Flat near the origin (= derivative of 0)
+- Simple analytical formula
+
+The kernel candidates we encountered till now score as follows:
+
+|                     Kernel | Indicator on disk | Squared Exponential | Triangular | Circular |
+|---------------------------:|:-----------------:|:-------------------:|:----------:|:--------:|
+| Positive definite  (in 2D) |                   |          x          |            |     x    |
+|    Radial symmetry (in 2D) |         x         |          x          |      x     |     x    |
+|             Finite support |         x         |                     |      x     |     x    |
+|           Flat near origin |         x         |          x          |            |          |
+|  Simple analytical formula |         x         |          x          |      x     |     x    |
 
 So how can we achieve flatness near the origin? The reason that the circular model has a cusp at the origin can be understood the same way the triangular function has a cusp at the top. When we consider the triangular function as a self-convolution of a block function, it is the discontinuity of the block function that yields the cusp. If we self-convolve two triangular functions, we get a higher order B-spline 'bump' which is smoother allround, including at the top. So we'll try and construct a new kernel by self-convolving - in 2D - a function with finite support that does not have a discontinuity at $r_{max}$ but goes to zero more smoothly.
 
@@ -139,7 +149,7 @@ for i, d in enumerate(ds):
 blocks = outs
 ```
 
-Note that for a 2D convolution, we generally would have a double for-loop over a 2D integra. However, because of radial symmetry, we only need to sweep the distance between the two (shifted) copies of the input function, that then get multiplied and integrated. If we restrict the support of the candidate functions to be within $[-1, 1] \times [-1, 1]$ and ensure that they go to zero outside of their support, we can just integrate over that square. Also notice how the self-convolution of functions that go to zero at $r=1$ will go to zero only at center distance $d = 2$. But because I think it is nice to have a kernel that goes to zero at 1, you'll see me rescale $d/2 \to r$ here and there...
+Note that for a 2D convolution, we generally would have a double for-loop over a 2D integral. However, because of radial symmetry, we only need to sweep the distance between the two (shifted) copies of the input function, that then get multiplied and integrated. If we restrict the support of the candidate functions to be within $[-1, 1] \times [-1, 1]$ and ensure that they go to zero outside of their support, we can just integrate over that square. Also notice how the self-convolution of functions that go to zero at $r=1$ will go to zero only at center distance $d = 2$. But because I think it is nice to have a kernel that goes to zero at 1, you'll see me rescale $d/2 \to r$ here and there...
 
 
 ```python
@@ -396,11 +406,14 @@ plt.grid()
 
 
 Eureka! Our new kernel checks all the boxes:
-- [x] Positive definite (in 2D)
-- [x] Radial symmetry (in 2D)
-- [x] Finite support / correlation length
-- [x] Flat near the origin
-- [x] Simple analytical formula (preferrably)
+
+|                     Kernel | Indicator on disk | Squared Exponential | Triangular | Circular | Triangular x triangular | New kernel |
+|---------------------------:|:-----------------:|:-------------------:|:----------:|:--------:|:-----------------------:|:----------:|
+| Positive definite  (in 2D) |                   |          x          |            |     x    |            x            |      x     |
+|    Radial symmetry (in 2D) |         x         |          x          |      x     |     x    |            x            |      x     |
+|             Finite support |         x         |                     |      x     |     x    |            x            |      x     |
+|           Flat near origin |         x         |          x          |            |          |            x            |      x     |
+|  Simple analytical formula |         x         |          x          |      x     |     x    |                         |      x     |
 
 That's all folks! Thanks for sticking around.
 

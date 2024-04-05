@@ -97,23 +97,19 @@
 	- QR vs Cholesky (speed difference)
 	- BFGS vs BOBYQA Hessian convergence
 	- Matrix that crashed SVD computation...***
-	- Unconstrained variables in a QP (2 methods)
+	- Unconstrained variables in a QP (2 methods)**
 	- Sparse direct solvers!
 	- Kadaster & updating covariance matrices
 	- EKF failing on sine fitting** (https://dsp.stackexchange.com/questions/79451/kalman-filter-on-sinusoidal-signal)
-	- Native Python linear inequality constraint visualization with matplotlib & con2vert (MATLAB > Python with ChatGPT?!)**
 - Puzzles/Recreational:
 	- Dots & MILP (???)
 	- Pyomo & overhang*
 	- Sprinkler pattern
 	- Garage door shapes
-	- Traveling Sam Problem (w TSP Concorde)
 	- Pi Day & Matt Parker (2022)
 	- sum(x) = 1: What does the 3d slice in 4d space look like?
-	- Comic: Trolleying Salesman Problem
 	- Variational physics, optimal solutions in nature
 	- Numberphile regular polyhedra & linear inequalities
-	- ChatGPT?
 - Sports/games:
 	- Rating systems. Love letter to TrueSkill. Ranking the sports
 		- Comparison of TrueSkill and Glicko?
@@ -183,4 +179,5 @@
 3. Run `bundle`
 4. `bundle exec jekyll serve`
 
-# Errata
+# Errata/improvements
+- More acknowledgements overall?

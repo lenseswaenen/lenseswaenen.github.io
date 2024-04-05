@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-04-04T09:20:08+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Bits of math</title><subtitle>Sharing bits of mathematics that I've come across in my ~10 years as a professional mathematical engineer.</subtitle><author><name>Lense Swaenen</name></author><entry><title type="html">A new spatial covariance kernel</title><link href="http://localhost:4000/2024/04/03/spatial_covariances.html" rel="alternate" type="text/html" title="A new spatial covariance kernel" /><published>2024-04-03T00:00:00+02:00</published><updated>2024-04-03T00:00:00+02:00</updated><id>http://localhost:4000/2024/04/03/spatial_covariances</id><content type="html" xml:base="http://localhost:4000/2024/04/03/spatial_covariances.html">&lt;p&gt;This post will be about &lt;a href=&quot;https://en.wikipedia.org/wiki/Kriging&quot;&gt;Gaussian Processes&lt;/a&gt; and the &lt;a href=&quot;https://www.cs.toronto.edu/~duvenaud/cookbook/&quot;&gt;design&lt;/a&gt; of a (afaik) new spatial kernel that was a pretty fun exercise. This exercise was motivated by a project I worked on the for Dutch Kadaster, so we’ll build the motivation for the new kernel through that application.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-04-05T15:28:42+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Bits of math</title><subtitle>Sharing bits of mathematics that I've come across in my ~10 years as a professional mathematical engineer.</subtitle><author><name>Lense Swaenen</name></author><entry><title type="html">A new spatial covariance kernel</title><link href="http://localhost:4000/2024/04/03/spatial_covariances.html" rel="alternate" type="text/html" title="A new spatial covariance kernel" /><published>2024-04-03T00:00:00+02:00</published><updated>2024-04-03T00:00:00+02:00</updated><id>http://localhost:4000/2024/04/03/spatial_covariances</id><content type="html" xml:base="http://localhost:4000/2024/04/03/spatial_covariances.html">&lt;p&gt;This post will be about &lt;a href=&quot;https://en.wikipedia.org/wiki/Kriging&quot;&gt;Gaussian Processes&lt;/a&gt; and the &lt;a href=&quot;https://www.cs.toronto.edu/~duvenaud/cookbook/&quot;&gt;design&lt;/a&gt; of a (afaik) new spatial kernel that was a pretty fun exercise. This exercise was motivated by a project I worked on the for Dutch Kadaster, so we’ll build the motivation for the new kernel through that application.&lt;/p&gt;
 
 &lt;h1 id=&quot;gaussian-process-regression&quot;&gt;Gaussian Process Regression&lt;/h1&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://scikit-learn.org/stable/_images/sphx_glr_plot_gpr_noisy_targets_002.png&quot; alt=&quot;Typical GPR illustration (from scikit-learn)&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/spatial_covariances_files/sphx_glr_plot_gpr_noisy_targets_002.png&quot; alt=&quot;Typical GPR illustration (from scikit-learn)&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Gaussian Process Regression (GPR) is lately turning up almost every commercial project I’m working on. I have a kind of love-hate relationship with them. Some things I like about Gaussian Processes:&lt;/p&gt;
 &lt;ul&gt;
@@ -27,7 +27,7 @@
 &lt;h1 id=&quot;the-baarda-alberda-matrix-and-other-sparse-covariance-matrix-issues&quot;&gt;The Baarda-Alberda matrix and other sparse covariance matrix issues&lt;/h1&gt;
 &lt;p&gt;To a large extent, following the Bayesian update rule, will yield a covariance matrix that has spatial features similar to Gaussian Process Kernel Matrices, but it will not be exactly the same due to the organic/historical/random nature of points and observations in the Netherlands. However, there were a few times in the project where we did see a need to create a custom (spatial) covariance matrix (using a kernel) from scratch.&lt;/p&gt;
 
-&lt;p&gt;The first application is the Baarde-Alberda matrix. To start the process of updating the current Kadastral map through Bayes’ rule, we need our starting point, the current Kadastral map, also to be described by a probability distribution. The current Kadastral map is the logical candidate for the mean, but what do we take for the covariance matrix? The HTW suggests the Baarda-Alberda matrix, which is uses a triangular kernel function:&lt;/p&gt;
+&lt;p&gt;The first application is the Baarda-Alberda matrix. To start the process of updating the current Kadastral map through Bayes’ rule, we need our starting point, the current Kadastral map, also to be described by a probability distribution. The current Kadastral map is the logical candidate for the mean, but what do we take for the covariance matrix? The HTW suggests the Baarda-Alberda matrix, which is uses a triangular kernel function:&lt;/p&gt;
 
 \[\Sigma(x, x') = \max \left(0, \sigma^2 \left(1 - \frac{r}{r_{max}}\right)\right)\]
 
@@ -89,13 +89,64 @@ Also the default kernel to Gaussian Processes checks out: The squared exponentia
 
 &lt;h1 id=&quot;requirements-for-a-new-kernel&quot;&gt;Requirements for a new kernel&lt;/h1&gt;
 &lt;p&gt;And so, after much ado, we get some requirements for a new kernel function:&lt;/p&gt;
-&lt;ul class=&quot;task-list&quot;&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Positive definite (in 2D)&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Radial symmetry (in 2D)&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Finite support / correlation length&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Flat near the origin (= derivative of 0)&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Simple analytical formula (preferrably)&lt;/li&gt;
+&lt;ul&gt;
+  &lt;li&gt;Positive definite (in 2D)&lt;/li&gt;
+  &lt;li&gt;Radial symmetry (in 2D)&lt;/li&gt;
+  &lt;li&gt;Finite support / correlation length&lt;/li&gt;
+  &lt;li&gt;Flat near the origin (= derivative of 0)&lt;/li&gt;
+  &lt;li&gt;Simple analytical formula&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;The kernel candidates we encountered till now score as follows:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Kernel&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Indicator on disk&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Squared Exponential&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Triangular&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Circular&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Positive definite  (in 2D)&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Radial symmetry (in 2D)&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Finite support&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Flat near origin&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Simple analytical formula&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;p&gt;So how can we achieve flatness near the origin? The reason that the circular model has a cusp at the origin can be understood the same way the triangular function has a cusp at the top. When we consider the triangular function as a self-convolution of a block function, it is the discontinuity of the block function that yields the cusp. If we self-convolve two triangular functions, we get a higher order B-spline ‘bump’ which is smoother allround, including at the top. So we’ll try and construct a new kernel by self-convolving - in 2D - a function with finite support that does not have a discontinuity at $r_{max}$ but goes to zero more smoothly.&lt;/p&gt;
 
@@ -122,7 +173,7 @@ Also the default kernel to Gaussian Processes checks out: The squared exponentia
 &lt;span class=&quot;n&quot;&gt;blocks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outs&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Note that for a 2D convolution, we generally would have a double for-loop over a 2D integra. However, because of radial symmetry, we only need to sweep the distance between the two (shifted) copies of the input function, that then get multiplied and integrated. If we restrict the support of the candidate functions to be within $[-1, 1] \times [-1, 1]$ and ensure that they go to zero outside of their support, we can just integrate over that square. Also notice how the self-convolution of functions that go to zero at $r=1$ will go to zero only at center distance $d = 2$. But because I think it is nice to have a kernel that goes to zero at 1, you’ll see me rescale $d/2 \to r$ here and there…&lt;/p&gt;
+&lt;p&gt;Note that for a 2D convolution, we generally would have a double for-loop over a 2D integral. However, because of radial symmetry, we only need to sweep the distance between the two (shifted) copies of the input function, that then get multiplied and integrated. If we restrict the support of the candidate functions to be within $[-1, 1] \times [-1, 1]$ and ensure that they go to zero outside of their support, we can just integrate over that square. Also notice how the self-convolution of functions that go to zero at $r=1$ will go to zero only at center distance $d = 2$. But because I think it is nice to have a kernel that goes to zero at 1, you’ll see me rescale $d/2 \to r$ here and there…&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;figure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blocks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;circular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;circular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'-'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'analytical'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -293,13 +344,67 @@ and self-convolve that in 2D, we get the following function (up to some scaling 
 &lt;p&gt;&lt;img src=&quot;/assets/images/spatial_covariances_files/spatial_covariances_41_0.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Eureka! Our new kernel checks all the boxes:&lt;/p&gt;
-&lt;ul class=&quot;task-list&quot;&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;Positive definite (in 2D)&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;Radial symmetry (in 2D)&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;Finite support / correlation length&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;Flat near the origin&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;Simple analytical formula (preferrably)&lt;/li&gt;
-&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Kernel&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Indicator on disk&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Squared Exponential&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Triangular&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Circular&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Triangular x triangular&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;New kernel&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Positive definite  (in 2D)&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Radial symmetry (in 2D)&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Finite support&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Flat near origin&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Simple analytical formula&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;x&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;p&gt;That’s all folks! Thanks for sticking around.&lt;/p&gt;
 

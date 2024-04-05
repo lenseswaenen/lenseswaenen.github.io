@@ -107,7 +107,7 @@
               <a href="#">Lense Swaenen</a>
               on April 03, 2024 &middot; <span class="reading-time" title="Estimated read time">
   
-   19 mins  read </span>
+   20 mins  read </span>
 
             </span>
           </div>
@@ -124,7 +124,7 @@
 
 <h1 id="gaussian-process-regression">Gaussian Process Regression</h1>
 
-<p><img src="https://scikit-learn.org/stable/_images/sphx_glr_plot_gpr_noisy_targets_002.png" alt="Typical GPR illustration (from scikit-learn)" /></p>
+<p><img src="/assets/images/spatial_covariances_files/sphx_glr_plot_gpr_noisy_targets_002.png" alt="Typical GPR illustration (from scikit-learn)" /></p>
 
 <p>Gaussian Process Regression (GPR) is lately turning up almost every commercial project I’m working on. I have a kind of love-hate relationship with them. Some things I like about Gaussian Processes:</p>
 <ul>
@@ -149,7 +149,7 @@
 <h1 id="the-baarda-alberda-matrix-and-other-sparse-covariance-matrix-issues">The Baarda-Alberda matrix and other sparse covariance matrix issues</h1>
 <p>To a large extent, following the Bayesian update rule, will yield a covariance matrix that has spatial features similar to Gaussian Process Kernel Matrices, but it will not be exactly the same due to the organic/historical/random nature of points and observations in the Netherlands. However, there were a few times in the project where we did see a need to create a custom (spatial) covariance matrix (using a kernel) from scratch.</p>
 
-<p>The first application is the Baarde-Alberda matrix. To start the process of updating the current Kadastral map through Bayes’ rule, we need our starting point, the current Kadastral map, also to be described by a probability distribution. The current Kadastral map is the logical candidate for the mean, but what do we take for the covariance matrix? The HTW suggests the Baarda-Alberda matrix, which is uses a triangular kernel function:</p>
+<p>The first application is the Baarda-Alberda matrix. To start the process of updating the current Kadastral map through Bayes’ rule, we need our starting point, the current Kadastral map, also to be described by a probability distribution. The current Kadastral map is the logical candidate for the mean, but what do we take for the covariance matrix? The HTW suggests the Baarda-Alberda matrix, which is uses a triangular kernel function:</p>
 
 \[\Sigma(x, x') = \max \left(0, \sigma^2 \left(1 - \frac{r}{r_{max}}\right)\right)\]
 
@@ -211,13 +211,64 @@ Also the default kernel to Gaussian Processes checks out: The squared exponentia
 
 <h1 id="requirements-for-a-new-kernel">Requirements for a new kernel</h1>
 <p>And so, after much ado, we get some requirements for a new kernel function:</p>
-<ul class="task-list">
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Positive definite (in 2D)</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Radial symmetry (in 2D)</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Finite support / correlation length</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Flat near the origin (= derivative of 0)</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Simple analytical formula (preferrably)</li>
+<ul>
+  <li>Positive definite (in 2D)</li>
+  <li>Radial symmetry (in 2D)</li>
+  <li>Finite support / correlation length</li>
+  <li>Flat near the origin (= derivative of 0)</li>
+  <li>Simple analytical formula</li>
 </ul>
+
+<p>The kernel candidates we encountered till now score as follows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">Kernel</th>
+      <th style="text-align: center">Indicator on disk</th>
+      <th style="text-align: center">Squared Exponential</th>
+      <th style="text-align: center">Triangular</th>
+      <th style="text-align: center">Circular</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">Positive definite  (in 2D)</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">x</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Radial symmetry (in 2D)</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Finite support</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Flat near origin</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Simple analytical formula</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+    </tr>
+  </tbody>
+</table>
 
 <p>So how can we achieve flatness near the origin? The reason that the circular model has a cusp at the origin can be understood the same way the triangular function has a cusp at the top. When we consider the triangular function as a self-convolution of a block function, it is the discontinuity of the block function that yields the cusp. If we self-convolve two triangular functions, we get a higher order B-spline ‘bump’ which is smoother allround, including at the top. So we’ll try and construct a new kernel by self-convolving - in 2D - a function with finite support that does not have a discontinuity at $r_{max}$ but goes to zero more smoothly.</p>
 
@@ -244,7 +295,7 @@ Also the default kernel to Gaussian Processes checks out: The squared exponentia
 <span class="n">blocks</span> <span class="o">=</span> <span class="n">outs</span>
 </code></pre></div></div>
 
-<p>Note that for a 2D convolution, we generally would have a double for-loop over a 2D integra. However, because of radial symmetry, we only need to sweep the distance between the two (shifted) copies of the input function, that then get multiplied and integrated. If we restrict the support of the candidate functions to be within $[-1, 1] \times [-1, 1]$ and ensure that they go to zero outside of their support, we can just integrate over that square. Also notice how the self-convolution of functions that go to zero at $r=1$ will go to zero only at center distance $d = 2$. But because I think it is nice to have a kernel that goes to zero at 1, you’ll see me rescale $d/2 \to r$ here and there…</p>
+<p>Note that for a 2D convolution, we generally would have a double for-loop over a 2D integral. However, because of radial symmetry, we only need to sweep the distance between the two (shifted) copies of the input function, that then get multiplied and integrated. If we restrict the support of the candidate functions to be within $[-1, 1] \times [-1, 1]$ and ensure that they go to zero outside of their support, we can just integrate over that square. Also notice how the self-convolution of functions that go to zero at $r=1$ will go to zero only at center distance $d = 2$. But because I think it is nice to have a kernel that goes to zero at 1, you’ll see me rescale $d/2 \to r$ here and there…</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">circular</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">circular</span><span class="p">(</span><span class="n">d</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">]),</span> <span class="s">'-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'analytical'</span><span class="p">)</span>
@@ -415,13 +466,67 @@ and self-convolve that in 2D, we get the following function (up to some scaling 
 <p><img src="/assets/images/spatial_covariances_files/spatial_covariances_41_0.png" alt="png" /></p>
 
 <p>Eureka! Our new kernel checks all the boxes:</p>
-<ul class="task-list">
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Positive definite (in 2D)</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Radial symmetry (in 2D)</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finite support / correlation length</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Flat near the origin</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Simple analytical formula (preferrably)</li>
-</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">Kernel</th>
+      <th style="text-align: center">Indicator on disk</th>
+      <th style="text-align: center">Squared Exponential</th>
+      <th style="text-align: center">Triangular</th>
+      <th style="text-align: center">Circular</th>
+      <th style="text-align: center">Triangular x triangular</th>
+      <th style="text-align: center">New kernel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">Positive definite  (in 2D)</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Radial symmetry (in 2D)</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Finite support</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Flat near origin</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Simple analytical formula</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">x</td>
+    </tr>
+  </tbody>
+</table>
 
 <p>That’s all folks! Thanks for sticking around.</p>
 
