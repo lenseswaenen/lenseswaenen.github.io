@@ -60,6 +60,7 @@
 - Unbiased variance estimation & sympy
 - Linear inequality visualization with matplotlib and con2vert
 - Radially symmetric PSD 2D kernel (and KKN)
+- Forming shoulders
 
 ## Up next
 
@@ -181,3 +182,8 @@
 
 # Errata/improvements
 - More acknowledgements overall?
+- Unbiased variance estimation: Jake's video is one [I] frequently...
+- Unbiased variance estimation: ...data are [is] a consistent estimator to mu....
+- Unbiased variance estimation: ...assymetry...
+- Unbiased variance estimation: [?!] Unfortunately this is not the case
+- A new spatial covariance kernel: Could I have used this as well?: https://docs.gpytorch.ai/en/stable/kernels.html#gpytorch.kernels.PiecewisePolynomialKernel

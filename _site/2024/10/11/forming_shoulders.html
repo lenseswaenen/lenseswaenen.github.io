@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    Forming shoulders - Bits of math
+    
+  </title>
+
+  <meta name="description" content="Something came on my path at work in the past weeks that I am super stoked about! So I couldn’t resist to write something about a very cool bit of maths/geom...">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link rel="canonical" href="http://localhost:4000/2024/10/11/forming_shoulders.html">
+  <link rel="alternate" type="application/rss+xml" title="Bits of math" href="/feed.xml">
+
+  <!-- for mathjax support -->
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" }},
+	  tex2jax: { inlineMath: [ ['$','$'], ['\\(','\\)'] ]}
+      });
+    </script>
+    <!-- <script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+  <!-- For Jekyll SEO plugin -->
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Forming shoulders | Bits of math</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Forming shoulders" />
+<meta name="author" content="Lense Swaenen" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Something came on my path at work in the past weeks that I am super stoked about! So I couldn’t resist to write something about a very cool bit of maths/geometry with a some company history, a surprising application and even some arts &amp; crafts thrown in!" />
+<meta property="og:description" content="Something came on my path at work in the past weeks that I am super stoked about! So I couldn’t resist to write something about a very cool bit of maths/geometry with a some company history, a surprising application and even some arts &amp; crafts thrown in!" />
+<link rel="canonical" href="http://localhost:4000/2024/10/11/forming_shoulders.html" />
+<meta property="og:url" content="http://localhost:4000/2024/10/11/forming_shoulders.html" />
+<meta property="og:site_name" content="Bits of math" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-11T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Forming shoulders" />
+<meta name="twitter:site" content="@LenseSwaenen" />
+<meta name="twitter:creator" content="@Lense Swaenen" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Forming shoulders","dateModified":"2024-10-11T00:00:00+02:00","datePublished":"2024-10-11T00:00:00+02:00","url":"http://localhost:4000/2024/10/11/forming_shoulders.html","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2024/10/11/forming_shoulders.html"},"author":{"@type":"Person","name":"Lense Swaenen"},"description":"Something came on my path at work in the past weeks that I am super stoked about! So I couldn’t resist to write something about a very cool bit of maths/geometry with a some company history, a surprising application and even some arts &amp; crafts thrown in!","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <!-- For Google findability -->
+  <meta name="google-site-verification" content="HMALsEPUPk8UDAmx9EYoAWZ0cB2rgDoxBp6zhln4_H4" />
+</head>
+
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">Bits of math</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/shoulders/forming_shoulder_high_res.jpg')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Forming shoulders</h1>
+            
+            <h2 class="subheading">Mathematical arts & crafts with a dash of LIME history</h2>
+            
+            <span class="meta">Posted by
+              <a href="#">Lense Swaenen</a>
+              on October 11, 2024 &middot; <span class="reading-time" title="Estimated read time">
+  
+   8 mins  read </span>
+
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <p>Something came on my path at work in the past weeks that I am super stoked about! So I couldn’t resist to write something about a very cool bit of maths/geometry with a some company history, a surprising application and even some arts &amp; crafts thrown in!</p>
+
+<h1 id="some-lime-history">Some LIME history</h1>
+<p>A company that manufactures packaging machines for the food processing industry traced us - Sioux Mathware - down as the descendants of the original creators of a small script that they use to create “forming shoulders”. This script was created somewhere in the early 90’s and could use some modernization, which is why they reached out. So as I write, we are formulating a proposal for a project. Not knowing whether it will land, I can’t contain myself to already write some of the history and maths (which is public) down. No code this time though.</p>
+
+<p>My working career started in August 2012 with LIME B.V.. LIME was an acronym for ‘Laboratory for Industrial Mathematics Eindhoven’. LIME was created somewhere around 2005 at the Technical University of Eindhoven (TU/e) by Prof. Bob Mattheij. Just before I joined, 2011 or early 2012, LIME spun out of the university and was acquired by Sioux, which was mostly a software company back then. Some milestones in the history of LIME since 2012 were</p>
+<ul>
+  <li>The branding of the company through “slimoentjes” around 2018 (with the main header to this blog being <a href="https://en.wikipedia.org/wiki/March_of_Progress">The March of Progress</a> reinterpreted with “slimoentjes”)</li>
+  <li>Becoming the Mathware department of Sioux Technologies in 2020.
+Over the span of my employment, Sioux as a whole has evolved from a software company into a “systems house” that houses nearly all of the engineering disciplines.</li>
+</ul>
+
+<p>The history before 2012, I knew mostly through word of mouth by colleagues who’ve been here longer than me. So I knew that LIME originated around 2005. But a screenshot of the forming shoulder script stated “Instituut Wiskundige Dienstverlening Eindhoven” (IWDE, Institute of Mathematical Service Eindhoven), so I went digging at little bit. Helpful at that is how the Eindhoven university publishes many university documents on their website. In my daily work I regularly consult master theses and PhD theses, which afaik the KULeuven still does not publish online. TUDelft and other Dutch universities as well, so perhaps its a Dutch thing… Anyways, this time around, I used the repository for more historical documents. One document that can be found there that gives a view into LIME history is the <a href="https://pure.tue.nl/ws/portalfiles/portal/3713220/724493.pdf">Liber Amicorum of Bob’s retirement from the university</a>.  Bob retired in 2011 and stuck around at LIME until 2018 (at which point we made him another Liber Amicorum or “book of friends”). That TU/e document is a testament to Bob’s lifelong engagement to close the gap between mathematics and industry, through a plethora of initiatives, like ECMI, SIAM, ITW, SWI, and eventually LIME. However, it does not state anything about the IWDE…</p>
+
+<p>Another piece of the puzzle though, was that we quickly found some literature on the mathematics of forming shoulders, the oldest one being this 1989 paper by Jaap Molenaar with nice old mathematical type setting titled <a href="https://pure.tue.nl/ws/portalfiles/portal/2059500/716596.pdf">“Shoulder design for packaging machines”</a>. Jaap Molenaar was familiar to me as a old co-worker of Bob, as we participated in the same team at the <a href="https://www.swi-wiskunde.nl/swi2019/download-our-proceedings/">SWI 2019</a> where we jointly pondered a week about modelling the stability of concrete 3D printing (a challenge submitted by Bruil). At the time of writing, Jaap is <a href="https://www.wur.nl/en/Persons/Jaap-Molenaar.htm">professor emeritus</a> from Wageningen University (WUR), but at the 2019 SWI he was still active as professor there. Before his professorship in Wageningen however, he worked for many years at the IWDE. Once again, the TU/e document repository proved a very interesting resource containing year reports of the IWDE. The earliest one I could find was the <a href="https://pure.tue.nl/ws/portalfiles/portal/1807211/720749.pdf">1988 IWDE “jaarverslag”</a>, the latest one being the <a href="https://pure.tue.nl/ws/portalfiles/portal/2273256/716745.pdf">2001 IWDE “jaarverslag”</a>. Both were published by Jaap Molenaar and give some insight into the IWDE. I am very impressed by the amount of activities, projects, publications, conference presentations, courses, … by the IWDE group in those reports, given that they were &lt;5 full time people.</p>
+
+<p>And yes, the 1988 report makes mention of the Aquarius company (their name back then), looking for help with the mathematics of their forming shoulders… With a history of over 35 years, this makes it by far the oldest LIME activity that I’m so closely involved with.
+Anyways, enough with the history: What are forming shoulders anyways?!</p>
+
+<h1 id="forming-shoulders">Forming shoulders</h1>
+<p>As a picture says more than a thousand words, check out the image below.</p>
+<figure>
+<img src="/img/posts/shoulders/hicks2007.png" width="500" />
+<figcaption>Image courtesy: Hicks B, et al., details below</figcaption>
+</figure>
+<p>This depicts a roll of plastic [1] being shaped into a tubular shape, that tube being sealed [5], filled  (think of m&amp;m’s) [6] and sealed and cut into individual bags [7,8]. The forming shoulder is [3], a component that guides/shapes the plastic into a tube. Below a picture of a true forming shoulder:</p>
+
+<p><img src="/img/posts/shoulders/forming_shoulder_high_res.jpg" width="500" /></p>
+
+<p>The function of this shoulder is to shape the plastic without stretching, tearing, wrinkling, … In order to achieve that, some very interesting mathematics is used, namely the mathematics of <a href="https://en.wikipedia.org/wiki/Developable_surface">developable surfaces</a>. Developable surfaces are those surfaces that can be deformed into flat planes without tears or wrinkles. This means local geometry is preserved, such as distances and angles. Mathematical theory states that such surfaces need to have Gaussian curvature zero everywhere. They can be curved, but they always need to be straight along some direction. “Doubly curved” surfaces (like spheres) are not developable. That is why there is an entire science about map projections for Earth, as there is no perfect solution. Another typical application is in how <a href="https://www.wired.com/2014/09/curvature-and-strength-empzeal/">holding a piece of floppy pizza</a> and intensionally folding is along the axial direction avoids it from sagging along the longitudinal direction.</p>
+
+<p>Developable surfaces are ruled surfaces (but not necessarily the other way around), which means that on every point, there is a straight line that is completely contained on the surface.
+A forming shoulder is not a single developable surface, but a union of two developable surfaces that meet at a bending curve. The constraint that one of the two developable surfaces is a (part) of a cylinder, imposes constraints on what the other developable surface (the collar) can be.</p>
+
+<figure>
+<img src="/img/posts/shoulders/hicks2007_2.png" width="500" />
+<figcaption>Image courtesy: Hicks B, et al., details below</figcaption>
+</figure>
+
+<p>Jaap Molenaar, during his time at the IWDE, was the first to derive and publish the theory and solution of what this bending curve and collar shape are. He did so in a <a href="https://pure.tue.nl/ws/portalfiles/portal/2059500/716596.pdf">1989 IWDE report</a>, but later also wrote a extended, peer reviewed version with nicer typesetting in this <a href="https://pure.tue.nl/ws/portalfiles/portal/1902134/Metis196344.pdf">1995 SIAM review paper</a>. Later on, professor Ben Hicks was involved in two publications that cite Molenaar and that have some nice visuals (that I use in this blog post), e.g.:</p>
+<ul>
+  <li><a href="https://onlinelibrary.wiley.com/doi/10.1002/pts.691?msockid=1dc414face756aea063b005bcf0c6b3a">Design of forming shoulders with complex cross-sections</a></li>
+  <li><a href="https://journals.sagepub.com/doi/10.1243/09544054JEM896">Towards an integrated CADCAM process for the production of forming shoulders with exact geometry</a></li>
+</ul>
+
+<p>A core part of the solution to the mathematical problem is the bending curve, which, when the tube is unrolled, looks a lot like a parabola. In fact, the formula is</p>
+
+\[f(\xi) = c_0 + c_2 \xi^2 + c_3 |\xi|^3 + c_4(\cos(\xi) - 1 + \xi^2/2) + c_5|\sin(\xi) - \xi - \xi^3/6|\]
+
+<p>Which is in fact a parabola with some additional terms on top. We have 5 parameters to the bending curve, that are related to the design parameters like the angle of the incoming film, the radius of the tube, the height between top of the bending curve and bottom of the bending curve, … For the math details, you should check out the papers.</p>
+
+<h1 id="manufacturing-forming-shoulders-arts--crafts">Manufacturing forming shoulders: arts &amp; crafts</h1>
+<p>In this final section, we discuss 3 possible ways of manufacturing forming shoulders for industrial application, and how 2 of them you can copy in your own home.</p>
+
+<p>The very first way is to create a solid shoulder using additive or subtractive manufacturing like 3D printing or CNC milling. Both of them require the full mathematical toolbox, as the full 3D geometry needs to be described. Moreover, I could not thing of a simple way to replicate that at home.</p>
+
+<h2 id="molding-and-the-paper-towel-shoulder">Molding and the paper towel shoulder</h2>
+<p>The second way of manufacturing a forming shoulder is the least mathematical way. In fact it avoids it completely by relying on the physics of deformable surfaces. The manufacturing technique I’m talking about is molding, e.g. from clay. You wrap some sheet material around a tube, and fold one end like a collar of a shirt (yes, also that is very much related to the mathematics above). If you do this upside down, you can fill the collar shape with your molding material. The trick is that the sheet material should be not too stiff to be easily foldable, but stiff enough to serve as a mold.</p>
+
+<p>At home, you can replicate this process with paper. However, if you were to use ordinary printing paper, you would experience that it is too stiff and that you need to wrinkle it and you wouldn’t get a nice solution. In my search for some sheet material that is not as stiff a paper, but not as weak as say a towel, if found a perfect balance in… you guessed it… paper towels! The dimensions of our paper towels at home were such that the tube whose circumference matched best was a bottle of wine. Just wrap it around the bottle, tape together the bottom 5-10cm and fold the upper part down. Below, you can behold a very nice example of your own forming shoulder at home, with no mathematics needed at all! And a bonus is that this shoulder is still deformable, so you can vary the parameters mentioned earlier easily.</p>
+
+<p><img src="/img/posts/shoulders/paper_towel.jpg" width="500" /></p>
+
+<h2 id="sheet-bending-and-the-printing-paper-shoulder">Sheet bending and the printing paper shoulder</h2>
+<p>The final way to manufacture a shoulder the most fun one and uses some of the maths, but relies on physics for the rest. We are talking about creating forming shoulders by bending a reasonably stiff plate material, like 1mm stainless steel plating. For this process we need only the mathematics of the bending curve. This curve is to be given to a laser cutter to cut your plate material in two along that parabolic shape. The two parts can be bent into the individual developable surfaces (tube and collar) and joined by welding them together at the (curved) bending curve.</p>
+
+<p>Where our printing paper was too stiff for the folding method, it serves perfectly to illustrate the stainless steel plate example. Step by step:</p>
+
+<h2 id="step-1-draw-the-cutting-line">Step 1: Draw the cutting line</h2>
+<p><img src="/img/posts/shoulders/step1.jpg" width="500" /></p>
+
+<p>See the (sole) equation above, or something simpler like a parabola. For 21cm wide A4 paper, I chose my parabola to be 10cm in height (which was easy to draw on my grid notebook paper). After bending, this will yield an insert angle which is almost a right angle. Put the parabola such that the collar part is not too long, as your final product will not stand upright and tip over.</p>
+
+<h2 id="step-2-cut-the-paper">Step 2: Cut the paper</h2>
+<p><img src="/img/posts/shoulders/step2.jpg" width="500" /></p>
+
+<p>We’ve replaced our laser cutter with ordinary scissors.</p>
+
+<h2 id="step-3-tape-the-tube">Step 3: Tape the tube</h2>
+<p><img src="/img/posts/shoulders/step3.jpg" width="500" /></p>
+
+<p>After a little bit of tape, the homogeneity of the papers mechanical properties will make for quite a good circular cross section.</p>
+
+<h2 id="step-4-tape-one-side-of-the-collar">Step 4: Tape one side of the collar</h2>
+<p><img src="/img/posts/shoulders/step4.jpg" width="500" /></p>
+
+<p>Where we now use tape to join the collar and the tube, with steel one would weld.</p>
+
+<h2 id="step-5-tape-the-rest-et-voila">Step 5: Tape the rest, et voila!</h2>
+<p><img src="/img/posts/shoulders/step5.jpg" width="500" /></p>
+
+<p>Having three connection points (top and the two collar ends) is already enough to get quite a good join across the whole bending curve (as mathematics would dictate).</p>
+
+<p>I imagine this could some fun recreational maths activity to enjoy with kids or students. If anyone would ever do so inspired by this post, be sure to let know!</p>
+
+<p>And I’ll keep you posted whether we landed a 2024 successor project to this ancient little gem.</p>
+
+<hr />
+
+<h2 id="related-posts">Related posts</h2>
+<ul>
+  <li><a href="/2023/03/25/dynobend_tube_optimizer.html">Dynobend Tube Optimizer: Jaap Molenaar’s derivations use curvatures and Frenet-Serret equations heavily, as we do in the Dynobend curve calculations.</a></li>
+</ul>
+
+<h2 id="want-to-leave-a-comment">Want to leave a comment?</h2>
+<p>Very interested in your comments but still figuring out the most suited approach to this. For now, feel free to send me an <a href="mailto:lenseswaenen@gmail.com">email</a>.</p>
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/2024/04/03/spatial_covariances.html" data-toggle="tooltip" data-placement="top" title="A new spatial covariance kernel">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="mailto:lenseswaenen@gmail.com">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/LenseSwaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/lenseswaenen">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Lense Swaenen 2024</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQVCL505Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7RQVCL505Y');
+</script>
+
+
+
+</body>
+
+</html>
